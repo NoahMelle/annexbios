@@ -7,7 +7,7 @@
     <title>{{ page_title }}</title>
     <link href="./assets/css/style.css" rel="stylesheet" />
     {{# styles}}
-    <link href="./assets/css/homepage.css" rel="stylesheet" />
+    <link href="./assets/css/{{.}}" rel="stylesheet" />
     {{/ styles}}
 </head>
 
@@ -37,9 +37,9 @@
             <div class="location-group">
                 <select name="" id="" class="location-selector">
                     <option value="" disabled selected>Kies je vestiging</option>
-                    <?php foreach ($locations as $location) : ?>
-                    <option value=""><?= $location ?></option>
-                    <?php endforeach; ?>
+                    {{# locations}}
+                    <option value="">{{ city }}</option>
+                    {{/ locations}}
                 </select>
                 <button class="view-tickets">
                     Bekijk Tickets
