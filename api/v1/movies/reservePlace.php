@@ -1,6 +1,6 @@
 <?php
 $response = [
-    "status" => "No Status",
+    "error" => false,
     "message" => []
 ];
 
@@ -43,11 +43,11 @@ if (isset($movie_id) && isset($location_id) && isset($place_id)) {
             }
 
             if(!$place_exist) {
-                $response["status"] = "Error";
+                $response["error"] = true;
                 $response["message"][] = "Place does not exist";
             } else {
                 if ($place_data["available"] === false) {
-                    $response["status"] = "Error";
+                    $response["error"] = true;
                     $response["message"][] = "No places available";
                 } else {
                     foreach ($place_data["places"] as &$place) {  // Loop by reference
@@ -59,15 +59,14 @@ if (isset($movie_id) && isset($location_id) && isset($place_id)) {
                                 $stmt = $con->prepare("UPDATE location_movie_data SET place_data = ? WHERE movie_id = ? AND location_id = ?");
                                 $stmt->bind_param("sii", $new_place_data, $movie_id, $location_id);
                                 if ($stmt->execute()) {
-                                    $response["status"] = "Success";
                                     $response["message"][] = "Place reserved successfully";
                                 } else {
-                                    $response["status"] = "Error";
+                                    $response["error"] = true;
                                     $response["message"][] = "Failed to reserve place";
                                 }
                                 $stmt->close();
                             } else {
-                                $response["status"] = "Error";
+                                $response["error"] = true;
                                 $response["message"][] = "Place is already reserved";
                             }
                         }
@@ -76,15 +75,15 @@ if (isset($movie_id) && isset($location_id) && isset($place_id)) {
                 }
             }
         } else {
-            $response["status"] = "Error";
+            $response["error"] = true;
             $response["message"][] = "No place data found";
         }
     } else {
-        $response["status"] = "Error";
+        $response["error"] = true;
         $response["message"][] = "Invalid GET parameters";
     }
 } else {
-    $response["status"] = "Error";
+    $response["error"] = true;
     $response["message"][] = "Required GET parameters are not set";
 }
 
