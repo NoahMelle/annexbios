@@ -1,41 +1,51 @@
 <?php
-    include_once './core/db_connect.php';
+include("core/db_connect.php");
+include("core/router.php");
 
-    $view = '';
-    if (!empty($_GET['view'])) {
-        $view = htmlspecialchars($_GET['view']);
-        $view = str_replace("/", "", $view);
-    }
+include("model/{$model}.php");
 
-    $page = '';
-    $style = '';
-    $js = '';
-    $isApiCall = false;
+$view = '';
+if (!empty($_GET['view'])) {
+    $view = htmlspecialchars($_GET['view']);
+    $view = str_replace("/", "", $view);
+}
 
-    switch($view) {
-    case '':
-        $page = 'home.php';
-        $style = 'home.css';
-        $js = 'home.js';
-        break;
-    case 'apiv1playingMovies':
-        $page = 'v1/movies/getPlayingMovies.php';
-        $isApiCall = true;
-        break;
-    case 'apiv1reservePlace':
-        $page = 'v1/movies/reservePlace.php';
-        $isApiCall = true;
-        break;
-    default: 
-        $page = '404.php';
-        $style = '404.css';
-        $js = '404.js';
-    }
+$page = '';
+$style = '';
+$js = '';
+$isApiCall = false;
 
-    if($isApiCall) {
-        require_once './api/' . $page;
-        exit();
-    } else {
-        require_once './view/' . $page;
-    }
-?>
+$mustache = new Mustache_Engine(array(
+    'template_class_prefix' => '__MyTemplates_',
+    'cache' => dirname(__FILE__) . '/tmp/cache/mustache',
+    'cache_file_mode' => 0666, // Please, configure your umask instead of doing this :)
+    'cache_lambda_templates' => true,
+    'extension' => '.html',
+    'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/views'),
+    'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/views/partials'),
+    'escape' => function ($value) {
+        return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
+    },
+    'charset' => 'ISO-8859-1',
+    'logger' => new Mustache_Logger_StreamLogger('php://stderr'),
+    'strict_callables' => true,
+    'pragmas' => [Mustache_Engine::PRAGMA_FILTERS],
+));
+
+
+if ($isApiCall) {
+    require_once './api/' . $page;
+    exit();
+} else {
+    $headertpl = $mustache->loadTemplate('header'); // loads __DIR__.'/views/foo.mustache';
+    echo $headertpl->render($data);
+
+    $tpl = $mustache->loadTemplate($template); // get $template from router
+    echo $tpl->render($data);
+
+    $footertpl = $mustache->loadTemplate('footer'); // loads __DIR__.'/views/foo.mustache';
+    echo $footertpl->render($data);
+
+
+    $con->close();
+}
