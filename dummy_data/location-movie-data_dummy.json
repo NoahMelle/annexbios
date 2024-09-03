@@ -1,28 +1,57 @@
 {
-    "id": 0,
-    "title": "",
-    "description": "",
-    "image": "",
-    "rating": 0,
-    "genres": [{
-        "name": ""
-    }],
-    "length": 0,
-    "release_date": "",
-    "directors": [{
-        "name": "",
-        "image": ""
-    }],
-    "actors": [{
-        "name": "",
-        "image": "",
-        "character_name": "",
-        "gender": ""
-    }],
-    "viewing_guides": [{
-        "name": "",
-        "image": ""
-    }],
-    "trailer_link": "",
-    "is_adult_movie": false
+  "id": 1,
+  "location": [{
+    "id": 1,
+    "name": "Bilthoven"
+  }],
+  "play_time": "2024-07-12",
+  "place_data": [{
+      "place": 1,
+      "available": true
+    },
+    {
+      "place": 2,
+      "available": false
+    },
+    {
+      "place": 3,
+      "available": true
+    },
+    {
+      "place": 4,
+      "available": false
+    },
+    {
+      "place": 5,
+      "available": true
+    },
+    {
+      "place": 6,
+      "available": false
+    },
+    {
+      "place": 7,
+      "available": true
+    },
+    {
+      "place": 8,
+      "available": false
+    },
+    {
+      "place": 9,
+      "available": true
+    },
+    {
+      "place": 10,
+      "available": false
+    },
+    {
+      "place": 11,
+      "available": true
+    },
+    {
+      "place": 12,
+      "available": false
+    }
+  ]
 }
