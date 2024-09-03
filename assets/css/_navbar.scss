@@ -1,0 +1,156 @@
+@import "./variables.scss";
+
+$hamburger-width: 30px;
+$bar-height: calc(#{$hamburger-width} / 10);
+$bar-spacing: calc(#{$hamburger-width} / 3.5);
+
+.menu-container {
+  position: relative;
+  display: none;
+  width: $hamburger-width;
+  height: calc(#{$hamburger-width} / 1.5);
+  flex-shrink: 0;
+}
+
+.hamburger-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: calc(#{$hamburger-width} / 1.5);
+  transform: translate(-50%, -50%);
+  width: $hamburger-width;
+  cursor: pointer;
+}
+
+.hamburger-bar {
+  display: block;
+  width: 100%;
+  height: $bar-height;
+  background: #000000;
+  border-radius: calc(#{$hamburger-width} / 13.33);
+  transition: all 0.3s;
+  position: absolute;
+}
+
+.bar-top {
+  top: 0;
+}
+
+.bar-middle {
+  top: $bar-spacing;
+}
+
+.bar-bottom {
+  top: calc(2 * #{$bar-spacing});
+}
+
+.navbar.active .bar-top {
+  animation: animate-top-bar 0.7s ease forwards;
+}
+
+.navbar.not-active .bar-top {
+  animation: animate-top-bar-reverse 0.7s ease forwards;
+}
+
+.navbar.active .bar-middle {
+  animation: animate-middle-bar 0.7s ease forwards;
+}
+
+.navbar.not-active .bar-middle {
+  animation: animate-middle-bar-reverse 0.7s ease forwards;
+}
+
+.navbar.active .bar-bottom {
+  animation: animate-bottom-bar 0.7s ease forwards;
+}
+
+.navbar.not-active .bar-bottom {
+  animation: animate-bottom-bar-reverse 0.7s ease forwards;
+}
+
+@keyframes animate-top-bar {
+  0% {
+    top: 0;
+    transform: rotate(0);
+  }
+  50% {
+    top: $bar-spacing;
+    transform: rotate(0);
+  }
+  100% {
+    top: $bar-spacing;
+    transform: rotate(45deg);
+  }
+}
+
+@keyframes animate-top-bar-reverse {
+  0% {
+    top: $bar-spacing;
+    transform: rotate(45deg);
+  }
+  50% {
+    top: $bar-spacing;
+    transform: rotate(0);
+  }
+  100% {
+    top: 0;
+    transform: rotate(0);
+  }
+}
+
+@keyframes animate-bottom-bar {
+  0% {
+    top: calc(2 * #{$bar-spacing});
+    transform: rotate(0);
+  }
+  50% {
+    top: $bar-spacing;
+    transform: rotate(0);
+  }
+  100% {
+    top: $bar-spacing;
+    transform: rotate(135deg);
+  }
+}
+
+@keyframes animate-bottom-bar-reverse {
+  0% {
+    top: $bar-spacing;
+    transform: rotate(135deg);
+  }
+  50% {
+    top: $bar-spacing;
+    transform: rotate(0);
+  }
+  100% {
+    top: calc(2 * #{$bar-spacing});
+    transform: rotate(0);
+  }
+}
+
+@keyframes animate-middle-bar {
+  50% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes animate-middle-bar-reverse {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media screen and (max-width: $tabletBreakpoint) {
+  .menu-container {
+    display: block;
+  }
+}
