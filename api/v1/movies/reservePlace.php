@@ -4,12 +4,24 @@ $response = [
     "message" => []
 ];
 
-// Check if required GET parameters are set and valid
-if (isset($_GET["location_id"]) && isset($_GET["movie_id"]) && isset($_GET["place_id"])) {
-    $location_id = $_GET["location_id"];
-    $movie_id = $_GET["movie_id"];
-    $place_id = $_GET["place_id"];
+if (!empty($_GET['view'])) {
+    $view = explode("/", htmlspecialchars($_GET['view'], ENT_QUOTES, 'UTF-8'));
 
+    if(isset($view[3]) && validate_integer($view[3])) {
+        $movie_id = $view[3];
+    }
+
+    if(isset($view[4]) && validate_integer($view[4])) {
+        $location_id = $view[4];
+    }
+
+    if(isset($view[5]) && validate_integer($view[5])) {
+        $place_id = $view[5];
+    }
+}
+
+// Check if required GET parameters are set and valid
+if (isset($movie_id) && isset($location_id) && isset($place_id)) {
     // Validate the inputs
     if (validate_integer($location_id) && validate_integer($movie_id) && validate_integer($place_id)) {
         // Proceed if all inputs are valid integers
