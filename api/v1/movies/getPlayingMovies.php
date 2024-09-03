@@ -1,6 +1,4 @@
 <?php
-    require_once './db_connect.php';
-
     if(isset($_GET["movie_id"]) && isset($_GET["location_id"]) && validate_integer($_GET["movie_id"]) && validate_integer($_GET["location_id"])) {
         // Case when both movie_id and location_id are set
         $stmt = $con->prepare("SELECT location_movie_data.id, location_movie_data.location_id, location_movie_data.place_data, location_movie_data.play_time, location_data.name FROM location_movie_data JOIN location_data ON location_movie_data.location_id = location_data.location_id WHERE location_movie_data.movie_id = ? AND location_movie_data.location_id = ?;");
