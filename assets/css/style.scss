@@ -36,6 +36,7 @@ body {
   flex-direction: column;
   background-color: #666;
   position: sticky;
+  z-index: 10;
   .mobile-top {
     display: flex;
     justify-content: space-between;
@@ -148,6 +149,7 @@ body {
       }
       .footer-section {
         max-width: 100%;
+        z-index: 1;
         .footer-heading {
           height: 80px;
           display: flex;
