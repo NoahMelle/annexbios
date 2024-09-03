@@ -176,6 +176,7 @@ body {
   flex-direction: column;
   background-color: #666;
   position: sticky;
+  z-index: 10;
 }
 .navbar .mobile-top {
   display: flex;
@@ -294,6 +295,7 @@ body {
 }
 .footer .footer-top-wrapper .footer-top .footer-section {
   max-width: 100%;
+  z-index: 1;
 }
 .footer .footer-top-wrapper .footer-top .footer-section .footer-heading {
   height: 80px;

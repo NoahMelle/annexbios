@@ -14,7 +14,10 @@ if ($isApiCall) {
         'cache_file_mode' => 0666, // Please, configure your umask instead of doing this :)
         'cache_lambda_templates' => true,
         'extension' => '.html',
-        'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/views'),
+        'loader' => new Mustache_Loader_FilesystemLoader(
+            dirname(__FILE__) . '/views',
+            array('extension' => '.html')
+        ),
         'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/views/partials'),
         'escape' => function ($value) {
             return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
