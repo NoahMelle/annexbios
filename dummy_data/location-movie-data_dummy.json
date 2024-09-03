@@ -1,0 +1,28 @@
+{
+    "id": 0,
+    "title": "",
+    "description": "",
+    "image": "",
+    "rating": 0,
+    "genres": [{
+        "name": ""
+    }],
+    "length": 0,
+    "release_date": "",
+    "directors": [{
+        "name": "",
+        "image": ""
+    }],
+    "actors": [{
+        "name": "",
+        "image": "",
+        "character_name": "",
+        "gender": ""
+    }],
+    "viewing_guides": [{
+        "name": "",
+        "image": ""
+    }],
+    "trailer_link": "",
+    "is_adult_movie": false
+}
