@@ -20,9 +20,14 @@ $mustache = new Mustache_Engine(array(
     'cache' => dirname(__FILE__) . '/tmp/cache/mustache',
     'cache_file_mode' => 0666, // Please, configure your umask instead of doing this :)
     'cache_lambda_templates' => true,
-    'extension' => '.html',
-    'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/views'),
-    'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__) . '/views/partials'),
+    'loader' => new Mustache_Loader_FilesystemLoader(
+        dirname(__FILE__) . '/views',
+        array('extension' => '.html') // Change this to your desired extension
+    ),
+    'partials_loader' => new Mustache_Loader_FilesystemLoader(
+        dirname(__FILE__) . '/views/partials',
+        array('extension' => '.html') // Change this to your desired extension for partials
+    ),
     'escape' => function ($value) {
         return htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
     },
@@ -32,20 +37,18 @@ $mustache = new Mustache_Engine(array(
     'pragmas' => [Mustache_Engine::PRAGMA_FILTERS],
 ));
 
-
 if ($isApiCall) {
     require_once './api/' . $page;
     exit();
 } else {
-    $headertpl = $mustache->loadTemplate('header'); // loads __DIR__.'/views/foo.mustache';
+    $headertpl = $mustache->loadTemplate('header'); // loads __DIR__.'/views/header.html';
     echo $headertpl->render($data);
 
-    $tpl = $mustache->loadTemplate($template); // get $template from router
+    $tpl = $mustache->loadTemplate($template); // loads __DIR__.'/views/{template}.html';
     echo $tpl->render($data);
 
-    $footertpl = $mustache->loadTemplate('footer'); // loads __DIR__.'/views/foo.mustache';
+    $footertpl = $mustache->loadTemplate('footer'); // loads __DIR__.'/views/footer.html';
     echo $footertpl->render($data);
-
 
     $con->close();
 }
