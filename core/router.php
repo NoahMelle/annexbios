@@ -30,10 +30,19 @@ switch ($view[0]) {
                 
                 $stmt = $con->prepare("INSERT INTO location_data (function, city, address, postal_code, website_link) VALUES (?, ?, ?, ?, ?);");
                 $stmt->bind_param("issss", $function, $city, $address, $postal_code, $website_link);
-                $stmt->execute();
-                $stmt->close();
+                if($stmt->execute()) {
+                    $stmt->close();
 
-                header("Location: " . $env["BASEURL"] . "vestegingen");
+                    $last_id = $con->insert_id;
+                    
+                    $stmt = $con->prepare("INSERT INTO location_tokens (location_id, token) VALUES (?, ?);");
+                    $stmt->bind_param("is", $last_id, generate_token());
+                    if($stmt->execute()) {
+                        $stmt->close();
+                        header("Location: " . $env["BASEURL"] . "vestegingen");
+                    }
+                }
+
             }
         } else if(isset($view[1]) && $view[1] == 'wijzig') {
             if(isset($view[2]) && !empty($view[2]) && validate_integer($view[2])) {

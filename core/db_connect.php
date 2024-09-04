@@ -69,3 +69,21 @@ function mes($value)
     global $con;
     return $con->real_escape_string($value);
 }
+
+function generate_token() {
+    global $con;
+    $token = bin2hex(random_bytes(32));
+
+    $stmt = $con->prepare("SELECT COUNT(token) FROM location_tokens WHERE token = ?;");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
+
+    if($count > 0) {
+        return generate_token();
+    } else {
+        return $token;
+    }
+}
