@@ -1,25 +1,21 @@
 <main class="">
   <div class="hero">
     <div class="hero-text-container">
-      <h2>LOCATIES</h2>
-      <p class="hero-text">Alle locaties/vestegingen van AnnexBios</p>
+      <h2>NIEUWE LOCATIE</h2>
+      <p class="hero-text">Voeg een nieuwe locaties/vestegingen toe</p>
     </div>
-    <a href="{{ base_url }}vestegingen/toevoegen" class="hero-view-locations">
-      VOEG NIEUWE TOE
-    </a>
   </div>
-  <div class="locations">
-    {{# locations}}
-    <div class="location">
-      <img class="location-image" src="https://placehold.co/600x200" alt="foto van de film">
-      <div class="location-info">
-        <h2 class="location-name">{{ city }}</h2>
-        <p class="location-address">{{ address }}</p>
-        <a href="{{ website_link }}" class="location-button">Bezoek Website</a>
-        <a href="{{ base_url }}vestegingen/wijzig" class="location-button">Wijzig Vesteging</a>
-        <a href="{{ base_url }}vestegingen/verwijder" class="location-button red">Verwijder Vesteging</a>
-      </div>
-    </div>
-    {{/ locations}}
+  <div class="locations_add">
+    <form action="{{ base_url }}vestegingen/toevoegen" method="post">
+      <label for="city">Stad</label>
+      <input type="text" name="city" id="city">
+      <label for="address">Address</label>
+      <input type="text" name="address" id="address">
+      <label for="postal_code">Post code</label>
+      <input type="text" name="postal_code" id="postal_code">
+      <label for="website_link">Website link</label>
+      <input type="text" name="website_link" id="website_link">
+      <input type="submit" value="toevoegen" id="addLocationSubmit">
+    </form>
   </div>
 </main>

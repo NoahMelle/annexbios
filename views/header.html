@@ -2,48 +2,48 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page_title }}</title>
-    <link href="./assets/css/style.css" rel="stylesheet" />
-    {{# styles}}
-    <link href="./assets/css/{{.}}" rel="stylesheet" />
-    {{/ styles}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title }}</title>
+  <link href="{{ base_url }}assets/css/style.css" rel="stylesheet" />
+  {{# styles}}
+  <link href="{{ base_url }}assets/css/{{.}}" rel="stylesheet" />
+  {{/ styles}}
 </head>
 
 <body>
-    <nav class="navbar not-active">
-        <div class="header-bar-container">
-            <div class="header-bar-content">
-                <div class="mobile-top">
-                    <img class="navbar-logo" src="./assets/img/logo/logo_hoofd.png" alt="logo">
-                    <div class="menu-container">
-                        <div class="hamburger-button not-active">
-                            <span class="hamburger-bar bar-top"></span>
-                            <span class="hamburger-bar bar-middle"></span>
-                            <span class="hamburger-bar bar-bottom"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="nav-links">
-                    <h3 class="kop1">VESTIGINGEN</h3>
-                    <h3 class="kop2">AANBEVOLEN FILMS</h3>
-                    <h3 class="kop3">CONTACT</h3>
-                </div>
+  <nav class="navbar not-active">
+    <div class="header-bar-container">
+      <div class="header-bar-content">
+        <div class="mobile-top">
+          <img class="navbar-logo" src="{{ base_url }}assets/img/logo/logo_hoofd.png" alt="logo">
+          <div class="menu-container">
+            <div class="hamburger-button not-active">
+              <span class="hamburger-bar bar-top"></span>
+              <span class="hamburger-bar bar-middle"></span>
+              <span class="hamburger-bar bar-bottom"></span>
             </div>
+          </div>
         </div>
-        <div class="navbar-lower">
-            <div class="navbar-purchase">KOOP JE TICKETS</div>
-            <div class="location-group">
-                <select name="" id="" class="location-selector">
-                    <option value="" disabled selected>Kies je vestiging</option>
-                    {{# locations}}
-                    <option value="">{{ city }}</option>
-                    {{/ locations}}
-                </select>
-                <button class="view-tickets">
-                    Bekijk Tickets
-                </button>
-            </div>
+        <div class="nav-links">
+          <h3 class="kop1">VESTIGINGEN</h3>
+          <h3 class="kop2">AANBEVOLEN FILMS</h3>
+          <h3 class="kop3">CONTACT</h3>
         </div>
-    </nav>
+      </div>
+    </div>
+    <div class="navbar-lower">
+      <div class="navbar-purchase">KOOP JE TICKETS</div>
+      <div class="location-group">
+        <select name="" id="" class="location-selector">
+          <option value="" disabled selected>Kies je vestiging</option>
+          {{# locations}}
+          <option value="">{{ city }}</option>
+          {{/ locations}}
+        </select>
+        <button class="view-tickets">
+          Bekijk Tickets
+        </button>
+      </div>
+    </div>
+  </nav>

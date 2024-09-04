@@ -18,11 +18,29 @@ switch ($view[0]) {
         $model = "home";
         break;
     case 'vestegingen':
-        if($view[1] == 'toevoegen') {
+        if(isset($view[1]) && $view[1] == 'toevoegen') {
             $template = "addLocation";
-        } else if($view[1] == 'wijzigen') {
-            $template = "changeLocation";
-        } else if($view[1] == 'verwijderen') {
+
+            if(isset($_POST["city"]) && !empty($_POST["city"]) && isset($_POST["address"]) && !empty($_POST["address"]) && isset($_POST["postal_code"]) && !empty($_POST["postal_code"]) && isset($_POST["website_link"]) && !empty($_POST["website_link"])) {
+                $city = mes($_POST["city"]);
+                $address = mes($_POST["address"]);
+                $postal_code = mes($_POST["postal_code"]);
+                $website_link = mes($_POST["website_link"]);
+                
+                $stmt = $con->prepare("INSERT INTO location_data (city, address, postal_code, website_link) VALUES (?, ?, ?, ?);");
+                $stmt->bind_param("ssss", $city, $address, $postal_code, $website_link);
+                $stmt->execute();
+                $stmt->close();
+
+                header("Location: " . $env["BASEURL"] . "vestegingen");
+            }
+        } else if(isset($view[1]) && $view[1] == 'wijzig') {
+            if(isset($view[2])) {
+                $template = "changeLocation";
+            } else {
+                header("Location: " . $env["BASEURL"] . "vestegingen");
+            }
+        } else if(isset($view[1]) && $view[1] == 'verwijderen') {
             $template = "deleteLocation";
         } else {
             $template = "locations";
