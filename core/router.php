@@ -148,6 +148,9 @@ switch ($view[0]) {
         $isApiCall = true;
 
         switch ($view[2]) {
+            case 'movieData':
+                $page = "v1/movies/movieData.php";
+                break;
             case 'playingMovies':
                 $page = "v1/movies/getPlayingMovies.php";
                 break;
