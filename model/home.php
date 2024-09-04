@@ -1,6 +1,7 @@
 <?php $data = [
     'page_title' => "AnnexBios",
     'styles' => ['homepage.css'],
+    'js' => ['load_movies.js'],
     'locations' => array(
         array(
             'city' => 'Leerdam',
@@ -27,5 +28,7 @@
             'address' => 'De Corridor 10 E',
             'postal_code' => '3621 ZB',
         ),
-    )
+    ),
+    'skeleton-loader-amt' => range(1, 10),
+    'stars' => range(1, 5),
 ];

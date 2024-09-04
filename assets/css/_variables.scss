@@ -3,3 +3,36 @@ $navbarHeight: 125px;
 $lowerNavbarHeight: 75px;
 
 $xlFont: clamp(2rem, 3vw, 3rem);
+
+@mixin skeletonLoader {
+  background: linear-gradient(
+    90deg,
+    hsl(210, 15%, 88%),
+    hsl(210, 15%, 95%),
+    hsl(210, 15%, 88%)
+  );
+  background-size: 200%;
+  animation: loader 1s infinite reverse;
+}
+
+@keyframes loader {
+  from {
+    background-position: -100% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+@keyframes pulseStars {
+    0% {
+        opacity: 0.1;
+
+    }
+    50% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 0.1;
+    }
+}
