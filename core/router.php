@@ -17,6 +17,19 @@ switch ($view[0]) {
         $template = "home";
         $model = "home";
         break;
+    case 'vestegingen':
+        if($view[1] == 'toevoegen') {
+            $template = "addLocation";
+        } else if($view[1] == 'wijzigen') {
+            $template = "changeLocation";
+        } else if($view[1] == 'verwijderen') {
+            $template = "deleteLocation";
+        } else {
+            $template = "locations";
+        }
+        $model = "locations";
+        
+        break;
     case 'api':
         $isApiCall = true;
 

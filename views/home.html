@@ -1,40 +1,40 @@
     <main class="">
-        <div class="hero">
-            <div class="hero-text-container">
-                <h2>WELKOM BIJ ANNEXBIOS</h2>
-                <p class="hero-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus
-                    eos fugit provident, eius perspiciatis facere veritatis rem <br> nihil nulla ullam nemo iusto fugiat
-                    excepturi vel velit aspernatur cum recusandae!</p>
-            </div>
-            <a href="/vestigingen" class="hero-view-locations">
-                Bekijk Onze Vestigingen
-            </a>
+      <div class="hero">
+        <div class="hero-text-container">
+          <h2>WELKOM BIJ ANNEXBIOS</h2>
+          <p class="hero-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus
+            eos fugit provident, eius perspiciatis facere veritatis rem <br> nihil nulla ullam nemo iusto fugiat
+            excepturi vel velit aspernatur cum recusandae!</p>
         </div>
-        <div class="locations">
-            {{# locations}}
-            <div class="location">
-                <img class="location-image" src="https://placehold.co/600x200" alt="foto van de film">
-                <div class="location-info">
-                    <h2 class="location-name">{{ city }}</h2>
-                    <p class="location-address">{{ address }}</p>
-                    <a href="#" class="location-button">Bezoek Website</a>
-                </div>
-            </div>
-            {{/ locations}}
-            <div class="location new-locations">
-                <div class="location-info">
-                    <h2 class="location-name">Weten waar wij nog meer komen?</h2>
-                    <p class="location-address">Lorem ipsum dolor sit amet, consectetuer
-                        adipiscing elit. Aenean commodo ligul.</p>
-                    <a href="#" class="location-button">Bekijk nieuwe projecten</a>
-                </div>
-            </div>
+        <a href="/vestigingen" class="hero-view-locations">
+          Bekijk Onze Vestigingen
+        </a>
+      </div>
+      <div class="locations">
+        {{# locations}}
+        <div class="location">
+          <img class="location-image" src="https://placehold.co/600x200" alt="foto van de film">
+          <div class="location-info">
+            <h2 class="location-name">{{ city }}</h2>
+            <p class="location-address">{{ address }}</p>
+            <a href="{{ website_link }}" class="location-button">Bezoek Website</a>
+          </div>
         </div>
-        <div class="recommended-movies-container">
-            <h2>AANBEVOLEN FILMS</h2>
+        {{/ locations}}
+        <div class="location new-locations">
+          <div class="location-info">
+            <h2 class="location-name">Weten waar wij nog meer komen?</h2>
+            <p class="location-address">Lorem ipsum dolor sit amet, consectetuer
+              adipiscing elit. Aenean commodo ligul.</p>
+            <a href="#" class="location-button">Bekijk nieuwe projecten</a>
+          </div>
+        </div>
+      </div>
+      <div class="recommended-movies-container">
+        <h2>AANBEVOLEN FILMS</h2>
 
 
-            <div id="recommended-movies">
+        <div id="recommended-movies">
 
-            </div>
+        </div>
     </main>

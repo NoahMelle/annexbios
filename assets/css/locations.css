@@ -1,0 +1,172 @@
+main {
+  width: 90%;
+  margin: 0 auto;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 4rem 0;
+}
+
+.hero {
+  width: 100%;
+  min-height: 280px;
+  height: -moz-fit-content;
+  height: fit-content;
+  background-color: black;
+  margin: 0 auto 0;
+  padding: clamp(20px, 4vw, 30px);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
+}
+.hero .hero-text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.hero h2 {
+  color: white;
+  font-size: clamp(2rem, 3vw, 3rem);
+}
+.hero .hero-text {
+  color: white;
+}
+.hero .hero-view-locations {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  display: block;
+  width: -moz-fit-content;
+  width: fit-content;
+  text-transform: uppercase;
+}
+.hero .hero-button {
+  width: 250px;
+  height: 50px;
+  background-color: white;
+  margin: 50px 0 0 3%;
+}
+.hero .hero-button .hero-button-text {
+  text-align: center;
+  padding-top: 15px;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.locations {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.locations .location {
+  height: 100%;
+  background-color: white;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.locations .location .location-image {
+  width: 100%;
+  aspect-ratio: 8/3;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.locations .location .location-info {
+  padding: 1.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.locations .location .location-name {
+  font-size: 26px;
+  text-transform: uppercase;
+  color: #666;
+}
+.locations .location .location-address {
+  color: #707070;
+}
+.locations .location .location-button {
+  padding: 0.5rem 1rem;
+  width: -moz-fit-content;
+  width: fit-content;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  background-color: #b97d46;
+}
+.locations .location .location-button.red {
+  background-color: #d9534f;
+}
+.locations .additional-locations-title {
+  font-size: 26px;
+  color: #666;
+  padding: 40px 0 0 7%;
+}
+.locations .additional-locations-text {
+  width: 350px;
+  height: auto;
+  padding: 20px 0 0 7%;
+  color: #666;
+}
+.locations .additional-locations-button {
+  width: 55%;
+  height: 25px;
+  background-color: #666;
+  margin: 15px 0 0 7%;
+  text-align: center;
+  padding-top: 5px;
+  color: white;
+}
+
+.recommended-movies-container h2 {
+  font-size: clamp(2rem, 3vw, 3rem);
+  color: white;
+}
+.recommended-movies-container .recommended-movies {
+  display: grid;
+  grid-template-columns: repeat(6, 15.7%);
+  gap: 0.5%;
+}
+
+.recommended-movie {
+  height: 575px;
+  margin: 0 0.5% 0 0;
+  background-color: white;
+  overflow: hidden;
+}
+.recommended-movie .movie-image {
+  width: 100%;
+  height: 325px;
+}
+.recommended-movie .movie-title {
+  margin: 10px 0 0 7%;
+  color: #666;
+}
+.recommended-movie .movie-rating {
+  width: 60%;
+  height: 30px;
+  margin: 10px 0 0 7%;
+}
+.recommended-movie .movie-rating .star {
+  padding: 2px 6% 0 0;
+  color: #666;
+}
+.recommended-movie .movie-release-date {
+  color: #666;
+  margin: 0 0 0 7%;
+}
+.recommended-movie .movie-description {
+  margin: 5px 5px 0 7%;
+  color: #666;
+}/*# sourceMappingURL=locations.css.map */

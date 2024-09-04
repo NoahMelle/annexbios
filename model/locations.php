@@ -1,8 +1,9 @@
 <?php 
     $data = [
-        'page_title' => "AnnexBios",
+        'page_title' => "AnnexBios Locations",
+        'base_url' => $env['BASEURL'],
         'website_link' => "",
-        'styles' => ['homepage.css'],
+        'styles' => ['locations.css'],
         'locations' => []
     ];
 
