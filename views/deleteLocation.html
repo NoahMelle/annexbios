@@ -9,7 +9,7 @@
     </a>
   </div>
   <div class="locations_add">
-    <form action="{{ base_url }}vestegingen/verwijder/{{ current_location_id }}" method="post">
+    <form action="{{ base_url }}vestigingen/verwijder/{{ current_location_id }}" method="post">
       <label>Weet je het zeker? Alle spelende films in deze locatie worden verwijderd...</label>
       <input type="hidden" name="location_id" value="{{ current_location_id }}">
       <input class="red" type="submit" value="verwijderen">

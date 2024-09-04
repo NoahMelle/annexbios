@@ -1,6 +1,10 @@
 <?php
 include_once "./vendor/autoload.php";
 
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 if (is_file(__dir__ . '/../.env')) {
     $env = parse_ini_file(__dir__ . '/../.env');
 } else {
