@@ -2,14 +2,20 @@
   <div class="hero">
     <div class="hero-text-container">
       <h2>LOCATIES</h2>
-      <p class="hero-text">Wijzig locatie/vesteging: {{ city }}</p>
+      <p class="hero-text">Wijzig locatie/vesteging: {{ function }} - {{ city }}</p>
     </div>
-    <a href="{{ website_link }}" class="hero-view-locations">
+    <a href="{{ current_website_link }}" class="hero-view-locations">
       BEZOEK WEBSITE
     </a>
   </div>
   <div class="locations_add">
     <form action="{{ base_url }}vestegingen/wijzig/{{ current_location_id }}" method="post">
+      <label for="function">Functie</label>
+      <select name="function" id="function">
+        {{# functions}}
+        <option value="{{ function_id }}" {{ selected }}>{{ name }}</option>
+        {{/ functions}}
+      </select>
       <label for="city">Stad</label>
       <input type="text" name="city" id="city" value="{{ city }}">
       <label for="address">Address</label>
@@ -17,7 +23,7 @@
       <label for="postal_code">Post code</label>
       <input type="text" name="postal_code" id="postal_code" value="{{ postal_code }}">
       <label for="website_link">Website link</label>
-      <input type="text" name="website_link" id="website_link" value="{{ website_link }}">
+      <input type="text" name="website_link" id="website_link" value="{{ current_website_link }}">
       <input type="submit" value="toevoegen">
     </form>
   </div>

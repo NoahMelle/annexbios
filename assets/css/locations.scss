@@ -126,7 +126,8 @@ main {
     flex-direction: column;
     justify-content: center;
 
-    input {
+    input,
+    select {
       width: 100%;
       padding: 0.5rem 1rem;
       font-weight: 700;

@@ -2,15 +2,15 @@
   <div class="hero">
     <div class="hero-text-container">
       <h2>LOCATIES</h2>
-      <p class="hero-text">Verwijder locatie/vesteging: {{ city }}</p>
+      <p class="hero-text">Verwijder locatie/vesteging: {{ function }} - {{ city }}</p>
     </div>
-    <a href="{{ website_link }}" class="hero-view-locations">
+    <a href="{{ current_website_link }}" class="hero-view-locations">
       BEZOEK WEBSITE
     </a>
   </div>
   <div class="locations_add">
     <form action="{{ base_url }}vestegingen/verwijder/{{ current_location_id }}" method="post">
-      <label>Weet je het zeker?</label>
+      <label>Weet je het zeker? Alle spelende films in deze locatie worden verwijderd...</label>
       <input type="hidden" name="location_id" value="{{ current_location_id }}">
       <input class="red" type="submit" value="verwijderen">
     </form>

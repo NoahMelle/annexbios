@@ -115,7 +115,8 @@ main {
   flex-direction: column;
   justify-content: center;
 }
-.locations_add form input {
+.locations_add form input,
+.locations_add form select {
   width: 100%;
   padding: 0.5rem 1rem;
   font-weight: 700;
@@ -127,14 +128,17 @@ main {
   border-radius: 5px;
   transition: all 200ms ease-in-out;
 }
-.locations_add form input[type=submit] {
+.locations_add form input[type=submit],
+.locations_add form select[type=submit] {
   cursor: pointer;
 }
-.locations_add form input[type=submit].red {
+.locations_add form input[type=submit].red,
+.locations_add form select[type=submit].red {
   background-color: #d32f2f;
   color: white;
 }
-.locations_add form input[type=submit]:hover {
+.locations_add form input[type=submit]:hover,
+.locations_add form select[type=submit]:hover {
   background-color: #707070;
   color: white;
 }/*# sourceMappingURL=locations.css.map */

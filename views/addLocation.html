@@ -2,11 +2,17 @@
   <div class="hero">
     <div class="hero-text-container">
       <h2>NIEUWE LOCATIE</h2>
-      <p class="hero-text">Voeg een nieuwe locaties/vestegingen toe</p>
+      <p class="hero-text">Voeg een nieuwe locaties/vesteging toe</p>
     </div>
   </div>
   <div class="locations_add">
     <form action="{{ base_url }}vestegingen/toevoegen" method="post">
+      <label for="function">Functie</label>
+      <select name="function" id="function">
+        {{# functions}}
+        <option value="{{ function_id }}">{{ name }}</option>
+        {{/ functions}}
+      </select>
       <label for="city">Stad</label>
       <input type="text" name="city" id="city">
       <label for="address">Address</label>
