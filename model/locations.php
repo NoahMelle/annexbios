@@ -28,7 +28,7 @@
         }
     }
 
-    if(isset($view[1]) && $view[1] == 'wijzig' && isset($view[2])) {
+    if(isset($view[1]) && $view[1] == 'wijzig' && isset($view[2]) && validate_integer($view[2])) {
         $stmt = $con->prepare("SELECT city, address, postal_code, website_link FROM location_data WHERE location_id = ?");
         $stmt->bind_param("i", $view[2]);
         $stmt->bind_result($city, $address, $postal_code, $website_link);
@@ -41,4 +41,6 @@
         $data['address'] = $address;
         $data['postal_code'] = $postal_code;
         $data['website_link'] = $website_link;
+    } else if(isset($view[1]) && $view[1] == 'verwijder' && isset($view[2]) && validate_integer($view[2])) {
+        $data['current_location_id'] = $view[2];
     }

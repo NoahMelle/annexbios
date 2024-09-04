@@ -2,24 +2,17 @@
   <div class="hero">
     <div class="hero-text-container">
       <h2>LOCATIES</h2>
-      <p class="hero-text">Alle locaties/vestegingen van AnnexBios</p>
+      <p class="hero-text">Verwijder locatie/vesteging: {{ city }}</p>
     </div>
-    <a href="{{ base_url }}vestegingen/toevoegen" class="hero-view-locations">
-      VOEG NIEUWE TOE
+    <a href="{{ website_link }}" class="hero-view-locations">
+      BEZOEK WEBSITE
     </a>
   </div>
-  <div class="locations">
-    {{# locations}}
-    <div class="location">
-      <img class="location-image" src="https://placehold.co/600x200" alt="foto van de film">
-      <div class="location-info">
-        <h2 class="location-name">{{ city }}</h2>
-        <p class="location-address">{{ address }}</p>
-        <a href="{{ website_link }}" class="location-button">Bezoek Website</a>
-        <a href="{{ base_url }}vestegingen/wijzig" class="location-button">Wijzig Vesteging</a>
-        <a href="{{ base_url }}vestegingen/verwijder" class="location-button red">Verwijder Vesteging</a>
-      </div>
-    </div>
-    {{/ locations}}
+  <div class="locations_add">
+    <form action="{{ base_url }}vestegingen/verwijder/{{ current_location_id }}" method="post">
+      <label>Weet je het zeker?</label>
+      <input type="hidden" name="location_id" value="{{ current_location_id }}">
+      <input class="red" type="submit" value="verwijderen">
+    </form>
   </div>
 </main>

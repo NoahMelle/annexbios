@@ -103,16 +103,6 @@ main {
   background-color: #d32f2f;
 }
 
-.recommended-movies-container h2 {
-  font-size: clamp(2rem, 3vw, 3rem);
-  color: white;
-}
-.recommended-movies-container .recommended-movies {
-  display: grid;
-  grid-template-columns: repeat(6, 15.7%);
-  gap: 0.5%;
-}
-
 .locations_add {
   height: 100%;
   background-color: white;
@@ -139,6 +129,10 @@ main {
 }
 .locations_add form input[type=submit] {
   cursor: pointer;
+}
+.locations_add form input[type=submit].red {
+  background-color: #d32f2f;
+  color: white;
 }
 .locations_add form input[type=submit]:hover {
   background-color: #707070;

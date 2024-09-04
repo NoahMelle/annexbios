@@ -54,8 +54,21 @@ switch ($view[0]) {
             } else {
                 header("Location: " . $env["BASEURL"] . "vestegingen");
             }
-        } else if(isset($view[1]) && $view[1] == 'verwijderen') {
-            $template = "deleteLocation";
+        } else if(isset($view[1]) && $view[1] == 'verwijder') {
+            if(isset($view[2]) && !empty($view[2]) && validate_integer($view[2])) {
+                $template = "deleteLocation";
+
+                if(isset($_POST["location_id"]) && !empty($_POST["location_id"]) && validate_integer($_POST["location_id"])) {
+                    $stmt = $con->prepare("DELETE FROM location_data WHERE location_id = ?;");
+                    $stmt->bind_param("i", $_POST["location_id"]);
+                    if($stmt->execute()) {
+                        header("Location: " . $env["BASEURL"] . "vestegingen");
+                    }
+                    $stmt->close();
+                }
+            } else {
+                header("Location: " . $env["BASEURL"] . "vestegingen");
+            }
         } else {
             $template = "locations";
         }
