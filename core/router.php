@@ -17,8 +17,16 @@ switch ($view[0]) {
         $template = "home";
         $model = "home";
         break;
+    case 'loguit':
+        header("Location: " . $env["BASEURL"] . "log-uit");
+        break;
+    case 'log-uit':
+        session_destroy();
+        header("Location: " . $env["BASEURL"]);
+        break;
     case 'login': 
         header("Location: " . $env["BASEURL"] . "log-in");
+        break;
     case 'log-in':
         $template = "login";
         $model = "login";
