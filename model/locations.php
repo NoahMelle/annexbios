@@ -1,6 +1,6 @@
 <?php 
     $data = [
-        'page_title' => "AnnexBios Locations",
+        'page_title' => "AnnexBios Vestigingen",
         'base_url' => $env['BASEURL'],
         'styles' => ['locations.css'],
         'locations' => [],

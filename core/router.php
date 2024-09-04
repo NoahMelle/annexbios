@@ -140,6 +140,10 @@ switch ($view[0]) {
             
             break;
         }
+    case 'filmladder':
+        $template = "movieSchedule";
+        $model = "movieSchedule";
+        break;
     case 'api':
         $isApiCall = true;
 
