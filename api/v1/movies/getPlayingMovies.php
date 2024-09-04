@@ -15,10 +15,10 @@
         }
 
         if(!isset($movie_id)) {
-            $stmt = $con->prepare("SELECT id, movie_id, place_data, play_time FROM location_movie_data WHERE location_id = ?");
+            $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE location_id = ?");
             $stmt->bind_param("i", $currect_location_id);
         } else {
-            $stmt = $con->prepare("SELECT id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ? AND location_id = ?");
+            $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ? AND location_id = ?");
             $stmt->bind_param("ii", $movie_id, $currect_location_id);
         }
 
@@ -34,7 +34,7 @@
             $place_data = json_decode($row["place_data"], true);
             
             $data[$id] = [
-                "id" => $row["id"],
+                "location_movie_id" => $row["location_movie_id"],
                 "movie_id" => $row["movie_id"],
                 "play_time" => $row["play_time"],
                 "plays_this_week" => isThisWeek($row["play_time"]),
