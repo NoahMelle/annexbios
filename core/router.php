@@ -35,8 +35,22 @@ switch ($view[0]) {
                 header("Location: " . $env["BASEURL"] . "vestegingen");
             }
         } else if(isset($view[1]) && $view[1] == 'wijzig') {
-            if(isset($view[2])) {
+            if(isset($view[2]) && !empty($view[2]) && validate_integer($view[2])) {
                 $template = "changeLocation";
+
+                if(isset($_POST["city"]) && !empty($_POST["city"]) && isset($_POST["address"]) && !empty($_POST["address"]) && isset($_POST["postal_code"]) && !empty($_POST["postal_code"]) && isset($_POST["website_link"]) && !empty($_POST["website_link"])) {
+                    $city = mes($_POST["city"]);
+                    $address = mes($_POST["address"]);
+                    $postal_code = mes($_POST["postal_code"]);
+                    $website_link = mes($_POST["website_link"]);
+                    
+                    $stmt = $con->prepare("UPDATE location_data SET city = ?, address = ?, postal_code = ?, website_link = ? WHERE location_id = ?;");
+                    $stmt->bind_param("ssssi", $city, $address, $postal_code, $website_link, $view[2]);
+                    $stmt->execute();
+                    $stmt->close();
+
+                    header("Location: " . $env["BASEURL"] . "vestegingen");
+                }
             } else {
                 header("Location: " . $env["BASEURL"] . "vestegingen");
             }
