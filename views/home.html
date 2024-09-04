@@ -44,13 +44,13 @@
     <h2>AANBEVOLEN FILMS</h2>
     <div class="recommended-movies">
       {{# skeleton-loader-amt}}
-      <div class="recommended-movie">
-        <div class="rm-img-container skeleton"></div>
+      <div class="recommended-movie skeleton">
+        <div class="rm-img-container"></div>
         <div class="rm-details">
-          <div class="rm-title-container skeleton">
+          <div class="rm-title-container">
             <h3 class="rm-title"></h3>
           </div>
-          <div class="rm-rating skeleton">
+          <div class="rm-rating">
             <div class="stars empty">
               {{# stars}}
               <svg
@@ -92,8 +92,10 @@
                 {{/ stars}}
               </div>
           </div>
-          <div class="rm-release-date skeleton"></div>
-          <div class="rm-description skeleton"></div>
+          <div class="rm-release-date"></div>
+          <div class="rm-description-container">
+            <p class="rm-description"></p>
+          </div>
         </div>
       </div>
       {{/ skeleton-loader-amt}}
