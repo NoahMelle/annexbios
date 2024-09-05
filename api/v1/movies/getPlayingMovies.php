@@ -54,8 +54,8 @@
                 "place_data" => []
             ];
 
-            if (isset($place_data["places"])) {
-                foreach ($place_data["places"] as $place) {
+            if (isset($place_data)) {
+                foreach ($place_data as $place) {
                     $data[$id]["place_data"][] = [
                         "place" => $place["place"],
                         "available" => $place["available"]

@@ -91,3 +91,14 @@ function generate_token() {
         return $token;
     }
 }
+
+function generatePlaceData($amount) {
+    $place_data = [];
+    for($i = 0; $i < $amount; $i++) {
+        $place_data[] = [
+            'place' => $i,
+            'available' => true
+        ];
+    }
+    return json_encode($place_data);
+}

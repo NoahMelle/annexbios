@@ -15,77 +15,129 @@ async function loadPlayingMovies() {
       }
       throw new Error('Network response was not ok.');
     })
-    .then(playingMoviesData => {
-      playingMoviesData.forEach((playingMovieData) => {
-        const moviedataEndpoint = `http://localhost/school/jaar2/periode1/annexBios/api/v1/movieData/${playingMovieData.movie_id}`;
+    .then(playingMovies => {
+      const recommendedMovies = document.querySelectorAll(".playing-movie");
 
-        fetch(moviedataEndpoint, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${apiToken}`,
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            }
-            throw new Error('Network response was not ok.');
-          })
-          .then(movieData => {
-            console.log(movieData);
+      recommendedMovies.forEach((playingMovie, index) => {
+        if (index < playingMovies.length) {
+          const moviedataEndpoint = `http://localhost/school/jaar2/periode1/annexBios/api/v1/movieData/${playingMovies[index].movie_id}`;
 
-            const playingMovies = document.querySelectorAll(".playing-movie");
+          fetch(moviedataEndpoint, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${apiToken}`,
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(response => {
+              if (response.ok) {
+                return response.json();
+              }
+              throw new Error('Network response was not ok.');
+            })
+            .then(movie => {
+              const {
+                title,
+                image_path,
+                rating
+              } = movie[0];
 
-            movieData.forEach((movie, index) => {
-              const playingMovie = playingMovies[index];
               const movieTitle = playingMovie.querySelector(".rm-title");
-              const moviePlayDate = playingMovie.querySelector(".rm-play-date");
+              const movieImageContainer = playingMovie.querySelector(".rm-img-container");
+              const moviePlayTime = playingMovie.querySelector(".rm-play-time");
               const moviePlacesAvailable = playingMovie.querySelector(".rm-places-available");
-              const movieImageContainer =
-                playingMovie.querySelector(".rm-img-container");
+              const filledStars = playingMovie.querySelector(".stars.filled");
+              const movieEdit = playingMovie.querySelector(".rm-edit");
+              const movieDelete = playingMovie.querySelector(".rm-delete");
 
-              const movieImageElement = document.createElement("img");
-              movieImageElement.src = movie.image_path;
-              movieImageElement.alt = `Poster voor ${movie.title}`;
-              movieImageElement.classList.add("rm-img");
-              movieImageContainer.appendChild(movieImageElement);
+              // Set movie details
+              movieTitle.textContent = title;
+              moviePlayTime.textContent = 'speelt op: ' + playingMovies[index].play_time;
 
-              movieTitle.textContent = movie.title;
-              moviePlayDate.textContent = `Speelt op: ${playingMovieData.play_time}`;
+              movieEdit.href = movieEdit.href + playingMovies[index].location_movie_id;
+              movieDelete.href = movieDelete.href + playingMovies[index].location_movie_id;
 
-              let placesAvailable = 0;
-              playingMovieData.place_data.forEach((place) => {
-                if (place.available == true) {
-                  placesAvailable++;
+
+              $availablePlaces = 0;
+              playingMovies[index].place_data.forEach((place) => {
+                if (place.available) {
+                  $availablePlaces++;
                 }
               });
-              moviePlacesAvailable.textContent = `Plaatsen beschikbaar: ${placesAvailable}`;
+              moviePlacesAvailable.textContent = 'plekken beschikbaar: ' + $availablePlaces;
 
-              const filledStars = playingMovie.querySelector(".stars.filled");
-              filledStars.style.width = `${movie.rating * 10}%`;
+              // Update the image only if necessary
+              if (!movieImageContainer.querySelector(".rm-img")) {
+                const movieImageElement = document.createElement("img");
+                movieImageElement.src = image_path;
+                movieImageElement.alt = `Poster for ${title}`;
+                movieImageElement.classList.add("rm-img");
+                movieImageContainer.appendChild(movieImageElement);
+              }
 
-              const skeletonLoaders = playingMovie.querySelectorAll(".skeleton");
-              skeletonLoaders.forEach((skeletonLoader) => {
-                skeletonLoader.classList.remove("skeleton");
-              });
+              // Update the star rating
+              filledStars.style.width = `${rating * 10}%`;
+
+              // Remove skeleton loaders
+              playingMovie.classList.remove("skeleton");
+            })
+            .catch(error => {
+              // Handle errors
+              console.error('There was a problem with the fetch operation:', error);
             });
-
-            for (let i = movieData.length; i < playingMovies.length; i++) {
-              const playingMovie = playingMovies[i];
-              playingMovie.style.display = "none";
-            }
-          })
-          .catch(error => {
-            // Handle errors
-            console.error('There was a problem with the fetch operation:', error);
-          });
+        } else {
+          // Hide extra recommended movie elements
+          playingMovie.style.display = "none";
+        }
       });
     })
     .catch(error => {
       // Handle errors
       console.error('There was a problem with the fetch operation:', error);
     });
+
+
+
+  // const recommendedMovies = document.querySelectorAll(".playing-movie");
+
+  // recommendedMovies.forEach((recommendedMovie, index) => {
+  //   console.log(recommendedMovie);
+
+  //   if (index < movieData.length) {
+  //     const {
+  //       title,
+  //       image,
+  //       rating
+  //     } = movieData[index];
+
+  //     const movieTitle = recommendedMovie.querySelector(".rm-title");
+  //     const movieImageContainer = recommendedMovie.querySelector(".rm-img-container");
+  //     const moviePlayTime = recommendedMovie.querySelector(".rm-play-time");
+  //     const moviePlacesAvailable = recommendedMovie.querySelector(".rm-places-available");
+  //     const filledStars = recommendedMovie.querySelector(".stars.filled");
+
+  //     // Set movie details
+  //     movieTitle.textContent = title;
+
+  //     // Update the image only if necessary
+  //     if (!movieImageContainer.querySelector(".rm-img")) {
+  //       const movieImageElement = document.createElement("img");
+  //       movieImageElement.src = image;
+  //       movieImageElement.alt = `Poster for ${title}`;
+  //       movieImageElement.classList.add("rm-img");
+  //       movieImageContainer.appendChild(movieImageElement);
+  //     }
+
+  //     // Update the star rating
+  //     filledStars.style.width = `${rating * 10}%`;
+
+  //     // Remove skeleton loaders
+  //     recommendedMovie.classList.remove("skeleton");
+  //   } else {
+  //     // Hide extra recommended movie elements
+  //     recommendedMovie.style.display = "none";
+  //   }
+  // });
 }
 
 loadPlayingMovies();

@@ -136,13 +136,76 @@ switch ($view[0]) {
             } else {
                 $template = "locations";
             }
-            $model = "locations";
-            
-            break;
+            $model = "locations";            
         }
+        
+        break;
     case 'filmladder':
-        $template = "movieSchedule";
-        $model = "movieSchedule";
+        if(!isset($_SESSION["user"]) || $_SESSION["user"]["role"] != 1) {
+            header("Location: " . $env["BASEURL"] . "log-in");
+        } else {
+            if(isset($view[1]) && $view[1] == 'toevoegen') {
+                $template = "addMovieSchedule";
+
+                if(isset($_POST["movie"]) && validate_integer($_POST["movie"]) && isset($_POST["location"]) && validate_integer($_POST["location"]) && isset($_POST["place_data"]) && validate_integer($_POST["place_data"]) && isset($_POST["play_time"]) && !empty($_POST["play_time"])) {
+                    $movie = $_POST["movie"];
+                    $location = $_POST["location"];
+                    $place_data_count = $_POST["place_data"];
+                    $play_time = mes($_POST["play_time"]);
+
+                    $place_data = generatePlaceData($place_data_count);
+                    
+                    $stmt = $con->prepare("INSERT INTO location_movie_data (movie_id, location_id, place_data, play_time) VALUES (?, ?, ?, ?);");
+                    $stmt->bind_param("iiss", $movie, $location, $place_data, $play_time);
+                    if($stmt->execute()) {
+                        $stmt->close();
+                        header("Location: " . $env["BASEURL"] . "filmladder");
+                    }
+
+                }
+            } else if(isset($view[1]) && $view[1] == 'wijzig') {
+                if(isset($view[2]) && !empty($view[2]) && validate_integer($view[2])) {
+                    $template = "changeMovieSchedule";
+
+                    if(isset($_POST["movie"]) && validate_integer($_POST["movie"]) && isset($_POST["location"]) && validate_integer($_POST["location"]) && isset($_POST["place_data"]) && validate_integer($_POST["place_data"]) && isset($_POST["play_time"]) && !empty($_POST["play_time"])) {
+                        $movie = $_POST["movie"]; 
+                        $location = $_POST["location"];
+                        $place_data_count = $_POST["place_data"];
+                        $play_time = mes($_POST["play_time"]);
+
+                        $place_data = generatePlaceData($place_data_count);
+                        
+                        $stmt = $con->prepare("UPDATE location_movie_data SET movie_id = ?, location_id = ?, place_data = ?, play_time = ? WHERE location_movie_id = ?;");
+                        $stmt->bind_param("iissi", $movie, $location, $place_data, $play_time, $view[2]);
+                        if($stmt->execute()) {
+                            $stmt->close();
+                            header("Location: " . $env["BASEURL"] . "filmladder");
+                        }
+                    }
+                } else {
+                    header("Location: " . $env["BASEURL"] . "vestigingen");
+                }
+            } else if(isset($view[1]) && $view[1] == 'verwijder') {
+                if(isset($view[2]) && !empty($view[2]) && validate_integer($view[2])) {
+                    $template = "deleteMovieSchedule";
+
+                    if(isset($_POST["current_location_id"]) && !empty($_POST["current_location_id"]) && validate_integer($_POST["current_location_id"])) {                            
+                        $stmt = $con->prepare("DELETE FROM location_movie_data WHERE location_movie_id = ?;");
+                        $stmt->bind_param("i", $_POST["current_location_id"]);
+                        if($stmt->execute()) {
+                            $stmt->close();
+                            header("Location: " . $env["BASEURL"] . "filmladder");
+                        }
+                    }
+                } else {
+                    header("Location: " . $env["BASEURL"] . "filmladder");
+                }
+            } else {
+                $template = "movieSchedule";
+            }
+            $model = "movieSchedule";
+        }
+        
         break;
     case 'api':
         $isApiCall = true;
