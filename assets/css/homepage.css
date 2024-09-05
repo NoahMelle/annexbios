@@ -145,9 +145,15 @@ main {
   color: white;
 }
 
+.recommended-movies-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
 .recommended-movies-container h2 {
   font-size: clamp(2rem, 3vw, 3rem);
   color: white;
+  text-transform: uppercase;
 }
 .recommended-movies-container .recommended-movies {
   display: flex;
@@ -211,7 +217,10 @@ main {
   background-size: 200%;
   animation: loader 1s infinite reverse;
 }
-.recommended-movies-container .recommended-movie.skeleton .rm-details .rm-rating, .recommended-movies-container .recommended-movie.skeleton .rm-details .rm-release-date, .recommended-movies-container .recommended-movie.skeleton .rm-details .rm-description-container, .recommended-movies-container .recommended-movie.skeleton .rm-details .rm-title-container {
+.recommended-movies-container .recommended-movie.skeleton .rm-details .rm-rating,
+.recommended-movies-container .recommended-movie.skeleton .rm-details .rm-release-date,
+.recommended-movies-container .recommended-movie.skeleton .rm-details .rm-description-container,
+.recommended-movies-container .recommended-movie.skeleton .rm-details .rm-title-container {
   border-radius: 4px;
 }
 .recommended-movies-container .recommended-movie .rm-details {
@@ -298,4 +307,58 @@ main {
   to {
     background-position: 100% 0;
   }
+}
+.news-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.news-container .news-header {
+  font-size: clamp(2rem, 3vw, 3rem);
+  color: white;
+  text-transform: uppercase;
+}
+.news-container .news {
+  --grid-layout-gap: 1rem;
+  --grid-column-count: 2; /* This gets overridden by an inline style. */
+  --grid-item--min-width: 300px; /* This gets overridden by an inline style. */
+  --gap-count: calc(var(--grid-column-count) - 1);
+  --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+  --grid-item--max-width: calc(
+    (100% - var(--total-gap-width)) / var(--grid-column-count)
+  );
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
+  grid-gap: var(--grid-layout-gap);
+}
+.news-container .news .news-item {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.news-container .news .news-item .news-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.news-container .news .news-item .news-image {
+  width: 100%;
+  aspect-ratio: 16/4;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.news-container .news .news-item .news-title {
+  font-size: 1.2rem;
+  color: #666;
+  text-transform: uppercase;
+}
+.news-container .news .news-item .news-description {
+  font-size: 0.8rem;
+  color: #666;
+}
+.news-container .news .news-item .news-date {
+  font-size: 0.8rem;
+  color: #666;
 }/*# sourceMappingURL=homepage.css.map */
