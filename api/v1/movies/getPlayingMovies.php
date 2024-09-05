@@ -15,11 +15,23 @@
         }
 
         if(!isset($movie_id)) {
-            $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE location_id = ?");
+            $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE location_id = ?;");
             $stmt->bind_param("i", $currect_location_id);
+
+            if(isset($tokenIsAdmin) && $tokenIsAdmin === true) {
+                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data;");
+            } else {
+                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE location_id = ?");
+                $stmt->bind_param("i", $currect_location_id);
+            }
         } else {
-            $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ? AND location_id = ?");
-            $stmt->bind_param("ii", $movie_id, $currect_location_id);
+            if(isset($tokenIsAdmin) && $tokenIsAdmin === true) {
+                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ?;");
+                $stmt->bind_param("i", $movie_id); 
+            } else {
+                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ? AND location_id = ?");
+                $stmt->bind_param("ii", $movie_id, $currect_location_id);
+            }
         }
 
         // Execute the statement
@@ -42,8 +54,8 @@
                 "place_data" => []
             ];
 
-            if (isset($place_data["places"])) {
-                foreach ($place_data["places"] as $place) {
+            if (isset($place_data)) {
+                foreach ($place_data as $place) {
                     $data[$id]["place_data"][] = [
                         "place" => $place["place"],
                         "available" => $place["available"]

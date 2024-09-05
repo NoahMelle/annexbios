@@ -1,0 +1,29 @@
+<main class="">
+  <div class="hero">
+    <div class="hero-text-container">
+      <h2>NIEUWE FILM SPEELTIJD</h2>
+      <p class="hero-text">Voeg een nieuwe film speeltijd toe</p>
+    </div>
+  </div>
+  <div class="movie_schedule_add">
+    <form action="{{ base_url }}cms/filmladder/toevoegen" method="post">
+      <label for="movie">Film</label>
+      <select name="movie" id="movie">
+        {{# movies }}
+        <option value="{{ movie_id }}">{{ title }}</option>
+        {{/ movies }}
+      </select>
+      <label for="location">Vestiging</label>
+      <select name="location" id="location">
+        {{# locations }}
+        <option value="{{ location_id }}">{{ function }} {{ city }} - {{ address }} {{ postal_code }}
+        </option>
+        {{/ locations }}
+      </select>
+      <label for="place_data">Plaatsen</label>
+      <input type="number" name="place_data" id="place_data">
+      <label for="play_time">Speel moment</label>
+      <input type="datetime-local" name="play_time" id="play_time" step="1">
+      <input type="submit" value="wijzig"> </form>
+  </div>
+</main>

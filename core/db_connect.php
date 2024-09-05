@@ -1,6 +1,10 @@
 <?php
 include_once "./vendor/autoload.php";
 
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 if (is_file(__dir__ . '/../.env')) {
     $env = parse_ini_file(__dir__ . '/../.env');
 } else {
@@ -68,4 +72,33 @@ function mes($value)
 {
     global $con;
     return $con->real_escape_string($value);
+}
+
+function generate_token() {
+    global $con;
+    $token = bin2hex(random_bytes(32));
+
+    $stmt = $con->prepare("SELECT COUNT(token) FROM location_tokens WHERE token = ?;");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
+
+    if($count > 0) {
+        return generate_token();
+    } else {
+        return $token;
+    }
+}
+
+function generatePlaceData($amount) {
+    $place_data = [];
+    for($i = 0; $i < $amount; $i++) {
+        $place_data[] = [
+            'place' => $i,
+            'available' => true
+        ];
+    }
+    return json_encode($place_data);
 }

@@ -1,0 +1,15 @@
+<main class="">
+  <div class="hero">
+    <div class="hero-text-container">
+      <h2>VERWIJDER FILM SPEELTIJD</h2>
+      <p class="hero-text">Verwijder film speeltijd</p>
+    </div>
+  </div>
+  <div class="movie_schedule_add">
+    <form action="{{ base_url }}cms/filmladder/verwijder/{{ current_location_movie_id }}" method="post">
+      <label>Weet je het zeker?</label>
+      <input type="hidden" name="current_location_id" value="{{ current_location_movie_id }}">
+      <input class="red" type="submit" value="verwijderen">
+    </form>
+  </div>
+</main>
