@@ -43,5 +43,410 @@
     ],
     "trailer_link": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
     "is_adult_movie": false
+  },
+  {
+    "id": 1,
+    "title": "The Galactic Odyssey",
+    "description": "A thrilling space adventure where a group of astronauts embarks on a journey to the edge of the universe.",
+    "image": "https://placehold.co/600x400",
+    "rating": 8.7,
+    "genres": [
+      {
+        "name": "Science Fiction"
+      },
+      {
+        "name": "Adventure"
+      }
+    ],
+    "length": 142,
+    "release_date": "2024-05-17",
+    "directors": [
+      {
+        "name": "Jane Doe",
+        "image": "https://placehold.co/400x400"
+      }
+    ],
+    "actors": [
+      {
+        "name": "John Smith",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Captain Ray Stellar",
+        "gender": "Male"
+      },
+      {
+        "name": "Emily Clarke",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Dr. Aurora Nova",
+        "gender": "Female"
+      }
+    ],
+    "viewing_guides": [
+      {
+        "name": "Galactic Journey: Behind the Scenes",
+        "image": "https://placehold.co/100x100"
+      }
+    ],
+    "trailer_link": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "is_adult_movie": false
+  },
+  {
+    "id": 1,
+    "title": "The Galactic Odyssey",
+    "description": "A thrilling space adventure where a group of astronauts embarks on a journey to the edge of the universe.",
+    "image": "https://placehold.co/600x400",
+    "rating": 8.7,
+    "genres": [
+      {
+        "name": "Science Fiction"
+      },
+      {
+        "name": "Adventure"
+      }
+    ],
+    "length": 142,
+    "release_date": "2024-05-17",
+    "directors": [
+      {
+        "name": "Jane Doe",
+        "image": "https://placehold.co/400x400"
+      }
+    ],
+    "actors": [
+      {
+        "name": "John Smith",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Captain Ray Stellar",
+        "gender": "Male"
+      },
+      {
+        "name": "Emily Clarke",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Dr. Aurora Nova",
+        "gender": "Female"
+      }
+    ],
+    "viewing_guides": [
+      {
+        "name": "Galactic Journey: Behind the Scenes",
+        "image": "https://placehold.co/100x100"
+      }
+    ],
+    "trailer_link": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "is_adult_movie": false
+  },
+  {
+    "id": 1,
+    "title": "The Galactic Odyssey",
+    "description": "A thrilling space adventure where a group of astronauts embarks on a journey to the edge of the universe.",
+    "image": "https://placehold.co/600x400",
+    "rating": 8.7,
+    "genres": [
+      {
+        "name": "Science Fiction"
+      },
+      {
+        "name": "Adventure"
+      }
+    ],
+    "length": 142,
+    "release_date": "2024-05-17",
+    "directors": [
+      {
+        "name": "Jane Doe",
+        "image": "https://placehold.co/400x400"
+      }
+    ],
+    "actors": [
+      {
+        "name": "John Smith",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Captain Ray Stellar",
+        "gender": "Male"
+      },
+      {
+        "name": "Emily Clarke",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Dr. Aurora Nova",
+        "gender": "Female"
+      }
+    ],
+    "viewing_guides": [
+      {
+        "name": "Galactic Journey: Behind the Scenes",
+        "image": "https://placehold.co/100x100"
+      }
+    ],
+    "trailer_link": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "is_adult_movie": false
+  },
+  {
+    "id": 1,
+    "title": "The Galactic Odyssey",
+    "description": "A thrilling space adventure where a group of astronauts embarks on a journey to the edge of the universe.",
+    "image": "https://placehold.co/600x400",
+    "rating": 8.7,
+    "genres": [
+      {
+        "name": "Science Fiction"
+      },
+      {
+        "name": "Adventure"
+      }
+    ],
+    "length": 142,
+    "release_date": "2024-05-17",
+    "directors": [
+      {
+        "name": "Jane Doe",
+        "image": "https://placehold.co/400x400"
+      }
+    ],
+    "actors": [
+      {
+        "name": "John Smith",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Captain Ray Stellar",
+        "gender": "Male"
+      },
+      {
+        "name": "Emily Clarke",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Dr. Aurora Nova",
+        "gender": "Female"
+      }
+    ],
+    "viewing_guides": [
+      {
+        "name": "Galactic Journey: Behind the Scenes",
+        "image": "https://placehold.co/100x100"
+      }
+    ],
+    "trailer_link": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "is_adult_movie": false
+  },
+  {
+    "id": 1,
+    "title": "The Galactic Odyssey",
+    "description": "A thrilling space adventure where a group of astronauts embarks on a journey to the edge of the universe.",
+    "image": "https://placehold.co/600x400",
+    "rating": 8.7,
+    "genres": [
+      {
+        "name": "Science Fiction"
+      },
+      {
+        "name": "Adventure"
+      }
+    ],
+    "length": 142,
+    "release_date": "2024-05-17",
+    "directors": [
+      {
+        "name": "Jane Doe",
+        "image": "https://placehold.co/400x400"
+      }
+    ],
+    "actors": [
+      {
+        "name": "John Smith",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Captain Ray Stellar",
+        "gender": "Male"
+      },
+      {
+        "name": "Emily Clarke",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Dr. Aurora Nova",
+        "gender": "Female"
+      }
+    ],
+    "viewing_guides": [
+      {
+        "name": "Galactic Journey: Behind the Scenes",
+        "image": "https://placehold.co/100x100"
+      }
+    ],
+    "trailer_link": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "is_adult_movie": false
+  },
+  {
+    "id": 1,
+    "title": "The Galactic Odyssey",
+    "description": "A thrilling space adventure where a group of astronauts embarks on a journey to the edge of the universe.",
+    "image": "https://placehold.co/600x400",
+    "rating": 8.7,
+    "genres": [
+      {
+        "name": "Science Fiction"
+      },
+      {
+        "name": "Adventure"
+      }
+    ],
+    "length": 142,
+    "release_date": "2024-05-17",
+    "directors": [
+      {
+        "name": "Jane Doe",
+        "image": "https://placehold.co/400x400"
+      }
+    ],
+    "actors": [
+      {
+        "name": "John Smith",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Captain Ray Stellar",
+        "gender": "Male"
+      },
+      {
+        "name": "Emily Clarke",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Dr. Aurora Nova",
+        "gender": "Female"
+      }
+    ],
+    "viewing_guides": [
+      {
+        "name": "Galactic Journey: Behind the Scenes",
+        "image": "https://placehold.co/100x100"
+      }
+    ],
+    "trailer_link": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "is_adult_movie": false
+  },
+  {
+    "id": 1,
+    "title": "The Galactic Odyssey",
+    "description": "A thrilling space adventure where a group of astronauts embarks on a journey to the edge of the universe.",
+    "image": "https://placehold.co/600x400",
+    "rating": 8.7,
+    "genres": [
+      {
+        "name": "Science Fiction"
+      },
+      {
+        "name": "Adventure"
+      }
+    ],
+    "length": 142,
+    "release_date": "2024-05-17",
+    "directors": [
+      {
+        "name": "Jane Doe",
+        "image": "https://placehold.co/400x400"
+      }
+    ],
+    "actors": [
+      {
+        "name": "John Smith",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Captain Ray Stellar",
+        "gender": "Male"
+      },
+      {
+        "name": "Emily Clarke",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Dr. Aurora Nova",
+        "gender": "Female"
+      }
+    ],
+    "viewing_guides": [
+      {
+        "name": "Galactic Journey: Behind the Scenes",
+        "image": "https://placehold.co/100x100"
+      }
+    ],
+    "trailer_link": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "is_adult_movie": false
+  },
+  {
+    "id": 1,
+    "title": "The Galactic Odyssey",
+    "description": "A thrilling space adventure where a group of astronauts embarks on a journey to the edge of the universe.",
+    "image": "https://placehold.co/600x400",
+    "rating": 8.7,
+    "genres": [
+      {
+        "name": "Science Fiction"
+      },
+      {
+        "name": "Adventure"
+      }
+    ],
+    "length": 142,
+    "release_date": "2024-05-17",
+    "directors": [
+      {
+        "name": "Jane Doe",
+        "image": "https://placehold.co/400x400"
+      }
+    ],
+    "actors": [
+      {
+        "name": "John Smith",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Captain Ray Stellar",
+        "gender": "Male"
+      },
+      {
+        "name": "Emily Clarke",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Dr. Aurora Nova",
+        "gender": "Female"
+      }
+    ],
+    "viewing_guides": [
+      {
+        "name": "Galactic Journey: Behind the Scenes",
+        "image": "https://placehold.co/100x100"
+      }
+    ],
+    "trailer_link": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "is_adult_movie": false
+  },
+  {
+    "id": 1,
+    "title": "The Galactic Odyssey",
+    "description": "A thrilling space adventure where a group of astronauts embarks on a journey to the edge of the universe.",
+    "image": "https://placehold.co/600x400",
+    "rating": 8.7,
+    "genres": [
+      {
+        "name": "Science Fiction"
+      },
+      {
+        "name": "Adventure"
+      }
+    ],
+    "length": 142,
+    "release_date": "2024-05-17",
+    "directors": [
+      {
+        "name": "Jane Doe",
+        "image": "https://placehold.co/400x400"
+      }
+    ],
+    "actors": [
+      {
+        "name": "John Smith",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Captain Ray Stellar",
+        "gender": "Male"
+      },
+      {
+        "name": "Emily Clarke",
+        "image": "https://placehold.co/400x400",
+        "character_name": "Dr. Aurora Nova",
+        "gender": "Female"
+      }
+    ],
+    "viewing_guides": [
+      {
+        "name": "Galactic Journey: Behind the Scenes",
+        "image": "https://placehold.co/100x100"
+      }
+    ],
+    "trailer_link": "https://www.youtube.com/watch?v=xvFZjo5PgG0",
+    "is_adult_movie": false
   }
 ]

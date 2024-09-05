@@ -286,12 +286,21 @@ body {
   background-color: rgb(168, 168, 168);
 }
 .navbar-lower .view-tickets {
+  font-size: 0.8rem;
   text-transform: uppercase;
+  background-color: white;
+  color: black;
+  display: flex;
+  align-items: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 30px;
+  padding: 0 0.7rem;
 }
 
 .footer {
   width: 100%;
-  margin-top: 250px;
+  margin-top: 2rem;
   color: white;
   background-color: #666;
 }
@@ -428,4 +437,9 @@ body {
     width: 100%;
     justify-content: center;
   }
+}
+.homepage-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
 }/*# sourceMappingURL=style.css.map */

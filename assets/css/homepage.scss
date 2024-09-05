@@ -139,9 +139,11 @@ main {
 }
 
 .recommended-movies-container {
+  display: flex;
+  flex-direction: column;
+  gap: $headerGap;
   h2 {
-    font-size: $xlFont;
-    color: white;
+    @include sectionHeader;
   }
   .recommended-movies {
     display: flex;
@@ -171,12 +173,41 @@ main {
       }
       @include skeletonLoader;
     }
-
+    &.skeleton {
+      .rm-title-container {
+        @include skeletonLoader;
+      }
+      .rm-details {
+        .rm-rating {
+          @include skeletonLoader;
+          .stars {
+            visibility: hidden;
+          }
+        }
+        .rm-release-date {
+          @include skeletonLoader;
+          width: 50%;
+        }
+        .rm-description-container {
+          @include skeletonLoader;
+        }
+        .rm-title-container {
+          @include skeletonLoader;
+        }
+        .rm-rating,
+        .rm-release-date,
+        .rm-description-container,
+        .rm-title-container {
+          border-radius: 4px;
+        }
+      }
+    }
     .rm-details {
       padding: 1rem;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      overflow: auto;
       flex-grow: 1;
       .rm-rating {
         position: relative;
@@ -193,42 +224,27 @@ main {
             transform: translateY(-50%);
             left: 0;
             .star {
-              flex-shrink: 0
+              flex-shrink: 0;
             }
-          }
-        }
-        &.skeleton {
-          @include skeletonLoader;
-          .stars {
-            display: none;
           }
         }
       }
       .rm-release-date {
         font-size: 0.8rem;
         height: calc(0.8rem * 1.5);
-        &.skeleton {
-          width: 50%;
-          @include skeletonLoader;
-        }
       }
-      .rm-description {
+      .rm-description-container {
         font-size: 0.8rem;
         width: 100%;
+        overflow: auto;
         flex-grow: 1;
-        &.skeleton {
-          @include skeletonLoader;
-        }
+        padding-right: 10px;
       }
       .rm-title-container {
         font-size: 18px;
         color: #666;
         height: 50px;
         width: 100%;
-        &.skeleton {
-          border-radius: 4px;
-          @include skeletonLoader;
-        }
         .rm-title {
           overflow: hidden;
           text-transform: uppercase;
@@ -274,5 +290,67 @@ main {
   }
   to {
     background-position: 100% 0;
+  }
+}
+
+.news-container {
+  display: flex;
+  flex-direction: column;
+  gap: $headerGap;
+  .news-header {
+    @include sectionHeader;
+  }
+
+  .news {
+    --grid-layout-gap: 1rem;
+    --grid-column-count: 2; /* This gets overridden by an inline style. */
+    --grid-item--min-width: 300px; /* This gets overridden by an inline style. */
+
+    --gap-count: calc(var(--grid-column-count) - 1);
+    --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+    --grid-item--max-width: calc(
+      (100% - var(--total-gap-width)) / var(--grid-column-count)
+    );
+
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr)
+    );
+    grid-gap: var(--grid-layout-gap);
+    .news-item {
+      background-color: white;
+      // padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      .news-info {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .news-image {
+        width: 100%;
+        aspect-ratio: 16 / 4;
+        object-fit: cover;
+      }
+
+      .news-title {
+        font-size: 1.2rem;
+        color: #666;
+        text-transform: uppercase;
+      }
+
+      .news-description {
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      .news-date {
+        font-size: 0.8rem;
+        color: #666;
+      }
+    }
   }
 }
