@@ -17,15 +17,12 @@
   <div class="locations">
     {{# locations}}
     <div class="location">
-      <img
-        class="location-image"
-        src="https://placehold.co/600x200"
-        alt="foto van de film"
-      />
+      <img class="location-image" src="{{ base_url }}assets/img/vestigingen/{{ image_path }}"
+        alt="foto van de vestiging" />
       <div class="location-info">
         <h2 class="location-name">{{ city }}</h2>
         <p class="location-address">{{ address }}</p>
-        <a href="#" class="location-button">Bezoek Website</a>
+        <a href="{{ website_link }}" class="location-button">Bezoek Website</a>
       </div>
     </div>
     {{/ locations}}
@@ -53,43 +50,21 @@
           <div class="rm-rating">
             <div class="stars empty">
               {{# stars}}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24.262"
-                height="23.264"
-                viewBox="0 0 24.262 23.264"
-                aria-label="Empty Star"
-                class="star empty"
-              >
-                <path
-                  data-name="Path 87"
+              <svg xmlns="http://www.w3.org/2000/svg" width="24.262" height="23.264" viewBox="0 0 24.262 23.264"
+                aria-label="Empty Star" class="star empty">
+                <path data-name="Path 87"
                   d="M15.628,8.025l7.823,1.364-5.837,5.383,1.124,7.847L11.8,18.742,4.671,22.235l1.579-7.8L.7,8.743,8.595,7.81,12.327.8Z"
-                  transform="translate(0.049 -0.007)"
-                  fill="#fff"
-                  stroke="#666"
-                  stroke-width="0.703"
-                />
+                  transform="translate(0.049 -0.007)" fill="#fff" stroke="#666" stroke-width="0.703" />
               </svg>
               {{/ stars}}
             </div>
             <div class="stars filled">
               {{# stars}}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24.262"
-                height="23.264"
-                viewBox="0 0 24.262 23.264"
-                class="star filled"
-                aria-label="Filled Star"
-              >
-                <path
-                  data-name="Path 86"
+              <svg xmlns="http://www.w3.org/2000/svg" width="24.262" height="23.264" viewBox="0 0 24.262 23.264"
+                class="star filled" aria-label="Filled Star">
+                <path data-name="Path 86"
                   d="M15.628,8.025l7.823,1.364-5.837,5.383,1.124,7.847L11.8,18.742,4.671,22.235l1.579-7.8L.7,8.743,8.595,7.81,12.327.8Z"
-                  transform="translate(0.049 -0.007)"
-                  fill="#666"
-                  stroke="#666"
-                  stroke-width="0.703"
-                />
+                  transform="translate(0.049 -0.007)" fill="#666" stroke="#666" stroke-width="0.703" />
               </svg>
               {{/ stars}}
             </div>
