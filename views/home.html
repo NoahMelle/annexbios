@@ -107,15 +107,25 @@
     <h2 class="news-header">Nieuws</h2>
     <div class="news">
       {{# news-items}}
-      <div class="news-item">
-        <img class="news-image" src="{{ image }}" alt="foto van de film" />
+      <div class="news-item skeleton">
+        <div class="news-image"></div>
         <div class="news-info">
-          <h3 class="news-title">{{ title }}</h3>
-          <time datetime="{{ date }}">Gepubliceerd: {{ date }}</time>
-          <p class="news-description">{{ content }}</p>
+          <div class="news-title-container">
+            <h3 class="news-title"></h3>
+          </div>
+          <time datetime="" class="news-date"></time>
+          <p class="news-description"></p>
         </div>
       </div>
       {{/ news-items}}
+      <div class="news-item-template">
+        <div class="news-image"></div>
+        <div class="news-info">
+          <h3 class="news-title"></h3>
+          <time datetime="" class="news-date"></time>
+          <p class="news-description"></p>
+        </div>
+      </div>
     </div>
   </div>
 </main>

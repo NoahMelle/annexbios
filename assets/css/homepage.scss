@@ -320,10 +320,17 @@ main {
     grid-gap: var(--grid-layout-gap);
     .news-item {
       background-color: white;
-      // padding: 1rem;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      &.skeleton {
+        .news-title-container {
+          @include skeletonLoader;
+        }
+        .news-image {
+          @include skeletonLoader;
+        }
+      }
       .news-info {
         padding: 1rem;
         display: flex;
@@ -333,20 +340,25 @@ main {
       .news-image {
         width: 100%;
         aspect-ratio: 16 / 4;
-        object-fit: cover;
+        display: flex;
+        .news-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
-
       .news-title {
         font-size: 1.2rem;
         color: #666;
         text-transform: uppercase;
       }
-
+      .news-title-container {
+        height: calc(1.2rem * 2);
+      }
       .news-description {
         font-size: 0.8rem;
         color: #666;
       }
-
       .news-date {
         font-size: 0.8rem;
         color: #666;
