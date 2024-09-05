@@ -1,40 +1,121 @@
-    <main class="">
-      <div class="hero">
-        <div class="hero-text-container">
-          <h2>WELKOM BIJ ANNEXBIOS</h2>
-          <p class="hero-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit possimus
-            eos fugit provident, eius perspiciatis facere veritatis rem <br> nihil nulla ullam nemo iusto fugiat
-            excepturi vel velit aspernatur cum recusandae!</p>
-        </div>
-        <a href="/vestigingen" class="hero-view-locations">
-          Bekijk Onze Vestigingen
-        </a>
+<main class="homepage-main">
+  <div class="hero">
+    <div class="hero-text-container">
+      <h2>WELKOM BIJ ANNEXBIOS</h2>
+      <p class="hero-text">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit
+        possimus eos fugit provident, eius perspiciatis facere veritatis rem
+        <br />
+        nihil nulla ullam nemo iusto fugiat excepturi vel velit aspernatur cum
+        recusandae!
+      </p>
+    </div>
+    <a href="/vestigingen" class="hero-view-locations">
+      Bekijk Onze Vestigingen
+    </a>
+  </div>
+  <div class="locations">
+    {{# locations}}
+    <div class="location">
+      <img
+        class="location-image"
+        src="https://placehold.co/600x200"
+        alt="foto van de film"
+      />
+      <div class="location-info">
+        <h2 class="location-name">{{ city }}</h2>
+        <p class="location-address">{{ address }}</p>
+        <a href="#" class="location-button">Bezoek Website</a>
       </div>
-      <div class="locations">
-        {{# locations}}
-        <div class="location">
-          <img class="location-image" src="https://placehold.co/600x200" alt="foto van de film">
-          <div class="location-info">
-            <h2 class="location-name">{{ city }}</h2>
-            <p class="location-address">{{ address }}</p>
-            <a href="{{ website_link }}" class="location-button">Bezoek Website</a>
+    </div>
+    {{/ locations}}
+    <div class="location new-locations">
+      <div class="location-info">
+        <h2 class="location-name">Weten waar wij nog meer komen?</h2>
+        <p class="location-address">
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
+          commodo ligul.
+        </p>
+        <a href="#" class="location-button">Bekijk nieuwe projecten</a>
+      </div>
+    </div>
+  </div>
+  <div class="recommended-movies-container">
+    <h2>AANBEVOLEN FILMS</h2>
+    <div class="recommended-movies">
+      {{# skeleton-loader-amt}}
+      <div class="recommended-movie skeleton">
+        <div class="rm-img-container"></div>
+        <div class="rm-details">
+          <div class="rm-title-container">
+            <h3 class="rm-title"></h3>
+          </div>
+          <div class="rm-rating">
+            <div class="stars empty">
+              {{# stars}}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24.262"
+                height="23.264"
+                viewBox="0 0 24.262 23.264"
+                aria-label="Empty Star"
+                class="star empty"
+              >
+                <path
+                  data-name="Path 87"
+                  d="M15.628,8.025l7.823,1.364-5.837,5.383,1.124,7.847L11.8,18.742,4.671,22.235l1.579-7.8L.7,8.743,8.595,7.81,12.327.8Z"
+                  transform="translate(0.049 -0.007)"
+                  fill="#fff"
+                  stroke="#666"
+                  stroke-width="0.703"
+                />
+              </svg>
+              {{/ stars}}
+            </div>
+            <div class="stars filled">
+              {{# stars}}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24.262"
+                height="23.264"
+                viewBox="0 0 24.262 23.264"
+                class="star filled"
+                aria-label="Filled Star"
+              >
+                <path
+                  data-name="Path 86"
+                  d="M15.628,8.025l7.823,1.364-5.837,5.383,1.124,7.847L11.8,18.742,4.671,22.235l1.579-7.8L.7,8.743,8.595,7.81,12.327.8Z"
+                  transform="translate(0.049 -0.007)"
+                  fill="#666"
+                  stroke="#666"
+                  stroke-width="0.703"
+                />
+              </svg>
+              {{/ stars}}
+            </div>
+          </div>
+          <div class="rm-release-date"></div>
+          <div class="rm-description-container">
+            <p class="rm-description"></p>
           </div>
         </div>
-        {{/ locations}}
-        <div class="location new-locations">
-          <div class="location-info">
-            <h2 class="location-name">Weten waar wij nog meer komen?</h2>
-            <p class="location-address">Lorem ipsum dolor sit amet, consectetuer
-              adipiscing elit. Aenean commodo ligul.</p>
-            <a href="#" class="location-button">Bekijk nieuwe projecten</a>
-          </div>
+      </div>
+      {{/ skeleton-loader-amt}}
+    </div>
+  </div>
+  <div class="news-container">
+    <h2 class="news-header">Nieuws</h2>
+    <div class="news">
+      {{# news-items}}
+      <div class="news-item">
+        <img class="news-image" src="{{ image }}" alt="foto van de film" />
+        <div class="news-info">
+          <h3 class="news-title">{{ title }}</h3>
+          <time datetime="{{ date }}">Gepubliceerd: {{ date }}</time>
+          <p class="news-description">{{ content }}</p>
         </div>
       </div>
-      <div class="recommended-movies-container">
-        <h2>AANBEVOLEN FILMS</h2>
-
-
-        <div id="recommended-movies">
-
-        </div>
-    </main>
+      {{/ news-items}}
+    </div>
+  </div>
+</main>

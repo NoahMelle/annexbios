@@ -24,7 +24,7 @@
             // Validate the inputs
             if (validate_integer($currect_location_id) && validate_integer($movie_id) && validate_integer($place_id)) {
                 // Proceed if all inputs are valid integers
-                $stmt = $con->prepare("SELECT place_data FROM location_movie_data WHERE movie_id = ? AND location_id = ?");
+                $stmt = $con->prepare("SELECT place_data FROM location_movie_data WHERE location_movie_id = ? AND location_id = ?");
                 $stmt->bind_param("ii", $movie_id, $currect_location_id);
                 $stmt->execute();
                 $stmt->bind_result($place_data);
@@ -55,7 +55,7 @@
                                         $place["available"] = false;    
                                         $new_place_data = json_encode($place_data);
         
-                                        $stmt = $con->prepare("UPDATE location_movie_data SET place_data = ? WHERE movie_id = ? AND location_id = ?");
+                                        $stmt = $con->prepare("UPDATE location_movie_data SET place_data = ? WHERE location_movie_id = ? AND location_id = ?");
                                         $stmt->bind_param("sii", $new_place_data, $movie_id, $currect_location_id);
                                         if ($stmt->execute()) {
                                             $response["message"][] = "Place reserved successfully";

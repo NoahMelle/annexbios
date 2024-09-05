@@ -105,13 +105,21 @@ body {
     background-color: rgb(168, 168, 168);
   }
   .view-tickets {
+    font-size: .8rem;
     text-transform: uppercase;
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: 30px;
+    padding: 0 .7rem;
   }
 }
 
 .footer {
   width: 100%;
-  margin-top: 250px;
+  margin-top: 2rem;
   color: white;
   background-color: #666;
   $maxFooterWidth: 1400px;
@@ -260,4 +268,10 @@ body {
       }
     }
   }
+}
+
+.homepage-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
 }
