@@ -21,7 +21,8 @@ async function loadNews() {
     const news = await response.json();
 
     news.forEach((element, i) => {
-      const { title, image, content, date } = element;
+      const { title, image, content } = element;
+      const date = new Date(element.date);
 
       const newsElement =
         i < newsItems.length ? newsItems[i] : newsItems[0].cloneNode(true);
@@ -33,10 +34,13 @@ async function loadNews() {
       const newsDescription = newsElement.querySelector(".news-description");
       const newsDate = newsElement.querySelector(".news-date");
 
+
       // Set movie details
       newsTitle.textContent = title;
       newsDescription.textContent = content;
-      newsDate.textContent = date;
+      newsDate.textContent =
+        "Gepubliceerd: " +
+        `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
       // Update the image only if necessary
       if (!newsImageContainer.querySelector(".news-img")) {
