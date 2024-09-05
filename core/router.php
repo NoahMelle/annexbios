@@ -49,7 +49,7 @@ switch ($view[0]) {
                     "role" => $role
                 ];
 
-                header("Location: " . $env["BASEURL"] . "vestigingen");
+                header("Location: " . $env["BASEURL"] . "cms/vestigingen");
             } else {
                 $_SESSION["user"] = [
                     "user_id" => null,
@@ -61,151 +61,159 @@ switch ($view[0]) {
         }
         
         break;
-    case 'vestigingen':
+    case 'cms':
         if(!isset($_SESSION["user"]) || $_SESSION["user"]["role"] != 1) {
             header("Location: " . $env["BASEURL"] . "log-in");
         } else {
-            if(isset($view[1]) && $view[1] == 'toevoegen') {
-                $template = "addLocation";
+            switch ($view[1]) {
+                case 'vestigingen':
+                    if(isset($view[2]) && $view[2] == 'toevoegen') {
+                        $template = "cms/addLocation";
 
-                if(isset($_POST["function"]) && validate_integer($_POST["function"]) && isset($_POST["city"]) && !empty($_POST["city"]) && isset($_POST["address"]) && !empty($_POST["address"]) && isset($_POST["postal_code"]) && !empty($_POST["postal_code"]) && isset($_POST["website_link"]) && !empty($_POST["website_link"])) {
-                    $function = $_POST["function"];
-                    $city = mes($_POST["city"]);
-                    $address = mes($_POST["address"]);
-                    $postal_code = mes($_POST["postal_code"]);
-                    $website_link = mes($_POST["website_link"]);
-                    
-                    $stmt = $con->prepare("INSERT INTO location_data (function, city, address, postal_code, website_link) VALUES (?, ?, ?, ?, ?);");
-                    $stmt->bind_param("issss", $function, $city, $address, $postal_code, $website_link);
-                    if($stmt->execute()) {
-                        $stmt->close();
-
-                        $last_id = $con->insert_id;
-                        
-                        $stmt = $con->prepare("INSERT INTO location_tokens (location_id, token) VALUES (?, ?);");
-                        $stmt->bind_param("is", $last_id, generate_token());
-                        if($stmt->execute()) {
-                            $stmt->close();
-                            header("Location: " . $env["BASEURL"] . "vestigingen");
-                        }
-                    }
-
-                }
-            } else if(isset($view[1]) && $view[1] == 'wijzig') {
-                if(isset($view[2]) && !empty($view[2]) && validate_integer($view[2])) {
-                    $template = "changeLocation";
-
-                    if(isset($_POST["function"]) && validate_integer($_POST["function"]) && isset($_POST["city"]) && !empty($_POST["city"]) && isset($_POST["address"]) && !empty($_POST["address"]) && isset($_POST["postal_code"]) && !empty($_POST["postal_code"]) && isset($_POST["website_link"]) && !empty($_POST["website_link"])) {
-                        $function = $_POST["function"]; 
-                        $city = mes($_POST["city"]);
-                        $address = mes($_POST["address"]);
-                        $postal_code = mes($_POST["postal_code"]);
-                        $website_link = mes($_POST["website_link"]);
-                        
-                        $stmt = $con->prepare("UPDATE location_data SET function = ?, city = ?, address = ?, postal_code = ?, website_link = ? WHERE location_id = ?;");
-                        $stmt->bind_param("issssi", $function, $city, $address, $postal_code, $website_link, $view[2]);
-                        $stmt->execute();
-                        $stmt->close();
-
-                        header("Location: " . $env["BASEURL"] . "vestigingen");
-                    }
-                } else {
-                    header("Location: " . $env["BASEURL"] . "vestigingen");
-                }
-            } else if(isset($view[1]) && $view[1] == 'verwijder') {
-                if(isset($view[2]) && !empty($view[2]) && validate_integer($view[2])) {
-                    $template = "deleteLocation";
-
-                    if(isset($_POST["location_id"]) && !empty($_POST["location_id"]) && validate_integer($_POST["location_id"])) {
-                        $stmt = $con->prepare("DELETE FROM location_movie_data WHERE location_id = ?;");
-                        $stmt->bind_param("i", $_POST["location_id"]);
-                        if($stmt->execute()) {
-                            $stmt->close();
+                        if(isset($_POST["function"]) && validate_integer($_POST["function"]) && isset($_POST["city"]) && !empty($_POST["city"]) && isset($_POST["address"]) && !empty($_POST["address"]) && isset($_POST["postal_code"]) && !empty($_POST["postal_code"]) && isset($_POST["website_link"]) && !empty($_POST["website_link"])) {
+                            $function = $_POST["function"];
+                            $city = mes($_POST["city"]);
+                            $address = mes($_POST["address"]);
+                            $postal_code = mes($_POST["postal_code"]);
+                            $website_link = mes($_POST["website_link"]);
                             
-                            $stmt = $con->prepare("DELETE FROM location_data WHERE location_id = ?;");
-                            $stmt->bind_param("i", $_POST["location_id"]);
+                            $stmt = $con->prepare("INSERT INTO location_data (function, city, address, postal_code, website_link) VALUES (?, ?, ?, ?, ?);");
+                            $stmt->bind_param("issss", $function, $city, $address, $postal_code, $website_link);
                             if($stmt->execute()) {
                                 $stmt->close();
-                                header("Location: " . $env["BASEURL"] . "vestigingen");
+
+                                $last_id = $con->insert_id;
+                                
+                                $stmt = $con->prepare("INSERT INTO location_tokens (location_id, token) VALUES (?, ?);");
+                                $stmt->bind_param("is", $last_id, generate_token());
+                                if($stmt->execute()) {
+                                    $stmt->close();
+                                    header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                                }
                             }
+
                         }
+                    } else if(isset($view[2]) && $view[2] == 'wijzig') {
+                        if(isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                            $template = "cms/changeLocation";
+
+                            if(isset($_POST["function"]) && validate_integer($_POST["function"]) && isset($_POST["city"]) && !empty($_POST["city"]) && isset($_POST["address"]) && !empty($_POST["address"]) && isset($_POST["postal_code"]) && !empty($_POST["postal_code"]) && isset($_POST["website_link"]) && !empty($_POST["website_link"])) {
+                                $function = $_POST["function"]; 
+                                $city = mes($_POST["city"]);
+                                $address = mes($_POST["address"]);
+                                $postal_code = mes($_POST["postal_code"]);
+                                $website_link = mes($_POST["website_link"]);
+                                
+                                $stmt = $con->prepare("UPDATE location_data SET function = ?, city = ?, address = ?, postal_code = ?, website_link = ? WHERE location_id = ?;");
+                                $stmt->bind_param("issssi", $function, $city, $address, $postal_code, $website_link, $view[3]);
+                                $stmt->execute();
+                                $stmt->close();
+
+                                header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                            }
+                        } else {
+                            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                        }
+                    } else if(isset($view[2]) && $view[2] == 'verwijder') {
+                        if(isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                            $template = "cms/deleteLocation";
+
+                            if(isset($_POST["location_id"]) && !empty($_POST["location_id"]) && validate_integer($_POST["location_id"])) {
+                                $stmt = $con->prepare("DELETE FROM location_movie_data WHERE location_id = ?;");
+                                $stmt->bind_param("i", $_POST["location_id"]);
+                                if($stmt->execute()) {
+                                    $stmt->close();
+
+                                    $stmt = $con->prepare("DELETE FROM location_tokens WHERE location_id = ?;");
+                                    $stmt->bind_param("i", $_POST["location_id"]);
+                                    if($stmt->execute()) {
+                                        $stmt->close();
+
+                                        $stmt = $con->prepare("DELETE FROM location_data WHERE location_id = ?;");
+                                        $stmt->bind_param("i", $_POST["location_id"]);
+                                        if($stmt->execute()) {
+                                            $stmt->close();
+                                            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                        }
+                    } else {
+                        $template = "cms/locations";
                     }
-                } else {
-                    header("Location: " . $env["BASEURL"] . "vestigingen");
+                    $model = "cms/locations";                            
+                    break;
+                case 'filmladder':
+                    if(isset($view[2]) && $view[2] == 'toevoegen') {
+                        $template = "cms/addMovieSchedule";
+
+                        if(isset($_POST["movie"]) && validate_integer($_POST["movie"]) && isset($_POST["location"]) && validate_integer($_POST["location"]) && isset($_POST["place_data"]) && validate_integer($_POST["place_data"]) && isset($_POST["play_time"]) && !empty($_POST["play_time"])) {
+                            $movie = $_POST["movie"];
+                            $location = $_POST["location"];
+                            $place_data_count = $_POST["place_data"];
+                            $play_time = mes($_POST["play_time"]);
+
+                            $place_data = generatePlaceData($place_data_count);
+                            
+                            $stmt = $con->prepare("INSERT INTO location_movie_data (movie_id, location_id, place_data, play_time) VALUES (?, ?, ?, ?);");
+                            $stmt->bind_param("iiss", $movie, $location, $place_data, $play_time);
+                            if($stmt->execute()) {
+                                $stmt->close();
+                                header("Location: " . $env["BASEURL"] . "cms/filmladder");
+                            }
+
+                        }
+                    } else if(isset($view[2]) && $view[2] == 'wijzig') {
+                        if(isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                            $template = "cms/changeMovieSchedule";
+
+                            if(isset($_POST["movie"]) && validate_integer($_POST["movie"]) && isset($_POST["location"]) && validate_integer($_POST["location"]) && isset($_POST["place_data"]) && validate_integer($_POST["place_data"]) && isset($_POST["play_time"]) && !empty($_POST["play_time"])) {
+                                $movie = $_POST["movie"]; 
+                                $location = $_POST["location"];
+                                $place_data_count = $_POST["place_data"];
+                                $play_time = mes($_POST["play_time"]);
+
+                                $place_data = generatePlaceData($place_data_count);
+                                
+                                $stmt = $con->prepare("UPDATE location_movie_data SET movie_id = ?, location_id = ?, place_data = ?, play_time = ? WHERE location_movie_id = ?;");
+                                $stmt->bind_param("iissi", $movie, $location, $place_data, $play_time, $view[3]);
+                                if($stmt->execute()) {
+                                    $stmt->close();
+                                    header("Location: " . $env["BASEURL"] . "cms/filmladder");
+                                }
+                            }
+                        } else {
+                            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                        }
+                    } else if(isset($view[2]) && $view[2] == 'verwijder') {
+                        if(isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                            $template = "cms/deleteMovieSchedule";
+
+                            if(isset($_POST["current_location_id"]) && !empty($_POST["current_location_id"]) && validate_integer($_POST["current_location_id"])) {                            
+                                $stmt = $con->prepare("DELETE FROM location_movie_data WHERE location_movie_id = ?;");
+                                $stmt->bind_param("i", $_POST["current_location_id"]);
+                                if($stmt->execute()) {
+                                    $stmt->close();
+                                    header("Location: " . $env["BASEURL"] . "cms/filmladder");
+                                }
+                            }
+                        } else {
+                            header("Location: " . $env["BASEURL"] . "cms/filmladder");
+                        }
+                    } else {
+                        $template = "cms/movieSchedule";
+                    }
+                    $model = "cms/movieSchedule";                
+                    break;
+                default:
+                    $template = "cms/cms";
+                    $model = "cms/cms";
+                    break;
                 }
-            } else {
-                $template = "locations";
             }
-            $model = "locations";            
-        }
-        
-        break;
-    case 'filmladder':
-        if(!isset($_SESSION["user"]) || $_SESSION["user"]["role"] != 1) {
-            header("Location: " . $env["BASEURL"] . "log-in");
-        } else {
-            if(isset($view[1]) && $view[1] == 'toevoegen') {
-                $template = "addMovieSchedule";
-
-                if(isset($_POST["movie"]) && validate_integer($_POST["movie"]) && isset($_POST["location"]) && validate_integer($_POST["location"]) && isset($_POST["place_data"]) && validate_integer($_POST["place_data"]) && isset($_POST["play_time"]) && !empty($_POST["play_time"])) {
-                    $movie = $_POST["movie"];
-                    $location = $_POST["location"];
-                    $place_data_count = $_POST["place_data"];
-                    $play_time = mes($_POST["play_time"]);
-
-                    $place_data = generatePlaceData($place_data_count);
-                    
-                    $stmt = $con->prepare("INSERT INTO location_movie_data (movie_id, location_id, place_data, play_time) VALUES (?, ?, ?, ?);");
-                    $stmt->bind_param("iiss", $movie, $location, $place_data, $play_time);
-                    if($stmt->execute()) {
-                        $stmt->close();
-                        header("Location: " . $env["BASEURL"] . "filmladder");
-                    }
-
-                }
-            } else if(isset($view[1]) && $view[1] == 'wijzig') {
-                if(isset($view[2]) && !empty($view[2]) && validate_integer($view[2])) {
-                    $template = "changeMovieSchedule";
-
-                    if(isset($_POST["movie"]) && validate_integer($_POST["movie"]) && isset($_POST["location"]) && validate_integer($_POST["location"]) && isset($_POST["place_data"]) && validate_integer($_POST["place_data"]) && isset($_POST["play_time"]) && !empty($_POST["play_time"])) {
-                        $movie = $_POST["movie"]; 
-                        $location = $_POST["location"];
-                        $place_data_count = $_POST["place_data"];
-                        $play_time = mes($_POST["play_time"]);
-
-                        $place_data = generatePlaceData($place_data_count);
-                        
-                        $stmt = $con->prepare("UPDATE location_movie_data SET movie_id = ?, location_id = ?, place_data = ?, play_time = ? WHERE location_movie_id = ?;");
-                        $stmt->bind_param("iissi", $movie, $location, $place_data, $play_time, $view[2]);
-                        if($stmt->execute()) {
-                            $stmt->close();
-                            header("Location: " . $env["BASEURL"] . "filmladder");
-                        }
-                    }
-                } else {
-                    header("Location: " . $env["BASEURL"] . "vestigingen");
-                }
-            } else if(isset($view[1]) && $view[1] == 'verwijder') {
-                if(isset($view[2]) && !empty($view[2]) && validate_integer($view[2])) {
-                    $template = "deleteMovieSchedule";
-
-                    if(isset($_POST["current_location_id"]) && !empty($_POST["current_location_id"]) && validate_integer($_POST["current_location_id"])) {                            
-                        $stmt = $con->prepare("DELETE FROM location_movie_data WHERE location_movie_id = ?;");
-                        $stmt->bind_param("i", $_POST["current_location_id"]);
-                        if($stmt->execute()) {
-                            $stmt->close();
-                            header("Location: " . $env["BASEURL"] . "filmladder");
-                        }
-                    }
-                } else {
-                    header("Location: " . $env["BASEURL"] . "filmladder");
-                }
-            } else {
-                $template = "movieSchedule";
-            }
-            $model = "movieSchedule";
-        }
-        
         break;
     case 'api':
         $isApiCall = true;

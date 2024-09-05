@@ -4,7 +4,7 @@
       <h2>LOCATIES</h2>
       <p class="hero-text">Alle locaties/vestigingen van AnnexBios</p>
     </div>
-    <a href="{{ base_url }}vestigingen/toevoegen" class="hero-view-locations">
+    <a href="{{ base_url }}cms/vestigingen/toevoegen" class="hero-view-locations">
       VOEG NIEUWE TOE
     </a>
   </div>
@@ -15,8 +15,8 @@
         <h2 class="location-name">{{ function }}</h2>
         <p class="location-address">{{ city }} {{ address }} {{ postal_code }}</p>
         <a href="{{ website_link }}" class="location-button">Bezoek Website</a>
-        <a href="{{ base_url }}vestigingen/wijzig/{{ location_id }}" class="location-button">Wijzig Vesteging</a>
-        <a href="{{ base_url }}vestigingen/verwijder/{{ location_id }}" class="location-button red">Verwijder
+        <a href="{{ base_url }}cms/vestigingen/wijzig/{{ location_id }}" class="location-button">Wijzig Vesteging</a>
+        <a href="{{ base_url }}cms/vestigingen/verwijder/{{ location_id }}" class="location-button red">Verwijder
           Vesteging</a>
       </div>
     </div>

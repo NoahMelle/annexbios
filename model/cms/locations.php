@@ -31,22 +31,22 @@
         }
     }
 
-    if(isset($view[1]) && $view[1] == 'wijzig' && isset($view[2]) && validate_integer($view[2]) || isset($view[1]) && $view[1] == 'verwijder' && isset($view[2]) && validate_integer($view[2])) {
+    if(isset($view[2]) && $view[2] == 'wijzig' && isset($view[3]) && validate_integer($view[3]) || isset($view[2]) && $view[2] == 'verwijder' && isset($view[3]) && validate_integer($view[3])) {
         $stmt = $con->prepare("SELECT function_data.name, location_data.city, location_data.address, location_data.postal_code, location_data.website_link FROM location_data JOIN function_data ON location_data.function = function_data.function_id WHERE location_id = ?;");
-        $stmt->bind_param("i", $view[2]);
+        $stmt->bind_param("i", $view[3]);
         $stmt->bind_result($function, $city, $address, $postal_code, $website_link);
         $stmt->execute();
         $stmt->fetch();
         $stmt->close();
 
-        $data['current_location_id'] = $view[2];
+        $data['current_location_id'] = $view[3];
         $data['current_website_link'] = $website_link;
         $data['city'] = $city;
         $data['address'] = $address;
         $data['postal_code'] = $postal_code;
 
         $stmt = $con->prepare("SELECT function_data.function_id, function_data.name FROM function_data JOIN location_data ON location_data.function = function_data.function_id WHERE location_id = ?;");
-        $stmt->bind_param("i", $view[2]);
+        $stmt->bind_param("i", $view[3]);
         $stmt->bind_result($function_id, $function_name);
         $stmt->execute();
         $stmt->fetch();

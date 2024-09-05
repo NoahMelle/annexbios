@@ -16,9 +16,9 @@
         'locations' => []
     ];
 
-    if(isset($view[1]) && $view[1] == 'wijzig' && isset($view[2]) && validate_integer($view[2]) || isset($view[1]) && $view[1] == 'verwijder' && isset($view[2]) && validate_integer($view[2])) {
+    if(isset($view[2]) && $view[2] == 'wijzig' && isset($view[3]) && validate_integer($view[3]) || isset($view[2]) && $view[2] == 'verwijder' && isset($view[3]) && validate_integer($view[3])) {
         $stmt = $con->prepare("SELECT location_movie_id, movie_id, location_id, place_data, play_time FROM location_movie_data WHERE location_movie_id = ?;");
-        $stmt->bind_param("i", $view[2]);
+        $stmt->bind_param("i", $view[3]);
         $stmt->bind_result($location_movie_id, $movie_id, $location_id, $place_data, $play_time);
         $stmt->execute();
         $stmt->fetch();
@@ -30,7 +30,7 @@
         $data['current_movie_id'] = $movie_id;
         $data['play_time'] = $play_time;
     }
-
+    
     $stmt = $con->prepare("SELECT movie_id, title FROM movie_data;");
     $stmt->execute();
     $result = $stmt->get_result();

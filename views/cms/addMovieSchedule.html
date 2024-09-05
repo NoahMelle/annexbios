@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="movie_schedule_add">
-    <form action="{{ base_url }}filmladder/toevoegen" method="post">
+    <form action="{{ base_url }}cms/filmladder/toevoegen" method="post">
       <label for="movie">Film</label>
       <select name="movie" id="movie">
         {{# movies }}
@@ -23,7 +23,7 @@
       <label for="place_data">Plaatsen</label>
       <input type="number" name="place_data" id="place_data">
       <label for="play_time">Speel moment</label>
-      <input type="datetime-local" name="play_time" id="play_time">
+      <input type="datetime-local" name="play_time" id="play_time" step="1">
       <input type="submit" value="wijzig"> </form>
   </div>
 </main>
