@@ -21,11 +21,8 @@ async function loadNews() {
     const news = await response.json();
 
     news.forEach((element, i) => {
-      const { title, image, description, date } = element;
+      const { title, image, content, date } = element;
 
-      console.log(
-        i < newsItems.length ? newsItems[i] : newsItems[0].cloneNode(true)
-      );
       const newsElement =
         i < newsItems.length ? newsItems[i] : newsItems[0].cloneNode(true);
       if (i >= newsItems.length) {
@@ -38,7 +35,7 @@ async function loadNews() {
 
       // Set movie details
       newsTitle.textContent = title;
-      newsDescription.textContent = description;
+      newsDescription.textContent = content;
       newsDate.textContent = date;
 
       // Update the image only if necessary
