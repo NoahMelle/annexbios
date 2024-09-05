@@ -27,6 +27,9 @@ switch ($view[0]) {
             case 'reservePlace':
                 $page = "v1/movies/reservePlace.php";
                 break;
+            case 'getnews':
+                $page = "v1/news/getnews.php";
+                break;
         }
         break;
     default:
