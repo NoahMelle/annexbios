@@ -112,8 +112,8 @@
         }
     
         // Define the path to save the image
-        $saveTo = '../../assets/img/films/' . $data['imdb_id'] . '.jpg';
-        $dbPath = $env['BASEURL'] .'assets/img/films/' . $data['imdb_id'] . '.jpg';
+        $saveTo = '../../assets/img/movies/' . $data['imdb_id'] . '.jpg';
+        $dbPath = $env['BASEURL'] .'assets/img/movies/' . $data['imdb_id'] . '.jpg';
     
         // Check if the directory exists, and create it if it doesn't
         $directory = dirname($saveTo);
@@ -159,8 +159,29 @@
                     }
 
                     if($director_id !== $director['director_id']) {
+                        // Define the path to save the image
+                        $saveTo = '../../assets/img/directors/' . $director['director_id'] . '.jpg';
+                        $dbPath = $env['BASEURL'] .'assets/img/directors/' . $director['director_id'] . '.jpg';
+                    
+                        // Check if the directory exists, and create it if it doesn't
+                        $directory = dirname($saveTo);
+                        if (!is_dir($directory)) {
+                            mkdir($directory, 0755, true); // Create the directory with permissions
+                        }
+                    
+                        // Store image in local files
+                        if (filter_var($director['image'], FILTER_VALIDATE_URL)) {
+                            // It's a URL, try to fetch the image
+                            $rawImage = @file_get_contents($director['image']);
+                            if ($rawImage === FALSE) {
+                                $dbPath = 'niet beschikbaar'; // Image could not be retrieved
+                            } else {
+                                file_put_contents($saveTo, $rawImage);
+                            }
+                        }
+                    
                         $stmt = $con->prepare("INSERT INTO director_data (imdb_id, name, gender, image_path) VALUES (?, ?, ?, ?);");
-                        $stmt->bind_param("isss", $director['director_id'], $director['name'], $director['gender'], $director['image']);
+                        $stmt->bind_param("isss", $director['director_id'], $director['name'], $director['gender'], $dbPath);
                         if($stmt->execute()) {
                             $db_director_id = $con->insert_id;
 
@@ -202,8 +223,30 @@
                     }
 
                     if($actor_id !== $actor['actor_id']) {
+                        // Define the path to save the image
+                        $saveTo = '../../assets/img/actors/' . $actor['actor_id'] . '.jpg';
+                        $dbPath = $env['BASEURL'] .'assets/img/actors/' . $actor['actor_id'] . '.jpg';
+
+                        // Check if the directory exists, and create it if it doesn't
+                        $directory = dirname($saveTo);
+                        if (!is_dir($directory)) {
+                            mkdir($directory, 0755, true); // Create the directory with permissions
+                        }
+
+
+                        // Store image in local files
+                        if (filter_var($actor['image'], FILTER_VALIDATE_URL)) {
+                            // It's a URL, try to fetch the image
+                            $rawImage = @file_get_contents($actor['image']);
+                            if ($rawImage === FALSE) {
+                                $dbPath = 'niet beschikbaar'; // Image could not be retrieved
+                            } else {
+                                file_put_contents($saveTo, $rawImage);
+                            }
+                        }                            
+
                         $stmt = $con->prepare("INSERT INTO actor_data (imdb_id, name, gender, image_path) VALUES (?, ?, ?, ?);");
-                        $stmt->bind_param("isss", $actor['actor_id'], $actor['name'], $actor['gender'], $actor['image']);
+                        $stmt->bind_param("isss", $actor['actor_id'], $actor['name'], $actor['gender'], $dbPath);
                         if($stmt->execute()) {
                             $db_actor_id = $con->insert_id;
 
@@ -245,8 +288,8 @@
                     }
     
                     if($title !== $genre['name']) {
-                        $stmt = $con->prepare("INSERT INTO genre_data (title) VALUES (?)");
-                        $stmt->bind_param("s", $genre['name']);
+                        $stmt = $con->prepare("INSERT INTO genre_data (imdb_id, title) VALUES (?, ?)");
+                        $stmt->bind_param("is", $genre['id'], $genre['name']);
                         if($stmt->execute()) {
                             $db_genre_id = $con->insert_id;
     
