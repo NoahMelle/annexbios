@@ -208,6 +208,63 @@ switch ($view[0]) {
                     }
                     $model = "cms/movieSchedule";                
                     break;
+                    
+                    case 'films':
+                        if(isset($view[2]) && $view[2] == 'toevoegen') {
+                            $template = "cms/addMovies";
+    
+                            if(isset($_POST["imdb_id"]) && !empty($_POST["imdb_id"])) {
+                                $imdb_id = mes($_POST["imdb_id"]);
+                                
+                                $data = getMovieData($imdb_id);
+                                $process = json_decode(processMovie($data), true);
+
+                                if($process["success"] === true) {
+                                    header("Location: " . $env["BASEURL"] . "cms/films");
+                                }
+                            }
+                        } else if(isset($view[2]) && $view[2] == 'wijzig') {
+                            if(isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                                $template = "cms/changeMovieSchedule";
+    
+                                if(isset($_POST["movie"]) && validate_integer($_POST["movie"]) && isset($_POST["location"]) && validate_integer($_POST["location"]) && isset($_POST["place_data"]) && validate_integer($_POST["place_data"]) && isset($_POST["play_time"]) && !empty($_POST["play_time"])) {
+                                    $movie = $_POST["movie"]; 
+                                    $location = $_POST["location"];
+                                    $place_data_count = $_POST["place_data"];
+                                    $play_time = mes($_POST["play_time"]);
+    
+                                    $place_data = generatePlaceData($place_data_count);
+                                    
+                                    $stmt = $con->prepare("UPDATE location_movie_data SET movie_id = ?, location_id = ?, place_data = ?, play_time = ? WHERE location_movie_id = ?;");
+                                    $stmt->bind_param("iissi", $movie, $location, $place_data, $play_time, $view[3]);
+                                    if($stmt->execute()) {
+                                        $stmt->close();
+                                        header("Location: " . $env["BASEURL"] . "cms/filmladder");
+                                    }
+                                }
+                            } else {
+                                header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                            }
+                        } else if(isset($view[2]) && $view[2] == 'verwijder') {
+                            if(isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                                $template = "cms/deleteMovieSchedule";
+    
+                                if(isset($_POST["current_location_id"]) && !empty($_POST["current_location_id"]) && validate_integer($_POST["current_location_id"])) {                            
+                                    $stmt = $con->prepare("DELETE FROM location_movie_data WHERE location_movie_id = ?;");
+                                    $stmt->bind_param("i", $_POST["current_location_id"]);
+                                    if($stmt->execute()) {
+                                        $stmt->close();
+                                        header("Location: " . $env["BASEURL"] . "cms/filmladder");
+                                    }
+                                }
+                            } else {
+                                header("Location: " . $env["BASEURL"] . "cms/filmladder");
+                            }
+                        } else {
+                            $template = "cms/movies";
+                        }
+                        $model = "cms/movies";                
+                        break;
                 default:
                     $template = "cms/cms";
                     $model = "cms/cms";

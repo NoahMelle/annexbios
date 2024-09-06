@@ -1,0 +1,15 @@
+<main class="">
+  <div class="hero">
+    <div class="hero-text-container">
+      <h2>NIEUWE FILM</h2>
+      <p class="hero-text">Voeg een film toe</p>
+    </div>
+  </div>
+  <div class="locations_add">
+    <form action="{{ base_url }}cms/films/toevoegen" method="post">
+      <label for="imdb_id">IMDB Id</label>
+      <input type="text" name="imdb_id" id="imdb_id">
+      <input type="submit" value="toevoegen">
+    </form>
+  </div>
+</main>
