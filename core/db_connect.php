@@ -54,16 +54,16 @@ function isToday($date)
 
 function isThisWeek($date)
 {
-    $today = new DateTime();
-    $givenDate = new DateTime($date);
 
-    // Get the start and end of this week
-    $startOfWeek = (clone $today)->modify('this week')->setTime(0, 0, 0);
-    $endOfWeek = (clone $today)->modify('this week +6 days')->setTime(23, 59, 59);
+  $today = new DateTime();
+  $givenDate = new DateTime($date);
 
-    return $givenDate >= $startOfWeek && $givenDate <= $endOfWeek;
+  // Get the start and end of this week
+  $startOfWeek = (clone $today)->modify('this week')->setTime(0, 0, 0);
+  $endOfWeek = (clone $today)->modify('this week +6 days')->setTime(23, 59, 59);
+
+  return $givenDate >= $startOfWeek && $givenDate <= $endOfWeek;
 }
-
 
 function dd($var, $die = false)
 {

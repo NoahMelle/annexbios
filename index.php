@@ -27,7 +27,7 @@ if ($isApiCall) {
         'strict_callables' => true,
         'pragmas' => [Mustache_Engine::PRAGMA_FILTERS],
     ));
-
+  
     $headertpl = $mustache->loadTemplate('header'); // loads __DIR__.'/views/foo.mustache';
     echo $headertpl->render($data);
 
