@@ -1,17 +1,26 @@
 <?php
-$dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
-$dotenv->safeLoad();
+include_once "./vendor/autoload.php";
 
-$dbhost = $_ENV['DBHOST'];
-$dbusername = $_ENV['DBUSERNAME'];
-$dbpassword = $_ENV['DBPASSWORD'];
-$dbname = $_ENV['DBNAME'];
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+if (is_file(__dir__ . '/../.env')) {
+    $env = parse_ini_file(__dir__ . '/../.env');
+} else {
+    $env = [];
+}
+
+$dbhost = $env['DBHOST'];
+$dbusername = $env['DBUSERNAME'];
+$dbpassword = $env['DBPASSWORD'];
+$dbname = $env['DBNAME'];
 
 $con = new mysqli($dbhost, $dbusername, $dbpassword, $dbname);
 
 if ($con->connect_errno) {
-  echo "Failed to connect to MySQL: " . $con->connect_error;
-  exit();
+    echo "Failed to connect to MySQL: " . $con->connect_error;
+    exit();
 }
 
 function prettyDump($var)

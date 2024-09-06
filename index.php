@@ -26,6 +26,10 @@
         $page = 'v1/movies/reservePlace.php';
         $isApiCall = true;
         break;
+    case 'apiv1temp':
+        $page = 'v1/movies/temp.php';
+        $isApiCall = true;
+        break;
     default: 
         $page = '404.php';
         $style = '404.css';
