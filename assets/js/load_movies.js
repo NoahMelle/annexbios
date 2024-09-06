@@ -8,14 +8,19 @@ async function loadRecommendedMovies() {
     }
 
     const movies = await response.json();
-    console.log(movies);
 
     const recommendedMovies = document.querySelectorAll(".recommended-movie");
 
     recommendedMovies.forEach((recommendedMovie, index) => {
       if (index < movies.length) {
-        const { title, image, release_date, description, rating } = movies[index];
-        
+        const {
+          title,
+          image,
+          release_date,
+          description,
+          rating
+        } = movies[index];
+
         const movieTitle = recommendedMovie.querySelector(".rm-title");
         const movieImageContainer = recommendedMovie.querySelector(".rm-img-container");
         const movieReleaseDate = recommendedMovie.querySelector(".rm-release-date");
