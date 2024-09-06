@@ -4,17 +4,17 @@
       <h2>FILMS</h2>
       <p class="hero-text">Alle films in de AnnexBios Database</p>
     </div>
-    <a href="{{ base_url }}cms/films/toevoegen" class="hero-view-locations">
+    <a href="{{ base_url }}cms/films/toevoegen" class="hero-view-movie">
       VOEG NIEUWE TOE
     </a>
   </div>
   <div class="movies">
     {{# movies}}
-    <div class="location">
-      <div class="location-info">
-        <h2 class="location-title">{{ title }}</h2>
-        <p class="location-imdb-id">{{ imdb_id }}</p>
-        <a href="{{ base_url }}cms/films/verwijder/{{ database_id }}" class="location-button red">Verwijder
+    <div class="movie">
+      <div class="movie-info">
+        <h2 class="movie-title">{{ title }}</h2>
+        <p class="movie-imdb-id">{{ imdb_id }}</p>
+        <a href="{{ base_url }}cms/films/verwijder/{{ database_id }}" class="movie-button red">Verwijder
           Film</a>
       </div>
     </div>

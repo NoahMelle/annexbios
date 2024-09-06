@@ -212,17 +212,6 @@ switch ($view[0]) {
                     case 'films':
                         if(isset($view[2]) && $view[2] == 'toevoegen') {
                             $template = "cms/addMovies";
-    
-                            if(isset($_POST["imdb_id"]) && !empty($_POST["imdb_id"])) {
-                                $imdb_id = mes($_POST["imdb_id"]);
-                                
-                                $data = getMovieData($imdb_id);
-                                $process = json_decode(processMovie($data), true);
-
-                                if($process["success"] === true) {
-                                    header("Location: " . $env["BASEURL"] . "cms/films");
-                                }
-                            }
                         } else if(isset($view[2]) && $view[2] == 'wijzig') {
                             if(isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
                                 $template = "cms/changeMovieSchedule";

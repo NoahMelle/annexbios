@@ -28,6 +28,18 @@ main {
     gap: 1rem;
   }
 
+  .hero-text-alert {
+    color: white;
+
+    &.success {
+      color: green;
+    }
+
+    &.error {
+      color: red;
+    }
+  }
+
   h2 {
     color: white;
     font-size: $xlFont;
@@ -37,7 +49,7 @@ main {
     color: white;
   }
 
-  .hero-view-locations {
+  .hero-view-movie {
     background-color: white;
     color: black;
     padding: 10px 20px;
@@ -70,7 +82,7 @@ main {
   min-height: 0;
   overflow: hidden;
 
-  .location {
+  .movie {
     height: 100%;
     background-color: white;
     min-width: 0;
@@ -80,24 +92,24 @@ main {
     flex-direction: column;
     justify-content: center;
 
-    .location-info {
+    .movie-info {
       padding: 1.7rem;
       display: flex;
       flex-direction: column;
       gap: 0.7rem;
     }
 
-    .location-name {
+    .movie-name {
       font-size: 26px;
       text-transform: uppercase;
       color: #666;
     }
 
-    .location-address {
+    .movie-address {
       color: #707070;
     }
 
-    .location-button {
+    .movie-button {
       padding: 0.5rem 1rem;
       width: fit-content;
       text-transform: uppercase;
@@ -114,7 +126,7 @@ main {
   }
 }
 
-.locations_add {
+.movies_add {
   height: 100%;
   background-color: white;
   padding: clamp(20px, 4vw, 30px);
@@ -155,4 +167,33 @@ main {
     }
   }
 
+}
+
+.movies-loading-screen {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(153, 153, 153);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+
+  .loader {
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid;
+    border-color: #000 #0000;
+    animation: l1 1s infinite;
+    position: relative;
+  }
+
+  @keyframes l1 {
+    to {
+      transform: rotate(.5turn)
+    }
+  }
 }

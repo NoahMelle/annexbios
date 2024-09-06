@@ -2,6 +2,7 @@
     'page_title' => "AnnexBios Films",
     'base_url' => $env['BASEURL'],
     'styles' => ['movies.css'],
+    'js' => ['upload_movie_to_db.js'],
     "movies" => [],
 ];
 
