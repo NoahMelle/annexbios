@@ -1,0 +1,52 @@
+<main class="">
+  <div class="hero">
+    <div class="hero-text-container">
+      <h2>FILMLADDER</h2>
+      <p class="hero-text">Alle films die binnenkort spelen</p>
+    </div>
+    <a href="{{ base_url }}cms/filmladder/toevoegen" class="hero-view-locations">
+      VOEG NIEUWE TOE
+    </a>
+  </div>
+  <div class="playing-movies-container">
+    <div class="playing-movies">
+      {{# skeleton-loader-amt}}
+      <div class="playing-movie skeleton">
+        <div class="rm-img-container"></div>
+        <div class="rm-details">
+          <div class="rm-title-container">
+            <h3 class="rm-title"></h3>
+          </div>
+          <div class="rm-rating">
+            <div class="stars empty">
+              {{# stars}}
+              <svg xmlns="http://www.w3.org/2000/svg" width="24.262" height="23.264" viewBox="0 0 24.262 23.264"
+                class="star empty">
+                <path data-name="Path 87"
+                  d="M15.628,8.025l7.823,1.364-5.837,5.383,1.124,7.847L11.8,18.742,4.671,22.235l1.579-7.8L.7,8.743,8.595,7.81,12.327.8Z"
+                  transform="translate(0.049 -0.007)" fill="#fff" stroke="#666" stroke-width="0.703" />
+              </svg>
+              {{/ stars}}
+            </div>
+            <div class="stars filled">
+              {{# stars}}
+              <svg xmlns="http://www.w3.org/2000/svg" width="24.262" height="23.264" viewBox="0 0 24.262 23.264"
+                class="star filled">
+                <path data-name="Path 86"
+                  d="M15.628,8.025l7.823,1.364-5.837,5.383,1.124,7.847L11.8,18.742,4.671,22.235l1.579-7.8L.7,8.743,8.595,7.81,12.327.8Z"
+                  transform="translate(0.049 -0.007)" fill="#666" stroke="#666" stroke-width="0.703" />
+              </svg>
+              {{/ stars}}
+            </div>
+          </div>
+          <div class="rm-play-time"></div>
+          <div class="rm-places-available"></div>
+        </div>
+        <div class="rm-cms">
+          <a href="{{ base_url }}cms/filmladder/wijzig/" class="rm-edit">BEWERK</a>
+          <a href="{{ base_url }}cms/filmladder/verwijder/" class="rm-delete">VERWIJDER</a>
+        </div>
+      </div>
+      {{/ skeleton-loader-amt}}
+    </div>
+</main>

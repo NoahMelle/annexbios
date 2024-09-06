@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title }}</title>
+  <link href="{{ base_url }}assets/css/style.css" rel="stylesheet" />
+  {{# styles}}
+  <link href="{{ base_url }}assets/css/{{.}}" rel="stylesheet" />
+  {{/ styles}}
+
+  <script>
+    const BASEURL = '{{ base_url }}';
+
+  </script>
+</head>
+
+<body>
+  <nav class="navbar not-active">
+    <div class="header-bar-container">
+      <div class="header-bar-content">
+        <div class="mobile-top">
+          <img class="navbar-logo" src="{{ base_url }}assets/img/logo/logo_hoofd.png" alt="logo">
+          <div class="menu-container">
+            <div class="hamburger-button not-active">
+              <span class="hamburger-bar bar-top"></span>
+              <span class="hamburger-bar bar-middle"></span>
+              <span class="hamburger-bar bar-bottom"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        <div class="navbar-lower">
+            <div class="navbar-purchase">KOOP JE TICKETS</div>
+            <div class="location-group">
+                <select name="location" id="location-selector" class="location-selector" aria-label="Selecteer een vestiging">
+                    <option value="#" disabled selected hidden>Kies je vestiging</option>
+                    {{# locations}}
+                    <option value="{{ url }}">{{ city }}</option>
+                    {{/ locations}}
+                </select>
+                <a class="view-tickets" id="view-tickets" href="#" target="_blank">
+                    Bekijk Tickets
+                </a>
+            </div>
+    </div>
+  </nav>

@@ -25,28 +25,29 @@ if ($con->connect_errno) {
 
 function prettyDump($var)
 {
-  echo "<pre>";
-  var_dump($var);
-  echo "</pre>";
+    echo "<pre>";
+    var_dump($var);
+    echo "</pre>";
 }
 
 // Function to validate integers
 function validate_integer($input)
 {
-  return filter_var($input, FILTER_VALIDATE_INT) !== false;
+    return filter_var($input, FILTER_VALIDATE_INT) !== false;
 }
 
 function isToday($date)
 {
-  $today = new DateTime();
-  $givenDate = new DateTime($date);
+    $today = new DateTime();
+    $givenDate = new DateTime($date);
 
-  // Compare only the date parts (ignoring the time)
-  return $givenDate->format('Y-m-d') === $today->format('Y-m-d');
+    // Compare only the date parts (ignoring the time)
+    return $givenDate->format('Y-m-d') === $today->format('Y-m-d');
 }
 
 function isThisWeek($date)
 {
+
   $today = new DateTime();
   $givenDate = new DateTime($date);
 
@@ -57,4 +58,47 @@ function isThisWeek($date)
   return $givenDate >= $startOfWeek && $givenDate <= $endOfWeek;
 }
 
-?>
+function dd($var, $die = false)
+{
+    echo "<pre>";
+    var_dump($var);
+    echo "</pre>";
+    if ($die) {
+        exit();
+    }
+}
+
+function mes($value)
+{
+    global $con;
+    return $con->real_escape_string($value);
+}
+
+function generate_token() {
+    global $con;
+    $token = bin2hex(random_bytes(32));
+
+    $stmt = $con->prepare("SELECT COUNT(token) FROM location_tokens WHERE token = ?;");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
+
+    if($count > 0) {
+        return generate_token();
+    } else {
+        return $token;
+    }
+}
+
+function generatePlaceData($amount) {
+    $place_data = [];
+    for($i = 0; $i < $amount; $i++) {
+        $place_data[] = [
+            'place' => $i,
+            'available' => true
+        ];
+    }
+    return json_encode($place_data);
+}

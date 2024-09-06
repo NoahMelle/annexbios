@@ -1,3 +1,22 @@
+@keyframes loader {
+  from {
+    background-position: -100% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+@keyframes pulseStars {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
 .menu-container {
   position: relative;
   display: none;
@@ -142,6 +161,25 @@
     display: block;
   }
 }
+@keyframes loader {
+  from {
+    background-position: -100% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+@keyframes pulseStars {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
 * {
   margin: 0;
   padding: 0;
@@ -176,6 +214,7 @@ body {
   flex-direction: column;
   background-color: #666;
   position: sticky;
+  z-index: 10;
 }
 .navbar .mobile-top {
   display: flex;
@@ -247,12 +286,21 @@ body {
   background-color: rgb(168, 168, 168);
 }
 .navbar-lower .view-tickets {
+  font-size: 0.8rem;
   text-transform: uppercase;
+  background-color: white;
+  color: black;
+  display: flex;
+  align-items: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 30px;
+  padding: 0 0.7rem;
 }
 
 .footer {
   width: 100%;
-  margin-top: 250px;
+  margin-top: 2rem;
   color: white;
   background-color: #666;
 }
@@ -294,6 +342,7 @@ body {
 }
 .footer .footer-top-wrapper .footer-top .footer-section {
   max-width: 100%;
+  z-index: 1;
 }
 .footer .footer-top-wrapper .footer-top .footer-section .footer-heading {
   height: 80px;
@@ -388,4 +437,9 @@ body {
     width: 100%;
     justify-content: center;
   }
+}
+.homepage-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
 }/*# sourceMappingURL=style.css.map */

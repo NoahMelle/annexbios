@@ -1,50 +1,72 @@
 <?php
-    if(isset($_GET["movie_id"]) && isset($_GET["location_id"]) && validate_integer($_GET["movie_id"]) && validate_integer($_GET["location_id"])) {
-        // Case when both movie_id and location_id are set
-        $stmt = $con->prepare("SELECT location_movie_data.id, location_movie_data.location_id, location_movie_data.place_data, location_movie_data.play_time, location_data.name FROM location_movie_data JOIN location_data ON location_movie_data.location_id = location_data.location_id WHERE location_movie_data.movie_id = ? AND location_movie_data.location_id = ?;");
-        $stmt->bind_param("ii", $_GET["movie_id"], $_GET["location_id"]);
-    } else if(isset($_GET["movie_id"]) && validate_integer($_GET["movie_id"])) {
-        // Case when only movie_id is set
-        $stmt = $con->prepare("SELECT location_movie_data.id, location_movie_data.location_id, location_movie_data.place_data, location_movie_data.play_time, location_data.name FROM location_movie_data JOIN location_data ON location_movie_data.location_id = location_data.location_id WHERE location_movie_data.movie_id = ?;");
-        $stmt->bind_param("i", $_GET["movie_id"]);
-    } else if(isset($_GET["location_id"]) && validate_integer($_GET["location_id"])) {
-        // Case when only location_id is set
-        $stmt = $con->prepare("SELECT location_movie_data.id, location_movie_data.location_id, location_movie_data.place_data, location_movie_data.play_time, location_data.name FROM location_movie_data JOIN location_data ON location_movie_data.location_id = location_data.location_id WHERE location_movie_data.location_id = ?;");
-        $stmt->bind_param("i", $_GET["location_id"]);
-    } else {
-        // Case when neither movie_id nor location_id is set
-        $stmt = $con->prepare("SELECT location_movie_data.id, location_movie_data.location_id, location_movie_data.place_data, location_movie_data.play_time, location_data.name FROM location_movie_data JOIN location_data ON location_movie_data.location_id = location_data.location_id;");
-    }
-    
-    $stmt->execute();
-    
-    $result = $stmt->get_result();
-    $data = [];
-    $id = 0;
+    require_once './core/check_api_token.php';
 
-    while ($row = $result->fetch_assoc()) {
-        $data[$id] = [
-            "id" => $row["id"],
-            "location" => [
-                "id" => $row["location_id"],
-                "name" => $row["name"]
-            ],
-            "play_time" => $row["play_time"],
-            "plays_this_week" => isThisWeek($row["play_time"]),
-            "plays_today" => isToday($row["play_time"]),
-            "place_data" => []
-        ];
-        
-        $place_data = json_decode($row["place_data"], true);
-        foreach($place_data["places"] as $place) {
-            $data[$id]["place_data"][] = [
-                "place" => $place["place"],
-                "available" => $place["available"]
-            ];
+    if(isset($validToken) && $validToken === true && isset($currect_location_id)) {
+        // Initialize default values
+        $movie_id = null;
+
+        if (!empty($_GET['view'])) {
+            $view = explode("/", htmlspecialchars($_GET['view'], ENT_QUOTES, 'UTF-8'));
+
+            // Validate and assign movie_id if present
+            if (!empty($view[3]) && ($view[3] === 'null' || validate_integer($view[3]))) {
+                $movie_id = $view[3] === 'null' ? null : (int)$view[3];
+            }
         }
 
-        $id++;
-    }
+        if(!isset($movie_id)) {
+            $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE location_id = ?;");
+            $stmt->bind_param("i", $currect_location_id);
 
-    echo json_encode($data);
+            if(isset($tokenIsAdmin) && $tokenIsAdmin === true) {
+                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data;");
+            } else {
+                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE location_id = ?");
+                $stmt->bind_param("i", $currect_location_id);
+            }
+        } else {
+            if(isset($tokenIsAdmin) && $tokenIsAdmin === true) {
+                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ?;");
+                $stmt->bind_param("i", $movie_id); 
+            } else {
+                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ? AND location_id = ?");
+                $stmt->bind_param("ii", $movie_id, $currect_location_id);
+            }
+        }
+
+        // Execute the statement
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $data = [];
+        $id = 0;
+
+        // Fetch and process results
+        while ($row = $result->fetch_assoc()) {
+            $place_data = json_decode($row["place_data"], true);
+            
+            $data[$id] = [
+                "location_movie_id" => $row["location_movie_id"],
+                "movie_id" => $row["movie_id"],
+                "play_time" => $row["play_time"],
+                "plays_this_week" => isThisWeek($row["play_time"]),
+                "plays_today" => isToday($row["play_time"]),
+                "place_data" => []
+            ];
+
+            if (isset($place_data)) {
+                foreach ($place_data as $place) {
+                    $data[$id]["place_data"][] = [
+                        "place" => $place["place"],
+                        "available" => $place["available"]
+                    ];
+                }
+            }
+
+            $id++;
+        }
+
+        // Output the JSON-encoded data
+        echo json_encode($data);
+    }
 ?>
