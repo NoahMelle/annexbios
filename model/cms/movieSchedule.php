@@ -4,6 +4,8 @@
         'base_url' => $env['BASEURL'],
         'styles' => ['movieSchedule.css'],
         'js' => ['movieSchedule.js'],
+        'url_path' => 'movieSchedule',
+        'schedule_active' => true,
         'skeleton-loader-amt' => range(1, 6),
         'stars' => range(1, 5),
 

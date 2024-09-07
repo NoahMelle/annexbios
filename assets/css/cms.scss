@@ -1,0 +1,43 @@
+.cms-layout {
+    display: flex;
+    min-height: 200vh;
+}
+
+.navbar {
+    flex: 0 0 400px;
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    font-size: 1.1rem;
+    padding: 2rem 0;
+    .logo {
+        width: 90%;
+        margin: 0 auto;
+        display: block;
+        width: fit-content;
+    }
+    .nav-links {
+        .nav-link {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            width: 100%;
+            padding: 1rem 2rem;
+            background-color: transparent;
+            img {
+                height: 30px;
+                
+            }
+            &.active {
+                background-color: #ffffff;
+                border-left: 3px solid #4b4b4b;
+            }
+        }
+    }
+}
+
+.cms-content {
+    min-width: 0;
+    flex: 1;
+}

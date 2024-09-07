@@ -28,15 +28,14 @@ if ($isApiCall) {
         'pragmas' => [Mustache_Engine::PRAGMA_FILTERS],
     ));
 
-    $headertpl = $mustache->loadTemplate('header'); // loads __DIR__.'/views/foo.mustache';
+    $headertpl = $cmsLayout ? $mustache->loadTemplate('cms_header') : $mustache->loadTemplate('header');
     echo $headertpl->render($data);
 
     $tpl = $mustache->loadTemplate($template); // get $template from router
     echo $tpl->render($data);
 
-    $footertpl = $mustache->loadTemplate('footer'); // loads __DIR__.'/views/foo.mustache';
+    $footertpl = $cmsLayout ? $mustache->loadTemplate('cms_footer') : $mustache->loadTemplate('footer');
     echo $footertpl->render($data);
-
 
     $con->close();
 }

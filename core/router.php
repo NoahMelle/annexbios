@@ -11,6 +11,7 @@ $page = '';
 $style = '';
 $js = '';
 $isApiCall = false;
+$cmsLayout = false;
 
 switch ($view[0]) {
     case '':
@@ -65,6 +66,7 @@ switch ($view[0]) {
         if(!isset($_SESSION["user"]) || $_SESSION["user"]["role"] != 1) {
             header("Location: " . $env["BASEURL"] . "log-in");
         } else {
+            $cmsLayout = true;
             switch ($view[1]) {
                 case 'vestigingen':
                     if(isset($view[2]) && $view[2] == 'toevoegen') {

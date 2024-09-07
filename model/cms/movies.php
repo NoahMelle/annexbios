@@ -1,6 +1,10 @@
 <?php $data = [
     'page_title' => "AnnexBios Films",
     'base_url' => $env['BASEURL'],
+    'url_path' => 'movies',
+    'movies_active' => true,
+    'locations_active' => false,
+    'schedule_active' => false,
     'styles' => ['movies.css'],
     "movies" => [],
 ];
