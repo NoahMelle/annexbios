@@ -3,9 +3,10 @@
         'page_title' => "AnnexBios Filmladder",
         'base_url' => $env['BASEURL'],
         'styles' => ['movieSchedule.css'],
-        'js' => ['movieSchedule.js'],
-        'skeleton-loader-amt' => range(1, 6),
+        'js' => ['load_rating.js'],
         'stars' => range(1, 5),
+
+        'currently_playing' => [],
 
         'place_data_count' => 0,
         'current_location_movie_id' => null,
@@ -72,3 +73,38 @@
         }
     }
     
+    $currentTime = date('Y-m-d H:i:s');
+
+    $stmt = $con->prepare("SELECT location_movie_id, movie_id, location_id, place_data, play_time FROM location_movie_data;");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    if($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $place_data = json_decode($row['place_data'], true);
+            $stmt = $con->prepare("SELECT title, image_path, rating FROM movie_data WHERE movie_id = ?;");
+            $stmt->bind_param("i", $row['movie_id']);
+            $stmt->execute();
+            $stmt->bind_result($title, $image_path, $rating);
+            $stmt->fetch();
+            $stmt->close();
+
+            $place_data_count = 0;
+
+            foreach($place_data as $place) {
+                if($place['available'] == true) {
+                    $place_data_count++;
+                }
+            }
+    
+            $data['currently_playing'][] = [
+                'location_movie_id' => $row['location_movie_id'],
+                'movie_id' => $row['movie_id'],
+                'title' => $title,
+                'play_time' => $row['play_time'],
+                'place_data_count' => $place_data_count,
+                'rating' => $rating * 10,
+                'image' => $env['BASEURL'] . $image_path
+            ];
+        }
+    }
