@@ -57,7 +57,8 @@
             "is_adult_movie" => intval($dataResult['adult']),
             "genres" => $dataResult['genres'],
             "directors" => [],
-            "actors" => []
+            "actors" => [],
+            "kijkwijzers" => []
         ];
     
         foreach($dataResult['credits']['crew'] as $crewMember) {
@@ -82,7 +83,18 @@
                 ];
             }
         }
-    
+
+        foreach($json_data['genres'] as $genre) {
+            $stmt = $con->prepare("SELECT kijkwijzer_genre_id FROM kijkwijzer_genre_link WHERE genre_id = ?;");
+            $stmt->bind_param("i", $genre['id']);
+            $stmt->bind_result($kijkwijzer_genre_id);
+            $stmt->execute();
+            $stmt->fetch();
+            $stmt->close();
+
+            $json_data['kijkwijzers'][] = $kijkwijzer_genre_id;
+        }
+        
         return $json_data;
     }
         
@@ -113,7 +125,7 @@
     
         // Define the path to save the image
         $saveTo = '../../assets/img/movies/' . $data['imdb_id'] . '.jpg';
-        $dbPath = $env['BASEURL'] .'assets/img/movies/' . $data['imdb_id'] . '.jpg';
+        $dbPath = 'assets/img/movies/' . $data['imdb_id'] . '.jpg';
     
         // Check if the directory exists, and create it if it doesn't
         $directory = dirname($saveTo);
@@ -136,6 +148,18 @@
                 if(empty($db_movie_id)) {
                     return json_encode(array('success' => false, 'error_message' => 'Failed to insert movie data into the database. Error: ' . $stmt->error, 'error_code' => 500));
                     exit();
+                }
+                
+                foreach($data['kijkwijzers'] as $kijkwijzer) {
+                    $stmt = $con->prepare("INSERT INTO kijkwijzer_movie_link (movie_id, kijkwijzer_id) VALUES (?, ?);");
+                    $stmt->bind_param("ii", $db_movie_id, $kijkwijzer);
+                    if($stmt->execute()) {
+                        $stmt->close();
+                    } else {
+                        $stmt->close();
+                        return json_encode(array('success' => false, 'error_message' => 'Failed to insert kijkwijzer link data into the database. Error: ' . $stmt->error, 'error_code' => 500));
+                        exit();
+                    }
                 }
                 
                 foreach($data['directors'] as $director) {
@@ -161,7 +185,7 @@
                     if($director_id !== $director['director_id']) {
                         // Define the path to save the image
                         $saveTo = '../../assets/img/directors/' . $director['director_id'] . '.jpg';
-                        $dbPath = $env['BASEURL'] .'assets/img/directors/' . $director['director_id'] . '.jpg';
+                        $dbPath = 'assets/img/directors/' . $director['director_id'] . '.jpg';
                     
                         // Check if the directory exists, and create it if it doesn't
                         $directory = dirname($saveTo);
@@ -225,7 +249,7 @@
                     if($actor_id !== $actor['actor_id']) {
                         // Define the path to save the image
                         $saveTo = '../../assets/img/actors/' . $actor['actor_id'] . '.jpg';
-                        $dbPath = $env['BASEURL'] .'assets/img/actors/' . $actor['actor_id'] . '.jpg';
+                        $dbPath = 'assets/img/actors/' . $actor['actor_id'] . '.jpg';
 
                         // Check if the directory exists, and create it if it doesn't
                         $directory = dirname($saveTo);
