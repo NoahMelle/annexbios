@@ -1,0 +1,15 @@
+<main class="">
+  <div class="hero">
+    <div class="hero-text-container">
+      <h2>FILMS</h2>
+      <p class="hero-text">Alle films in de AnnexBios Database</p>
+    </div>
+  </div>
+  <div class="movies_add">
+    <form action="{{ base_url }}cms/films/verwijder/{{ current_movie_id }}" method="post">
+      <label>Weet je het zeker? Alle spelende films met deze film worden verwijderd...</label>
+      <input type="hidden" name="current_movie_id" value="{{ current_movie_id }}">
+      <input class="red" type="submit" value="verwijderen">
+    </form>
+  </div>
+</main>

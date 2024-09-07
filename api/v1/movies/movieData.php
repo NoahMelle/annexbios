@@ -71,7 +71,7 @@
                 ];
             }
 
-            $stmt = $con->prepare("SELECT name, age, symbols FROM kijkwijzer_genre_link WHERE kijkwijzer_genre_id IN (SELECT kijkwijzer_id FROM kijkwijzer_movie_link WHERE movie_id = ?);");
+            $stmt = $con->prepare("SELECT name, age, symbols FROM kijkwijzer_genre_link WHERE kijkwijzer_genre_id IN (SELECT kijkwijzer_id FROM movie_kijkwijzer_link WHERE movie_id = ?);");
             $stmt->bind_param("i", $row["movie_id"]);
             $stmt->execute();
             $resultViewingGuide = $stmt->get_result();
@@ -93,7 +93,7 @@
                 if (is_array($rowSymbols)) {
                     foreach ($rowSymbols as $symbol) {
                         // Ensure symbol is an array and has necessary keys
-                        if (is_array($symbol) && isset($symbol["name"]) && isset($symbol["image"])) {
+                        if (is_array($symbol) && isset($symbol["name"]) && isset($symbol["image"]) && !validate_integer($symbol["name"])) {
                             // Check if the symbol is already in the array
                             $symbolExists = false;
                             foreach ($symbols as $existingSymbol) {
@@ -115,6 +115,10 @@
                 }
             }
             
+            $symbols[] = [
+                "name" => $age . "+",
+                "image" => $env["BASEURL"] . "assets/img/viewing_guides/" . $age . ".png"
+            ];
 
             $viewing_guides[] = [
                 "age" => $age . "+",

@@ -121,22 +121,20 @@ switch ($view[0]) {
                             if(isset($_POST["location_id"]) && !empty($_POST["location_id"]) && validate_integer($_POST["location_id"])) {
                                 $stmt = $con->prepare("DELETE FROM location_movie_data WHERE location_id = ?;");
                                 $stmt->bind_param("i", $_POST["location_id"]);
-                                if($stmt->execute()) {
-                                    $stmt->close();
+                                $stmt->execute();
+                                $stmt->close();
 
-                                    $stmt = $con->prepare("DELETE FROM location_tokens WHERE location_id = ?;");
-                                    $stmt->bind_param("i", $_POST["location_id"]);
-                                    if($stmt->execute()) {
-                                        $stmt->close();
+                                $stmt = $con->prepare("DELETE FROM location_tokens WHERE location_id = ?;");
+                                $stmt->bind_param("i", $_POST["location_id"]);
+                                $stmt->execute();
+                                $stmt->close();
 
-                                        $stmt = $con->prepare("DELETE FROM location_data WHERE location_id = ?;");
-                                        $stmt->bind_param("i", $_POST["location_id"]);
-                                        if($stmt->execute()) {
-                                            $stmt->close();
-                                            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
-                                        }
-                                    }
-                                }
+                                $stmt = $con->prepare("DELETE FROM location_data WHERE location_id = ?;");
+                                $stmt->bind_param("i", $_POST["location_id"]);
+                                $stmt->execute();
+                                $stmt->close();
+                                    
+                                header("Location: " . $env["BASEURL"] . "cms/vestigingen");
                             }
                         } else {
                             header("Location: " . $env["BASEURL"] . "cms/vestigingen");
@@ -236,18 +234,39 @@ switch ($view[0]) {
                             }
                         } else if(isset($view[2]) && $view[2] == 'verwijder') {
                             if(isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
-                                $template = "cms/deleteMovieSchedule";
+                                $template = "cms/deleteMovies";
     
-                                if(isset($_POST["current_location_id"]) && !empty($_POST["current_location_id"]) && validate_integer($_POST["current_location_id"])) {                            
-                                    $stmt = $con->prepare("DELETE FROM location_movie_data WHERE location_movie_id = ?;");
-                                    $stmt->bind_param("i", $_POST["current_location_id"]);
-                                    if($stmt->execute()) {
-                                        $stmt->close();
-                                        header("Location: " . $env["BASEURL"] . "cms/filmladder");
-                                    }
+                                if(isset($_POST["current_movie_id"]) && !empty($_POST["current_movie_id"]) && validate_integer($_POST["current_movie_id"])) {                            
+                                    $stmt = $con->prepare("DELETE FROM movie_genre_link WHERE movie_id = ?;");
+                                    $stmt->bind_param("i", $_POST["current_movie_id"]);
+                                    $stmt->execute();
+                                    $stmt->close();
+
+                                    $stmt = $con->prepare("DELETE FROM movie_director_link WHERE movie_id = ?;");
+                                    $stmt->bind_param("i", $_POST["current_movie_id"]);
+                                    $stmt->execute();
+                                    $stmt->close();
+
+                                    $stmt = $con->prepare("DELETE FROM movie_actor_link WHERE movie_id = ?;");
+                                    $stmt->bind_param("i", $_POST["current_movie_id"]);
+                                    $stmt->execute();
+                                    $stmt->close();
+
+                                    $stmt = $con->prepare("DELETE FROM movie_kijkwijzer_link WHERE movie_id = ?;");
+                                    $stmt->bind_param("i", $_POST["current_movie_id"]);
+                                    $stmt->execute();
+                                    $stmt->close();
+
+                                    $stmt = $con->prepare("DELETE FROM movie_data WHERE movie_id = ?;");
+                                    $stmt->bind_param("i", $_POST["current_movie_id"]);
+                                    $stmt->execute();
+                                    $stmt->close();
+
+                                    header("Location: " . $env["BASEURL"] . "cms/films");
+
                                 }
                             } else {
-                                header("Location: " . $env["BASEURL"] . "cms/filmladder");
+                                header("Location: " . $env["BASEURL"] . "cms/films");
                             }
                         } else {
                             $template = "cms/movies";

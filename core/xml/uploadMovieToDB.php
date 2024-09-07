@@ -151,7 +151,7 @@
                 }
                 
                 foreach($data['kijkwijzers'] as $kijkwijzer) {
-                    $stmt = $con->prepare("INSERT INTO kijkwijzer_movie_link (movie_id, kijkwijzer_id) VALUES (?, ?);");
+                    $stmt = $con->prepare("INSERT INTO movie_kijkwijzer_link (movie_id, kijkwijzer_id) VALUES (?, ?);");
                     $stmt->bind_param("ii", $db_movie_id, $kijkwijzer);
                     if($stmt->execute()) {
                         $stmt->close();
