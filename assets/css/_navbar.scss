@@ -13,6 +13,7 @@ $bar-spacing: calc(#{$hamburger-width} / 3.5);
 }
 
 .hamburger-button {
+  z-index: 1001;
   position: absolute;
   top: 50%;
   left: 50%;
