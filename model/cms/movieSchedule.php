@@ -4,6 +4,7 @@
         'base_url' => $env['BASEURL'],
         'styles' => ['movieSchedule.css'],
         'js' => ['load_rating.js'],
+        'schedule_active' => true,
         'stars' => range(1, 5),
 
         'currently_playing' => [],
