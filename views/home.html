@@ -10,11 +10,11 @@
         recusandae!
       </p>
     </div>
-    <a href="/vestigingen" class="hero-view-locations">
+    <a href="#locations" class="hero-view-locations">
       Bekijk Onze Vestigingen
     </a>
   </div>
-  <div class="locations">
+  <div class="locations scroll-anchor" id="locations">
     {{# locations}}
     <div class="location">
       <img class="location-image" src="{{ base_url }}assets/img/locations/{{ image_path }}"
@@ -37,7 +37,7 @@
       </div>
     </div>
   </div>
-  <div class="recommended-movies-container">
+  <div class="recommended-movies-container scroll-anchor" id="recommended-movies">
     <h2>AANBEVOLEN FILMS</h2>
     <div class="recommended-movies">
       {{# skeleton-loader-amt}}

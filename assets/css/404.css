@@ -1,0 +1,30 @@
+.notfound-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 600px;
+  color: white;
+}
+.notfound-container h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+.notfound-container .homepage-link {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  display: block;
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 0.2rem;
+  transition: background-color 0.2s;
+}
+.notfound-container .homepage-link:hover {
+  background-color: #f2f2f2;
+}
+
+body {
+  background: rgb(15, 15, 15);
+}/*# sourceMappingURL=404.css.map */

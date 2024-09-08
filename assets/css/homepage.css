@@ -357,6 +357,7 @@ main {
   width: 100%;
   aspect-ratio: 16/4;
   display: flex;
+  min-height: 0;
 }
 .news-container .news .news-item .news-image .news-img {
   width: 100%;

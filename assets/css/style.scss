@@ -26,6 +26,15 @@ body {
   background-size: cover;
   width: 100%;
   font-family: "Lato", sans-serif;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content 1fr min-content;
+}
+
+.scroll-anchor {
+  padding-top: calc($navbarHeight + $lowerNavbarHeight);
+  margin-top: -($navbarHeight + $lowerNavbarHeight);
 }
 
 .navbar {
@@ -37,6 +46,17 @@ body {
   background-color: #666;
   position: sticky;
   z-index: 10;
+  .logo-link {
+    display: block;
+    height: fit-content;
+    .navbar-logo {
+      max-width: 225px;
+      height: 90px;
+      width: 100%;
+      object-fit: contain;
+      display: block;
+    }
+  }
   .mobile-top {
     display: flex;
     justify-content: space-between;
@@ -56,12 +76,6 @@ body {
       max-width: 1600px;
       gap: 1.5rem;
       height: 100%;
-      .navbar-logo {
-        max-width: 225px;
-        height: 90px;
-        width: 100%;
-        object-fit: contain;
-      }
       .nav-links {
         display: flex;
         justify-content: flex-end;
@@ -105,7 +119,7 @@ body {
     background-color: rgb(168, 168, 168);
   }
   .view-tickets {
-    font-size: .8rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
     background-color: white;
     color: black;
@@ -113,7 +127,7 @@ body {
     align-items: center;
     width: fit-content;
     height: 30px;
-    padding: 0 .7rem;
+    padding: 0 0.7rem;
   }
 }
 
