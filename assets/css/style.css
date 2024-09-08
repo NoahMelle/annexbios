@@ -266,10 +266,12 @@ body {
   text-align: center;
   gap: 1.4rem;
 }
-.navbar .header-bar-container .header-bar-content .nav-links h3 {
+.navbar .header-bar-container .header-bar-content .nav-links .nav-link {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 .navbar-lower {

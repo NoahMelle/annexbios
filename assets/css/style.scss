@@ -81,10 +81,12 @@ body {
         justify-content: flex-end;
         text-align: center;
         gap: 1.4rem;
-        h3 {
+        .nav-link {
           display: flex;
           justify-content: center;
           align-items: center;
+          font-weight: 700;
+          font-size: 1.1rem;
         }
       }
     }
