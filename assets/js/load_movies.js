@@ -1,8 +1,14 @@
 async function loadRecommendedMovies() {
-  const dummyDataEndpoint = "./dummy_data/movie-data_dummy.json";
+  const apiEndpoint = "./api/v1/movieData";
 
   try {
-    const response = await fetch(dummyDataEndpoint);
+    const response = await fetch(apiEndpoint, {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${apiToken}`,
+        "Content-Type": "application/json",
+      },
+    });
     if (!response.ok) {
       throw new Error(`Failed to fetch data: ${response.statusText}`);
     }
@@ -13,18 +19,16 @@ async function loadRecommendedMovies() {
 
     recommendedMovies.forEach((recommendedMovie, index) => {
       if (index < movies.length) {
-        const {
-          title,
-          image,
-          release_date,
-          description,
-          rating
-        } = movies[index];
+        const { title, image, release_date, description, rating } =
+          movies[index];
 
         const movieTitle = recommendedMovie.querySelector(".rm-title");
-        const movieImageContainer = recommendedMovie.querySelector(".rm-img-container");
-        const movieReleaseDate = recommendedMovie.querySelector(".rm-release-date");
-        const movieDescription = recommendedMovie.querySelector(".rm-description");
+        const movieImageContainer =
+          recommendedMovie.querySelector(".rm-img-container");
+        const movieReleaseDate =
+          recommendedMovie.querySelector(".rm-release-date");
+        const movieDescription =
+          recommendedMovie.querySelector(".rm-description");
         const filledStars = recommendedMovie.querySelector(".stars.filled");
 
         // Set movie details
