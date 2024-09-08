@@ -41,6 +41,16 @@
         $data = [];
         $id = 0;
 
+        if($result->num_rows === 0) {
+            $data = [
+                "error" => "No data found"
+            ];
+
+            // Output the JSON-encoded data
+            echo json_encode($data);
+            exit();
+        }
+
         // Fetch and process results
         while ($row = $result->fetch_assoc()) {
             $place_data = json_decode($row["place_data"], true);

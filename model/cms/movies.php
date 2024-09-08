@@ -6,7 +6,9 @@
     'locations_active' => false,
     'schedule_active' => false,
     'styles' => ['movies.css'],
+    'js' => ['upload_movie_to_db.js'],
     "movies" => [],
+    "current_movie_id" => null
 ];
 
 $stmt = $con->prepare("SELECT movie_id, imdb_id, title  FROM movie_data;");
@@ -18,4 +20,8 @@ while ($row = $result->fetch_assoc()) {
         "imdb_id" => $row["imdb_id"],
         "title" => $row["title"]
     ];
+}
+
+if(isset($view[2]) && $view[2] == 'verwijder' && isset($view[3]) && validate_integer($view[3])) {
+    $data['current_movie_id'] = $view[3];
 }
