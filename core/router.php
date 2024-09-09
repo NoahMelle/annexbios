@@ -69,6 +69,10 @@ switch ($view[0]) {
             $cmsLayout = true;
             if (!isset($view[1])) $view[1] = '';
             switch ($view[1]) {
+                case '':
+                    $template = "cms/cms";
+                    $model = "cms/cms";
+                    break;
                 case 'vestigingen':
                     if(isset($view[2]) && $view[2] == 'toevoegen') {
                         $template = "cms/addLocation";
@@ -279,8 +283,8 @@ switch ($view[0]) {
                         $model = "cms/movies";                
                         break;
                 default:
-                    $template = "cms/cms";
-                    $model = "cms/cms";
+                    $template = "404";
+                    $model = "404";
                     break;
                 }
             }

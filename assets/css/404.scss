@@ -6,9 +6,12 @@
   gap: 1rem;
   min-height: 600px;
   color: white;
+  height: 100%;
   h2 {
     font-size: 1.5rem;
     font-weight: 400;
+    max-width: 500px;
+    text-align: center;
   }
   .homepage-link {
     background-color: white;

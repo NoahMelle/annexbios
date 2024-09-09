@@ -45,7 +45,7 @@
                 <select name="location" id="location-selector" class="location-selector" aria-label="Selecteer een vestiging">
                     <option value="#" disabled selected hidden>Kies je vestiging</option>
                     {{# locations}}
-                    <option value="{{ url }}">{{ city }}</option>
+                    <option value="{{ website_link }}">{{ city }}</option>
                     {{/ locations}}
                 </select>
                 <a class="view-tickets" id="view-tickets" href="#" target="_blank">
