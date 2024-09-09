@@ -30,45 +30,57 @@
       </table>
     </div>
   </div>
-  <div id="new-user-form">
+  <div id="new-user-form-container">
     <h2>Gebruiker Toevoegen</h2>
-    <form action="" method="post">
-      <input
+    <form action="" method="post" class="new-user-form">
+      <div>
+        <input
         type="text"
         name="username"
         id="username"
         placeholder="Gebruikersnaam"
+        autocomplete="off"
       />
-      <div class="password-input-container">
-        <input
-          type="text"
-          name="password"
-          id="password"
-          placeholder="Wachtwoord"
-        />
-        <button
-          onclick="generateRandomPassword(this)"
-          aria-label="Generate Random Password"
-          class="random-password-button"
-          type="button"
-        >
-          <img src="{{ base_url }}assets/icons/dice.svg" alt="Dice Icon" />
-        </button>
+      <p id="username-error" class="error"></p>
+      </div>
+      <div>
+        <div class="password-input-container">
+          <input
+            type="text"
+            name="password"
+            id="password"
+            placeholder="Wachtwoord"
+          />
+          <button
+            onclick="generateRandomPassword(this)"
+            aria-label="Generate Random Password"
+            class="random-password-button"
+            type="button"
+          >
+            <img src="{{ base_url }}assets/icons/dice.svg" alt="Dice Icon" />
+          </button>
+        </div>
+        <p id="password-error" class="error"></p>
       </div>
       <div class="permissions-wrapper">
         <div>
             <h3>Permissies</h3>
-            <small><em>Selecteer de pagina's waar de gebruiker toegang tot moet hebben.</em></small>
+            <small><em>Selecteer de pagina's waar de medewerker toegang tot moet hebben.</em></small>
         </div>
-        <div class="permissions-container">
-          {{# available_perms}}
-          <label class="permission-label" for="{{ . }}">
-            <input type="checkbox" name="{{ . }}" id="{{ . }}" class="permission-checkbox" />
-            {{ . }}
-          </label>
-          {{/ available_perms}}
+        <div>
+          <div class="permissions-container">
+            {{# available_perms}}
+            <label class="permission-label" for="{{ . }}">
+              <input type="checkbox" name="{{ . }}" id="{{ . }}" class="permission-checkbox" />
+              {{ . }}
+            </label>
+            {{/ available_perms}}
+          </div>
+          <p class="error" id="permissions-error"></p>
         </div>
       </div>
+      <button type="submit" class="submit-btn" id="add-user-submit">
+        Toevoegen
     </form>
   </div>
 </main>
