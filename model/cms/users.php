@@ -73,7 +73,7 @@
                     $data['permissions'] = $permissions;
                 } else {
                     try {
-                        $stmt = $con->prepare("INSERT INTO user_data (username, password) VALUES (?, ?);");
+                        $stmt = $con->prepare("INSERT INTO user_data (username, password, cms_access) VALUES (?, ?, true);");
                         $stmt->bind_param("ss", $username, $password);
                         $stmt->execute();
                         $new_user_id = $con->insert_id;
