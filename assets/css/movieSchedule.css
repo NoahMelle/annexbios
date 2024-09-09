@@ -77,7 +77,7 @@ main {
 .playing-movies {
   display: flex;
   gap: 1rem;
-  height: 680px;
+  height: 690px;
   scroll-snap-type: x mandatory;
   max-width: 100%;
   overflow-x: auto;
@@ -148,15 +148,21 @@ main {
 .playing-movies .playing-movie .rm-details .rm-places-available {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  border-radius: 3px;
+}
+.playing-movies .playing-movie .rm-details .rm-play-time p,
+.playing-movies .playing-movie .rm-details .rm-places-available p {
+  padding: 5px;
 }
 .playing-movies .playing-movie .rm-details .rm-play-time span,
 .playing-movies .playing-movie .rm-details .rm-places-available span {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5px;
-  border: 1px solid black;
+  width: 100%;
   padding: 5px;
+  border: 1px solid black;
   border-radius: 3px;
 }
 .playing-movies .playing-movie .rm-details .rm-rating {

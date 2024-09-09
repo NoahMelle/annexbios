@@ -39,8 +39,12 @@
               {{/ stars}}
             </div>
           </div>
-          <div class="rm-play-time">speelt op: <span>{{ play_time }}</span></div>
-          <div class="rm-places-available">beschikbare plekken: <span>{{ place_data_count }}</span></div>
+          <div class="rm-play-time">
+            <p>speelt op</p><span>{{ play_time }}</span>
+          </div>
+          <div class="rm-places-available">
+            <p>beschikbare plekken</p><span>{{ place_data_count }}</span>
+          </div>
         </div>
         <div class="rm-cms">
           <a href="{{ base_url }}cms/filmladder/wijzig/{{ location_movie_id }}" class="rm-edit">BEWERK</a>
