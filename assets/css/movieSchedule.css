@@ -290,12 +290,16 @@ main {
   margin: 10px 0;
   border-radius: 3px;
 }
-.movie_schedule_add form input:hover,
-.movie_schedule_add form select:hover {
-  background-color: black;
-  color: white;
+.movie_schedule_add form input:focus,
+.movie_schedule_add form select:focus {
+  outline: none;
 }
 .movie_schedule_add form input[type=submit],
 .movie_schedule_add form select[type=submit] {
   cursor: pointer;
+}
+.movie_schedule_add form input[type=submit]:hover,
+.movie_schedule_add form select[type=submit]:hover {
+  background-color: black;
+  color: white;
 }/*# sourceMappingURL=movieSchedule.css.map */

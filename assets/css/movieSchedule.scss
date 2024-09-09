@@ -295,13 +295,17 @@ main {
       margin: 10px 0;
       border-radius: 3px;
 
-      &:hover {
-        background-color: black;
-        color: white;
+      &:focus {
+        outline: none;
       }
 
       &[type="submit"] {
         cursor: pointer;
+
+        &:hover {
+          background-color: black;
+          color: white;
+        }
       }
     }
   }
