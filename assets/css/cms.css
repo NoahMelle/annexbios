@@ -19,7 +19,7 @@
 }
 .cms-layout {
   display: flex;
-  min-height: 200vh;
+  min-height: 100vh;
 }
 
 .navbar {
@@ -141,4 +141,7 @@
   .navbar.active {
     transform: translateX(0);
   }
+}
+.footer.cms {
+  margin-top: 0;
 }/*# sourceMappingURL=cms.css.map */
