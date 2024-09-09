@@ -101,7 +101,7 @@ function generate_token() {
 
 function generatePlaceData($amount) {
     $place_data = [];
-    for($i = 0; $i < $amount; $i++) {
+    for($i = 1; $i < $amount + 1; $i++) {
         $place_data[] = [
             'place' => $i,
             'available' => true

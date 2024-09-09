@@ -17,10 +17,18 @@
             if(isset($view[4]) && validate_integer($view[4])) {
                 $place_id = $view[4];
             }
+
+            if(isset($view[5]) && !empty($view[5])) {
+                $name = $view[5];
+            }
+
+            if(isset($view[6]) && !empty($view[6])) {
+                $email = $view[6];
+            }
         }
         
         // Check if required GET parameters are set and valid
-        if (isset($movie_id) && isset($place_id)) {
+        if (isset($movie_id) && isset($place_id) && isset($name) && isset($email)) {
             // Validate the inputs
             if (validate_integer($currect_location_id) && validate_integer($movie_id) && validate_integer($place_id)) {
                 // Proceed if all inputs are valid integers
@@ -35,7 +43,7 @@
                     $place_data = json_decode($place_data, true);
         
                     $place_exist = false;
-                    foreach ($place_data["places"] as $place) {
+                    foreach ($place_data as $place) {
                         if($place["place"] == $place_id) {
                             $place_exist = true;
                         }
@@ -45,33 +53,30 @@
                         $response["error"] = true;
                         $response["message"][] = "Place does not exist";
                     } else {
-                        if ($place_data["available"] === false) {
-                            $response["error"] = true;
-                            $response["message"][] = "No places available";
-                        } else {
-                            foreach ($place_data["places"] as &$place) {  // Loop by reference
-                                if ($place["place"] == $place_id) {
-                                    if ($place["available"] == true) {
-                                        $place["available"] = false;    
-                                        $new_place_data = json_encode($place_data);
-        
-                                        $stmt = $con->prepare("UPDATE location_movie_data SET place_data = ? WHERE location_movie_id = ? AND location_id = ?");
-                                        $stmt->bind_param("sii", $new_place_data, $movie_id, $currect_location_id);
-                                        if ($stmt->execute()) {
-                                            $response["message"][] = "Place reserved successfully";
-                                        } else {
-                                            $response["error"] = true;
-                                            $response["message"][] = "Failed to reserve place";
-                                        }
-                                        $stmt->close();
+                        foreach ($place_data as &$place) {  // Loop by reference
+                            if ($place["place"] == $place_id) {
+                                if ($place["available"] == true) {
+                                    $place["available"] = false;   
+                                    $place["name"] = $name;
+                                    $place["email"] = $email; 
+                                    $new_place_data = json_encode($place_data);
+    
+                                    $stmt = $con->prepare("UPDATE location_movie_data SET place_data = ? WHERE location_movie_id = ? AND location_id = ?");
+                                    $stmt->bind_param("sii", $new_place_data, $movie_id, $currect_location_id);
+                                    if ($stmt->execute()) {
+                                        $response["message"][] = "Place reserved successfully";
                                     } else {
                                         $response["error"] = true;
-                                        $response["message"][] = "Place is already reserved";
+                                        $response["message"][] = "Failed to reserve place";
                                     }
+                                    $stmt->close();
+                                } else {
+                                    $response["error"] = true;
+                                    $response["message"][] = "Place is already reserved";
                                 }
                             }
-                            unset($place);  // Unset reference after loop
                         }
+                        unset($place);  // Unset reference after loop
                     }
                 } else {
                     $response["error"] = true;
