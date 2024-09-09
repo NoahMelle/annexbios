@@ -18,6 +18,8 @@
         'locations' => []
     ];
 
+    include "./model/cms/cms_global.php";
+
     if(isset($view[2]) && $view[2] == 'wijzig' && isset($view[3]) && validate_integer($view[3]) || isset($view[2]) && $view[2] == 'verwijder' && isset($view[3]) && validate_integer($view[3])) {
         $stmt = $con->prepare("SELECT location_movie_id, movie_id, location_id, place_data, play_time FROM location_movie_data WHERE location_movie_id = ?;");
         $stmt->bind_param("i", $view[3]);

@@ -24,26 +24,13 @@
                 <img src="{{base_url}}assets/img/logo/logo_hoofd.png" alt="">
             </a>
             <div class="nav-links">
-                <a href="{{ base_url }}cms" class="nav-link {{# cms_active }}active{{/ cms_active }}">
-                    <img src="{{ base_url }}assets/icons/home.svg" alt="">
-                    Dashboard
+                {{# header_pages}}
+                <a href="{{ base_url }}cms/{{ url }}" class="nav-link {{# active }}active{{/ active }}">
+                    <img src="{{ base_url }}assets/icons/{{ img_url }}" alt="">
+                    {{title}}
                 </a>
-                <a href="{{ base_url }}cms/films" class="nav-link {{# movies_active }}active{{/ movies_active }}">
-                    <img src="{{ base_url }}assets/icons/movie.svg" alt="">
-                    Filmgegevens
-                </a>
-                <a href="{{ base_url }}cms/filmladder" class="nav-link {{# schedule_active }}active{{/ schedule_active }}">
-                    <img src="{{ base_url }}assets/icons/calendar.svg" alt="">
-                    Filmladder
-                </a>
-                <a href="{{ base_url }}cms/vestigingen" class="nav-link {{# locations_active }}active{{/ locations_active }}">
-                    <img src="{{ base_url }}assets/icons/location.svg" alt="">
-                    Vestigingen
-                </a>
-                <a href="{{ base_url }}cms/gebruikers" class="nav-link {{# users_active }}active{{/ users_active }}">
-                    <img src="{{ base_url }}assets/icons/person.svg" alt="">
-                    Gebruikers
-                </a>
+                {{/ header_pages}}
+                
             </div>
         </nav>
         <div class="menu-container not-active">

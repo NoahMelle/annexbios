@@ -1,15 +1,5 @@
 @import "./variables.scss";
 
-main {
-  width: 90%;
-  margin: 0 auto;
-  max-width: 1400px;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding: 4rem 0;
-}
-
 .hero {
   width: 100%;
   min-height: 280px;

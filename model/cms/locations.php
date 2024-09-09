@@ -1,7 +1,7 @@
 <?php 
     $data = [
         'page_title' => "AnnexBios Vestigingen",
-        'locations_active' => true,
+        'vestigingen_active' => true,
         'base_url' => $env['BASEURL'],
         'styles' => ['locations.css'],
         'locations' => [],
@@ -14,6 +14,8 @@
         'address' => null,
         'postal_code' => null
     ];
+
+    include "./model/cms/cms_global.php";
 
     $stmt = $con->prepare("SELECT function_data.name AS function_name, location_data.location_id, location_data.city, location_data.address, location_data.postal_code, location_data.website_link FROM location_data JOIN function_data ON location_data.function = function_data.function_id;");
     $stmt->execute();

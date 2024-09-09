@@ -5,4 +5,6 @@
         'styles' => ['locations.css'],
         'cms_active' => true,
     ];
+
+    include "./model/cms/cms_global.php";
 ?>
