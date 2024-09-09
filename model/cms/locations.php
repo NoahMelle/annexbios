@@ -1,14 +1,11 @@
 <?php 
     $data = [
         'page_title' => "AnnexBios Vestigingen",
-        'locations_active' => [],
-        'movies_active' => [],
-        'schedule_active' => [],
+        'locations_active' => true,
         'base_url' => $env['BASEURL'],
         'styles' => ['locations.css'],
         'locations' => [],
         'functions' => [],
-
         'current_location_id' => null,
         'current_website_link' => null,
         'current_function' => [],

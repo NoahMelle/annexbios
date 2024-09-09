@@ -2,7 +2,7 @@
 
 .cms-layout {
   display: flex;
-  min-height: 200vh;
+  min-height: 100vh;
 }
 
 .navbar {
@@ -131,4 +131,8 @@ $bar-spacing: calc(#{$hamburger-width} / 3.5);
       transform: translateX(0);
     }
   }
+}
+
+.footer.cms {
+  margin-top: 0;
 }
