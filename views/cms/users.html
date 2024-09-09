@@ -32,7 +32,7 @@
   </div>
   <div id="new-user-form-container">
     <h2>Gebruiker Toevoegen</h2>
-    <form action="" method="post" class="new-user-form">
+    <form action="{{ current_url }}" method="post" class="new-user-form">
       <div>
         <input
         type="text"
@@ -70,17 +70,18 @@
         <div>
           <div class="permissions-container">
             {{# available_perms}}
-            <label class="permission-label" for="{{ . }}">
-              <input type="checkbox" name="{{ . }}" id="{{ . }}" class="permission-checkbox" />
-              {{ . }}
+            <label class="permission-label" for="{{ id }}">
+              <input type="checkbox" name="permissions[]" id="{{ id }}" class="permission-checkbox" value="{{ id }}" />
+              {{ title }}
             </label>
             {{/ available_perms}}
           </div>
           <p class="error" id="permissions-error"></p>
         </div>
       </div>
-      <button type="submit" class="submit-btn" id="add-user-submit">
+      <button type="submit" class="submit-btn" id="add-user-submit" name="add-user-submit">
         Toevoegen
+      </button>
     </form>
   </div>
 </main>

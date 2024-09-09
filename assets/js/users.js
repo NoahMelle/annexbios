@@ -4,77 +4,87 @@ const passwordInput = document.getElementById("password");
 const addUserButton = document.getElementById("add-user-submit");
 const permissionCheckboxes = document.querySelectorAll(".permission-checkbox");
 const permissionsError = document.getElementById("permissions-error");
+const usernameError = document.getElementById("username-error");
+const passwordError = document.getElementById("password-error");
+
 let containsErrors = true;
 
-const onPasswordChange = (event) => {
-  const password = event.target.value;
-  const passwordError = document.getElementById("password-error");
-  if (validatePassword(password)) {
-    // if password valid
-    passwordError.textContent = "";
-    checkFullValidation();
-  }
-  else if (password.length === 0) {
-    // if password is empty, still not valid
-    containsErrors = true;
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
+const handlePasswordValidation = (password) => {
+  if (!password.length || validatePassword(password)) {
     passwordError.textContent = "";
   } else {
-    // if password invalid
     containsErrors = true;
     passwordError.textContent =
       "Wachtwoord moet minimaal 8 karakters lang zijn en minimaal 1 letter en 1 cijfer bevatten.";
   }
-}
+};
 
-const onCheckboxChange = (event) => {
-  const checkboxesChecked = Array.from(permissionCheckboxes).some(
-    (checkbox) => checkbox.checked
-  );
-  if (checkboxesChecked) {
-    permissionsError.textContent = "";
-    checkFullValidation();
-  } else {
-    permissionsError.textContent = "Selecteer minimaal één permissie.";
-    containsErrors = true;
-  }
-}
-
-const onUsernameChange = (event) => {
-  const username = event.target.value;
-  const usernameError = document.getElementById("username-error");
-  if (validateUsername(username)) {
-    // if username valid
-    usernameError.textContent = "";
-    checkFullValidation();
-  } else if (username.length === 0) {
-    // if username is empty, still not valid
-    containsErrors = true;
+const handleUsernameValidation = (username) => {
+  if (!username.length || validateUsername(username)) {
     usernameError.textContent = "";
   } else {
-    // if username invalid
     containsErrors = true;
     usernameError.textContent =
-    "Gebruikersnaam moet tussen de 3 en 255 karakters lang zijn en mag alleen letters, cijfers en underscores bevatten.";
+      "Gebruikersnaam moet tussen de 3 en 255 karakters lang zijn en mag alleen letters, cijfers en underscores bevatten.";
   }
 };
 
+const handlePermissionValidation = () => {
+  const isChecked = getCheckboxesChecked().length > 0;
+  permissionsError.textContent = isChecked
+    ? ""
+    : "Selecteer minimaal één permissie.";
+};
+
 function checkFullValidation() {
-  if (validateUsername(usernameInput.value) && validatePassword(passwordInput.value)) {
-    containsErrors = false;
-  } else {
-    containsErrors = true;
-  }
-  addUserButton.disabled = containsErrors
-  console.log(containsErrors);
+  containsErrors = !(
+    validateUsername(usernameInput.value) &&
+    validatePassword(passwordInput.value) &&
+    getCheckboxesChecked().length > 0
+  );
+  addUserButton.disabled = containsErrors;
 }
 
-passwordInput.addEventListener("input", onPasswordChange);
-usernameInput.addEventListener("input", onUsernameChange);
+const getCheckboxesChecked = () =>
+  Array.from(permissionCheckboxes)
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.value);
+
+// Add debounced event listeners
+passwordInput.addEventListener(
+  "input",
+  debounce((e) => {
+    handlePasswordValidation(e.target.value);
+    checkFullValidation();
+  }, 300)
+);
+
+usernameInput.addEventListener(
+  "input",
+  debounce((e) => {
+    handleUsernameValidation(e.target.value);
+    checkFullValidation();
+  }, 300)
+);
+
 permissionCheckboxes.forEach((checkbox) => {
-  checkbox.addEventListener("change", onCheckboxChange);
+  checkbox.addEventListener("change", () => {
+    handlePermissionValidation();
+    checkFullValidation();
+  });
 });
+
 checkFullValidation();
 
+// Password generation
 function generateRandomPassword(element) {
   const randomPassword = generateCustomPassword(32);
   element.parentNode.querySelector('input[name="password"]').value =
@@ -82,29 +92,20 @@ function generateRandomPassword(element) {
 }
 
 function generateCustomPassword(length) {
-  const getRandomChar = () => {
-    const charSets = [
-      [48, 57], // Numbers (0-9)
-      [65, 90], // Uppercase letters (A-Z)
-      [97, 122], // Lowercase letters (a-z)
-      [33, 47], // Special characters (!"#$%&'()*+,-./)
-      // [91, 96],  // Special characters ([\]^_`)
-    ];
-
-    // Select a random character set
-    const charSet = charSets[Math.floor(Math.random() * charSets.length)];
-    // Generate a random character code from the selected set
-    const charCode =
-      Math.floor(Math.random() * (charSet[1] - charSet[0] + 1)) + charSet[0];
-    // Convert the character code to a character
-    return String.fromCharCode(charCode);
-  };
+  const charSets = [
+    [48, 57], // Numbers (0-9)
+    [65, 90], // Uppercase letters (A-Z)
+    [97, 122], // Lowercase letters (a-z)
+    [33, 47], // Special characters (!"#$%&'()*+,-./)
+  ];
 
   let password = "";
   for (let i = 0; i < length; i++) {
-    password += getRandomChar();
+    const charSet = charSets[Math.floor(Math.random() * charSets.length)];
+    const charCode =
+      Math.floor(Math.random() * (charSet[1] - charSet[0] + 1)) + charSet[0];
+    password += String.fromCharCode(charCode);
   }
-
   return password;
 }
 
@@ -113,5 +114,7 @@ function validateUsername(username) {
 }
 
 function validatePassword(password) {
-  return /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9!"#$%&'()*+,-./]{8,}$/.test(password);
+  return /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9!"#$%&'()*+,-./]{8,}$/.test(
+    password
+  );
 }
