@@ -39,12 +39,12 @@
               {{/ stars}}
             </div>
           </div>
-          <div class="rm-play-time">speelt op: {{ play_time }}</div>
-          <div class="rm-places-available">beschrikbare plekken: {{ place_data_count }}</div>
+          <div class="rm-play-time">speelt op: <span>{{ play_time }}</span></div>
+          <div class="rm-places-available">beschikbare plekken: <span>{{ place_data_count }}</span></div>
         </div>
         <div class="rm-cms">
           <a href="{{ base_url }}cms/filmladder/wijzig/{{ location_movie_id }}" class="rm-edit">BEWERK</a>
-          <a href="{{ base_url }}cms/filmladder/verwijder/{{ location_movie_id }}" class="rm-delete">VERWIJDER</a>
+          <a href="{{ base_url }}cms/filmladder/verwijder/{{ location_movie_id }}" class="rm-delete red">VERWIJDER</a>
         </div>
       </div>
       {{/ currently_playing}}
