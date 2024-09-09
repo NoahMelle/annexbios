@@ -67,6 +67,7 @@ switch ($view[0]) {
             header("Location: " . $env["BASEURL"] . "log-in");
         } else {
             $cmsLayout = true;
+            if (!isset($view[1])) $view[1] = '';
             switch ($view[1]) {
                 case 'vestigingen':
                     if(isset($view[2]) && $view[2] == 'toevoegen') {
@@ -144,8 +145,10 @@ switch ($view[0]) {
                     } else {
                         $template = "cms/locations";
                     }
+
                     $model = "cms/locations";                            
                     break;
+
                 case 'filmladder':
                     if(isset($view[2]) && $view[2] == 'toevoegen') {
                         $template = "cms/addMovieSchedule";
