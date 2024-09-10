@@ -6,6 +6,7 @@ const permissionCheckboxes = document.querySelectorAll(".permission-checkbox");
 const permissionsError = document.getElementById("permissions-error");
 const usernameError = document.getElementById("username-error");
 const passwordError = document.getElementById("password-error");
+const deleteUserForm = document.getElementById("delete-user-form");
 
 let containsErrors = true;
 
@@ -117,4 +118,19 @@ function validatePassword(password) {
   return /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9!"#$%&'()*+,-./]{8,}$/.test(
     password
   );
+}
+
+function deleteUser(element) {
+  deleteUserForm.classList.toggle("active");
+  const usernameConfirm = deleteUserForm.querySelector(".username-confirm");
+  const id = element.getAttribute("data-id");
+  const username = element.getAttribute("data-username");
+  usernameConfirm.textContent = username;
+
+  deleteUserForm.querySelector('input[name="delete-user-id"]').value = id;
+}
+
+function cancelDelete(element) {
+  deleteUserForm.classList.remove("active");
+  deleteUserForm.querySelector(".username-confirm").textContent = "";
 }

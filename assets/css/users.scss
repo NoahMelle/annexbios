@@ -142,6 +142,56 @@
       }
     }
   }
+  #delete-user-form {
+    background-color: white;
+    padding: 1rem;
+    .form-btn {
+      width: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      aspect-ratio: 1/1;
+      &.cancel {
+        background-color: #f2f2f2;
+        color: black;
+        border: none;
+        cursor: pointer;
+        border-radius: .3rem
+      }
+      &.confirm {
+        background-color: #aa2525;
+        color: white;
+        border: none;
+        border-radius: .3rem;
+        cursor: pointer;
+        img {
+          filter: invert(1);
+        }
+      }
+    }
+    .delete-user-btns {
+      display: flex;
+      gap: 1rem;
+    }
+    #delete-user-submit {
+      display: none;
+    }
+  }
+  .delete-user-form-wrapper {
+    display: none;
+    z-index: 1002;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    &:has(#delete-user-form.active) {
+      display: flex;
+    }
+  }
 }
 
 @layer containerQueries {

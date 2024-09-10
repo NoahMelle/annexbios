@@ -23,7 +23,17 @@
             <td>{{ username }}</td>
             <td>test</td>
             <td>{{ last_login }}</td>
-            <td>tests</td>
+            <td>
+              <button class="edit-user-btn" onclick="editUser(this)" data-id="{{ id }}" data-username="{{ username }}">
+                <img
+                  src="{{ base_url }}assets/icons/pencil.svg"
+                  alt="Edit Icon"
+                />
+              </button>
+              <button class="delete-user-btn" onclick="deleteUser(this)" data-id="{{ id }}" data-username="{{ username }}">
+                <img src="{{ base_url }}assets/icons/x.svg" alt="Delete Icon" />
+              </button>
+            </td>
           </tr>
           {{/ users}}
         </tbody>
@@ -35,13 +45,13 @@
     <form action="{{ current_url }}" method="post" class="new-user-form">
       <div>
         <input
-        type="text"
-        name="username"
-        id="username"
-        placeholder="Gebruikersnaam"
-        autocomplete="off"
-      />
-      <p id="username-error" class="error"></p>
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Gebruikersnaam"
+          autocomplete="off"
+        />
+        <p id="username-error" class="error"></p>
       </div>
       <div>
         <div class="password-input-container">
@@ -64,14 +74,25 @@
       </div>
       <div class="permissions-wrapper">
         <div>
-            <h3>Permissies</h3>
-            <small><em>Selecteer de pagina's waar de medewerker toegang tot moet hebben.</em></small>
+          <h3>Permissies</h3>
+          <small
+            ><em
+              >Selecteer de pagina's waar de medewerker toegang tot moet
+              hebben.</em
+            ></small
+          >
         </div>
         <div>
           <div class="permissions-container">
             {{# available_perms}}
             <label class="permission-label" for="{{ id }}">
-              <input type="checkbox" name="permissions[]" id="{{ id }}" class="permission-checkbox" value="{{ id }}" />
+              <input
+                type="checkbox"
+                name="permissions[]"
+                id="{{ id }}"
+                class="permission-checkbox"
+                value="{{ id }}"
+              />
               {{ title }}
             </label>
             {{/ available_perms}}
@@ -79,9 +100,35 @@
           <p class="error" id="permissions-error"></p>
         </div>
       </div>
-      <button type="submit" class="submit-btn" id="add-user-submit" name="add-user-submit">
+      <button
+        type="submit"
+        class="submit-btn"
+        id="add-user-submit"
+        name="add-user-submit"
+      >
         Toevoegen
       </button>
     </form>
   </div>
 </main>
+<div class="delete-user-form-wrapper">
+  <form action="{{ current_url }}" id="delete-user-form" method="post">
+    <input type="hidden" name="delete-user-id" id="delete-user" />
+    <h3>Weet je zeker dat je deze gebruiker (<span class="username-confirm"></span>) wilt verwijderen?</h3>
+    <p>Deze actie kan niet ongedaan worden gemaakt.</p>
+    <div class="delete-user-btns">
+      <button class="cancel form-btn" onclick="cancelDelete(this)" aria-label="Cancel Deletion" type="button">
+        <img src="{{ base_url }}assets/icons/x.svg" alt="Delete Icon" />
+      </button>
+      <label for="delete-user-submit" class="confirm form-btn">
+        <img src="{{ base_url }}assets/icons/trash.svg" alt="Check Icon" />
+      </label>
+    </div>
+    <input
+      type="submit"
+      id="delete-user-submit"
+      name="delete-user-submit"
+      aria-label="Confirm Deletion"
+    />
+  </form>
+</div>

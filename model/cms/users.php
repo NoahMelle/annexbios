@@ -8,8 +8,8 @@
         'current_url' => $_SERVER['REQUEST_URI'],
     ];
 
-    $stmt = $con->prepare("SELECT username, last_login FROM user_data");
-    $stmt->bind_result($username, $last_login);
+    $stmt = $con->prepare("SELECT username, last_login, user_id FROM user_data");
+    $stmt->bind_result($username, $last_login, $id);
     $stmt->execute();
     $result = $stmt->get_result();
     $stmt->close();
@@ -18,7 +18,8 @@
         while($row = $result->fetch_assoc()) {
             $data['users'][] = [
                 'username' => $row['username'],
-                'last_login' => $row['last_login']
+                'last_login' => $row['last_login'],
+                'id' => $row['user_id']
             ];
         }
     }
@@ -92,6 +93,20 @@
                         $data['error'] = "Er is iets fout gegaan bij het toevoegen van de gebruiker. Probeer het opnieuw.";
                     }
                 }
+            }
+        } else if (isset($_POST['delete-user-submit'])) {
+            if (isset($_POST['delete-user-id'])) {
+                $user_id = $_POST['delete-user-id'];
+
+                try {
+                    $stmt = $con->prepare("DELETE FROM user_data WHERE user_id = ?;");
+                    $stmt->bind_param("i", $user_id);
+                    $stmt->execute();
+                    $stmt->close();
+                } catch (Exception $e) {
+                    $data['error'] = "Er is iets fout gegaan bij het verwijderen van de gebruiker. Probeer het opnieuw.";
+                }
+                header("Location: " . $env['BASEURL'] . "cms/gebruikers");
             }
         }
     }
