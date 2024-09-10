@@ -22,9 +22,9 @@ if (isset($_POST["username"]) && !empty($_POST["username"]) && isset($_POST["pas
     $username = mes($_POST["username"]);
     $password = mes($_POST["password"]);
 
-    $stmt = $con->prepare("SELECT user_id, username, password, cms_access FROM user_data WHERE username = ?;");
+    $stmt = $con->prepare("SELECT u.user_id, u.username, GROUP_CONCAT(up.page_id) as page_permissions, u.password, u.cms_access, u.superuser FROM user_data u LEFT JOIN user_page_permission_link up ON u.user_id = up.user_id WHERE username = ?;");
     $stmt->bind_param("s", $username);
-    $stmt->bind_result($user_id, $username, $db_password, $cms_access);
+    $stmt->bind_result($user_id, $username, $page_permissions, $db_password, $cms_access, $superuser);
     $stmt->execute();
     $stmt->fetch();
     $stmt->close();
@@ -33,7 +33,9 @@ if (isset($_POST["username"]) && !empty($_POST["username"]) && isset($_POST["pas
         $_SESSION["user"] = [
             "user_id" => $user_id,
             "username" => $username,
-            "cms_access" => $cms_access
+            "cms_access" => $cms_access,
+            "page_permissions" => $page_permissions ? explode(",", $page_permissions) : [],
+            "superuser" => $superuser
         ];
 
         header("Location: " . $env["BASEURL"] . "cms/vestigingen");
