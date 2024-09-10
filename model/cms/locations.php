@@ -76,3 +76,76 @@
         ];
     }
     $stmt->close();
+
+
+
+
+
+
+
+    if (isset($view[2]) && $view[2] == 'toevoegen') {
+        if (isset($_POST["function"]) && validate_integer($_POST["function"]) && isset($_POST["city"]) && !empty($_POST["city"]) && isset($_POST["address"]) && !empty($_POST["address"]) && isset($_POST["postal_code"]) && !empty($_POST["postal_code"]) && isset($_POST["website_link"]) && !empty($_POST["website_link"])) {
+            $function = $_POST["function"];
+            $city = mes($_POST["city"]);
+            $address = mes($_POST["address"]);
+            $postal_code = mes($_POST["postal_code"]);
+            $website_link = mes($_POST["website_link"]);
+
+            $stmt = $con->prepare("INSERT INTO location_data (function, city, address, postal_code, website_link) VALUES (?, ?, ?, ?, ?);");
+            $stmt->bind_param("issss", $function, $city, $address, $postal_code, $website_link);
+            if ($stmt->execute()) {
+                $stmt->close();
+
+                $last_id = $con->insert_id;
+
+                $stmt = $con->prepare("INSERT INTO location_tokens (location_id, token) VALUES (?, ?);");
+                $stmt->bind_param("is", $last_id, generate_token());
+                if ($stmt->execute()) {
+                    $stmt->close();
+                    header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                }
+            }
+        }
+    } else if (isset($view[2]) && $view[2] == 'wijzig') {
+        if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+            if (isset($_POST["function"]) && validate_integer($_POST["function"]) && isset($_POST["city"]) && !empty($_POST["city"]) && isset($_POST["address"]) && !empty($_POST["address"]) && isset($_POST["postal_code"]) && !empty($_POST["postal_code"]) && isset($_POST["website_link"]) && !empty($_POST["website_link"])) {
+                $function = $_POST["function"];
+                $city = mes($_POST["city"]);
+                $address = mes($_POST["address"]);
+                $postal_code = mes($_POST["postal_code"]);
+                $website_link = mes($_POST["website_link"]);
+
+                $stmt = $con->prepare("UPDATE location_data SET function = ?, city = ?, address = ?, postal_code = ?, website_link = ? WHERE location_id = ?;");
+                $stmt->bind_param("issssi", $function, $city, $address, $postal_code, $website_link, $view[3]);
+                $stmt->execute();
+                $stmt->close();
+
+                header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+            }
+        } else {
+            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+        }
+    } else if (isset($view[2]) && $view[2] == 'verwijder') {
+        if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+            if (isset($_POST["location_id"]) && !empty($_POST["location_id"]) && validate_integer($_POST["location_id"])) {
+                $stmt = $con->prepare("DELETE FROM location_movie_data WHERE location_id = ?;");
+                $stmt->bind_param("i", $_POST["location_id"]);
+                $stmt->execute();
+                $stmt->close();
+
+                $stmt = $con->prepare("DELETE FROM location_tokens WHERE location_id = ?;");
+                $stmt->bind_param("i", $_POST["location_id"]);
+                $stmt->execute();
+                $stmt->close();
+
+                $stmt = $con->prepare("DELETE FROM location_data WHERE location_id = ?;");
+                $stmt->bind_param("i", $_POST["location_id"]);
+                $stmt->execute();
+                $stmt->close();
+
+                header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+            }
+        } else {
+            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+        }
+    }

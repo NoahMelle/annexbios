@@ -17,3 +17,31 @@ while ($row = $result->fetch_assoc()) {
         'website_link' => $row['website_link'],
     ];
 }
+
+if (isset($_POST["username"]) && !empty($_POST["username"]) && isset($_POST["password"]) && !empty($_POST["password"])) {
+    $username = mes($_POST["username"]);
+    $password = mes($_POST["password"]);
+
+    $stmt = $con->prepare("SELECT user_id, username, password, cms_access FROM user_data WHERE username = ?;");
+    $stmt->bind_param("s", $username);
+    $stmt->bind_result($user_id, $username, $db_password, $cms_access);
+    $stmt->execute();
+    $stmt->fetch();
+    $stmt->close();
+
+    if (password_verify($password, $db_password)) {
+        $_SESSION["user"] = [
+            "user_id" => $user_id,
+            "username" => $username,
+            "cms_access" => $cms_access
+        ];
+
+        header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+    } else {
+        $_SESSION["user"] = [
+            "user_id" => null,
+            "username" => null,
+            "cms_access" => null
+        ];
+    }
+}

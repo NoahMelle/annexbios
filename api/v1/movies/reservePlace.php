@@ -19,7 +19,7 @@
             }
 
             if(isset($view[5]) && !empty($view[5])) {
-                $name = $view[5];
+                $name = str_replace('+', ' ', $view[5]);
             }
 
             if(isset($view[6]) && !empty($view[6])) {
