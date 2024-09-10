@@ -34,7 +34,6 @@ async function loadNews() {
       const newsDescription = newsElement.querySelector(".news-description");
       const newsDate = newsElement.querySelector(".news-date");
 
-
       // Set movie details
       newsTitle.textContent = title;
       newsDescription.textContent = content;
@@ -45,7 +44,7 @@ async function loadNews() {
       // Update the image only if necessary
       if (!newsImageContainer.querySelector(".news-img")) {
         const newsImageElement = document.createElement("img");
-        newsImageElement.src = image;
+        newsImageElement.src = "./assets/img/news/" + image;
         newsImageElement.alt = `Image for ${title}`;
         newsImageElement.classList.add("news-img");
         newsImageContainer.appendChild(newsImageElement);

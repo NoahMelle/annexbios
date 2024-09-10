@@ -84,6 +84,23 @@
           backdrop-filter: blur(5px);
 }
 
+.users-table {
+  background-color: white;
+  width: 100%;
+}
+.users-table th,
+.users-table td {
+  text-align: left;
+  padding: 0.7rem 1rem;
+}
+.users-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
 .hamburger-button.cms {
   height: calc(30px / 1.5);
   width: 30px;
