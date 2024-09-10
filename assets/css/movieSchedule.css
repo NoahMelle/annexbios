@@ -77,7 +77,7 @@ main {
 .playing-movies {
   display: flex;
   gap: 1rem;
-  height: 690px;
+  height: 740px;
   scroll-snap-type: x mandatory;
   max-width: 100%;
   overflow-x: auto;
@@ -293,6 +293,12 @@ main {
 .movie_schedule_add form input:focus,
 .movie_schedule_add form select:focus {
   outline: none;
+}
+.movie_schedule_add form input.red,
+.movie_schedule_add form select.red {
+  background-color: #d32f2f;
+  color: white;
+  border: none;
 }
 .movie_schedule_add form input[type=submit],
 .movie_schedule_add form select[type=submit] {
