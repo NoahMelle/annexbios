@@ -134,3 +134,9 @@ function cancelDelete(element) {
   deleteUserForm.classList.remove("active");
   deleteUserForm.querySelector(".username-confirm").textContent = "";
 }
+
+function copyToClipboard(element) {
+  const elementToCopy = element.parentNode.querySelector(".entered");
+  navigator.clipboard.writeText(elementToCopy.innerText);
+}
+

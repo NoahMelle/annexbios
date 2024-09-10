@@ -6,7 +6,7 @@
     </button>
   </div>
   <div>
-    <h2>Bestaande Gebruikers</h2>
+    <h2 class="existing-users-header">Bestaande Gebruikers</h2>
     <div class="table-container">
       <table class="users-table" id="users-table">
         <thead>
@@ -21,16 +21,30 @@
           {{# users}}
           <tr>
             <td>{{ username }}</td>
-            <td>test</td>
+            <td>
+              {{# permissions}}
+              <span class="permission">{{ . }}</span>
+              {{/ permissions}}
+            </td>
             <td>{{ last_login }}</td>
             <td>
-              <button class="edit-user-btn" onclick="editUser(this)" data-id="{{ id }}" data-username="{{ username }}">
+              <button
+                class="edit-user-btn"
+                onclick="editUser(this)"
+                data-id="{{ id }}"
+                data-username="{{ username }}"
+              >
                 <img
                   src="{{ base_url }}assets/icons/pencil.svg"
                   alt="Edit Icon"
                 />
               </button>
-              <button class="delete-user-btn" onclick="deleteUser(this)" data-id="{{ id }}" data-username="{{ username }}">
+              <button
+                class="delete-user-btn"
+                onclick="deleteUser(this)"
+                data-id="{{ id }}"
+                data-username="{{ username }}"
+              >
                 <img src="{{ base_url }}assets/icons/x.svg" alt="Delete Icon" />
               </button>
             </td>
@@ -51,7 +65,7 @@
           placeholder="Gebruikersnaam"
           autocomplete="off"
         />
-        <p id="username-error" class="error"></p>
+        <p id="username-error" class="error">{{ username_error }}</p>
       </div>
       <div>
         <div class="password-input-container">
@@ -70,7 +84,7 @@
             <img src="{{ base_url }}assets/icons/dice.svg" alt="Dice Icon" />
           </button>
         </div>
-        <p id="password-error" class="error"></p>
+        <p id="password-error" class="error">{{ password_error }}</p>
       </div>
       <div class="permissions-wrapper">
         <div>
@@ -97,7 +111,7 @@
             </label>
             {{/ available_perms}}
           </div>
-          <p class="error" id="permissions-error"></p>
+          <p class="error" id="permissions-error">{{ permissions_error }}</p>
         </div>
       </div>
       <button
@@ -114,14 +128,22 @@
 <div class="delete-user-form-wrapper">
   <form action="{{ current_url }}" id="delete-user-form" method="post">
     <input type="hidden" name="delete-user-id" id="delete-user" />
-    <h3>Weet je zeker dat je deze gebruiker (<span class="username-confirm"></span>) wilt verwijderen?</h3>
+    <h3>
+      Weet je zeker dat je deze gebruiker (<span class="username-confirm"></span
+      >) wilt verwijderen?
+    </h3>
     <p>Deze actie kan niet ongedaan worden gemaakt.</p>
     <div class="delete-user-btns">
-      <button class="cancel form-btn" onclick="cancelDelete(this)" aria-label="Cancel Deletion" type="button">
-        <img src="{{ base_url }}assets/icons/x.svg" alt="Delete Icon" />
+      <button
+        class="cancel form-btn"
+        onclick="cancelDelete(this)"
+        aria-label="Cancel Deletion"
+        type="button"
+      >
+        Annuleer
       </button>
       <label for="delete-user-submit" class="confirm form-btn">
-        <img src="{{ base_url }}assets/icons/trash.svg" alt="Check Icon" />
+        Verwijder
       </label>
     </div>
     <input
@@ -132,3 +154,43 @@
     />
   </form>
 </div>
+{{# add_user_success}}
+<div class="add-user-success-modal-wrapper">
+  <div class="add-user-success-modal">
+    <h3>Gebruiker Toegevoegd</h3>
+    <p>
+      De gebruiker is succesvol toegevoegd aan het systeem. De gebruiker kan nu
+      inloggen met deze gegevens:
+    </p>
+    <div>
+      <p>
+        <strong>Gebruikersnaam:</strong>
+      </p>
+      <div class="entered-container">
+        <code class="username entered"> {{ entered_username }} </code>
+        <button onclick="copyToClipboard(this)" aria-label="Copy Username" class="copy-entered">
+          <img src="{{ base_url }}assets/icons/copy.svg" alt="Copy Icon" />
+        </button>
+      </div>
+    </div>
+    <div>
+      <p>
+        <strong>Wachtwoord:</strong>
+      </p>
+      <div class="entered-container">
+        <code class="password entered"> {{ entered_password }} </code>
+        <button onclick="copyToClipboard(this)" aria-label="Copy Password" class="copy-entered">
+          <img src="{{ base_url }}assets/icons/copy.svg" alt="Copy Icon" />
+        </button>
+      </div>
+    </div>
+    <button
+      class="close-modal-btn"
+      onclick="closeModal(this)"
+      aria-label="Close Modal"
+    >
+      Sluiten
+    </button>
+  </div>
+</div>
+{{/ add_user_success}}
