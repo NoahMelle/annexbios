@@ -45,8 +45,13 @@ switch ($view[0]) {
                     $model = "cms/cms";
                     break;
                 case 'gebruikers':
-                    $template = "cms/users";
-                    $model = "cms/users";
+                    if (isset($view[2]) && $view[2] == 'verwijder') {
+                        $template = "cms/delete_user";
+                        $model = "cms/delete_user";
+                    } else {
+                        $template = "cms/users";
+                        $model = "cms/users";
+                    }
                     break;
                 case 'vestigingen':
                     if (isset($view[2]) && $view[2] == 'toevoegen') {
@@ -66,10 +71,8 @@ switch ($view[0]) {
                     } else {
                         $template = "cms/locations";
                     }
-
                     $model = "cms/locations";
                     break;
-
                 case 'filmladder':
                     if (isset($view[2]) && $view[2] == 'toevoegen') {
                         $template = "cms/addMovieSchedule";

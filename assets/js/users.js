@@ -6,6 +6,7 @@ const permissionCheckboxes = document.querySelectorAll(".permission-checkbox");
 const permissionsError = document.getElementById("permissions-error");
 const usernameError = document.getElementById("username-error");
 const passwordError = document.getElementById("password-error");
+const deleteUserForm = document.getElementById("delete-user-form");
 
 let containsErrors = true;
 
@@ -118,3 +119,35 @@ function validatePassword(password) {
     password
   );
 }
+
+function deleteUser(element) {
+  deleteUserForm.classList.toggle("active");
+  const usernameConfirm = deleteUserForm.querySelector(".username-confirm");
+  const id = element.getAttribute("data-id");
+  const username = element.getAttribute("data-username");
+  usernameConfirm.textContent = username;
+
+  deleteUserForm.querySelector('input[name="delete-user-id"]').value = id;
+}
+
+function cancelDelete(element) {
+  deleteUserForm.classList.remove("active");
+  deleteUserForm.querySelector(".username-confirm").textContent = "";
+}
+
+function copyToClipboard(element) {
+  const elementToCopy = element.parentNode.querySelector(".entered");
+  navigator.clipboard.writeText(elementToCopy.innerText);
+  const copyIcon = element.querySelector(".copy-icon");
+  const checkIcon = element.querySelector(".check-icon");
+
+  copyIcon.classList.add("hidden");
+  checkIcon.classList.remove("hidden");
+
+  const copyTimeout = setTimeout(() => {
+    copyIcon.classList.remove("hidden");
+    checkIcon.classList.add("hidden");
+    clearTimeout(copyTimeout);
+  }, 2000);
+}
+
