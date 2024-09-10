@@ -1,0 +1,87 @@
+<main>
+  <div class="hero">
+    <h1 class="hero-header">Gebruikers</h1>
+    <button onclick="addUser()" class="add-user-btn">
+      Gebruiker toevoegen
+    </button>
+  </div>
+  <div>
+    <h2>Bestaande Gebruikers</h2>
+    <div class="table-container">
+      <table class="users-table" id="users-table">
+        <thead>
+          <tr>
+            <th>Gebruikersnaam</th>
+            <th>Permissies</th>
+            <th>Laatste Login</th>
+            <th>Acties</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{# users}}
+          <tr>
+            <td>{{ username }}</td>
+            <td>test</td>
+            <td>{{ last_login }}</td>
+            <td>tests</td>
+          </tr>
+          {{/ users}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="new-user-form-container">
+    <h2>Gebruiker Toevoegen</h2>
+    <form action="{{ current_url }}" method="post" class="new-user-form">
+      <div>
+        <input
+        type="text"
+        name="username"
+        id="username"
+        placeholder="Gebruikersnaam"
+        autocomplete="off"
+      />
+      <p id="username-error" class="error"></p>
+      </div>
+      <div>
+        <div class="password-input-container">
+          <input
+            type="text"
+            name="password"
+            id="password"
+            placeholder="Wachtwoord"
+          />
+          <button
+            onclick="generateRandomPassword(this)"
+            aria-label="Generate Random Password"
+            class="random-password-button"
+            type="button"
+          >
+            <img src="{{ base_url }}assets/icons/dice.svg" alt="Dice Icon" />
+          </button>
+        </div>
+        <p id="password-error" class="error"></p>
+      </div>
+      <div class="permissions-wrapper">
+        <div>
+            <h3>Permissies</h3>
+            <small><em>Selecteer de pagina's waar de medewerker toegang tot moet hebben.</em></small>
+        </div>
+        <div>
+          <div class="permissions-container">
+            {{# available_perms}}
+            <label class="permission-label" for="{{ id }}">
+              <input type="checkbox" name="permissions[]" id="{{ id }}" class="permission-checkbox" value="{{ id }}" />
+              {{ title }}
+            </label>
+            {{/ available_perms}}
+          </div>
+          <p class="error" id="permissions-error"></p>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn" id="add-user-submit" name="add-user-submit">
+        Toevoegen
+      </button>
+    </form>
+  </div>
+</main>

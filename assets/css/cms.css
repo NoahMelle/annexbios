@@ -144,4 +144,33 @@
 }
 .footer.cms {
   margin-top: 0;
+}
+
+.hero {
+  width: 100%;
+  min-height: 280px;
+  height: -moz-fit-content;
+  height: fit-content;
+  background-color: black;
+  margin: 0 auto 0;
+  padding: clamp(20px, 4vw, 30px);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
+}
+.hero .hero-header {
+  color: white;
+  font-size: clamp(2rem, 3vw, 3rem);
+  text-transform: uppercase;
+}
+
+main {
+  width: 90%;
+  margin: 0 auto;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 4rem 0;
 }/*# sourceMappingURL=cms.css.map */

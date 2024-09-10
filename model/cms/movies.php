@@ -11,6 +11,8 @@
     "current_movie_id" => null
 ];
 
+include "./model/cms/cms_global.php";
+
 $stmt = $con->prepare("SELECT movie_id, imdb_id, title  FROM movie_data;");
 $stmt->execute();
 $result = $stmt->get_result();
