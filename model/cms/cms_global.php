@@ -4,7 +4,7 @@ $allowedPages = $_SESSION['user']['page_permissions'];
 $superuser = $_SESSION['user']['superuser'];
 
 if ($superuser) {
-    $stmt = $con->prepare("SELECT title, url, img_url FROM admin_header_pages_data");
+    $stmt = $con->prepare("SELECT title, url, img_url FROM admin_header_pages_data ORDER BY sort ASC");
     $stmt->execute();
     $result = $stmt->get_result();
 } else {

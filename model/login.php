@@ -22,7 +22,7 @@ if (isset($_POST["username"]) && !empty($_POST["username"]) && isset($_POST["pas
     $username = mes($_POST["username"]);
     $password = mes($_POST["password"]);
 
-    $stmt = $con->prepare("SELECT u.user_id, u.username, GROUP_CONCAT(up.page_id) as page_permissions, u.password, u.cms_access, u.superuser FROM user_data u LEFT JOIN user_page_permission_link up ON u.user_id = up.user_id WHERE username = ?;");
+    $stmt = $con->prepare("SELECT u.user_id, u.username, GROUP_CONCAT(p.title) as page_permissions, u.password, u.cms_access, u.superuser FROM user_data u LEFT JOIN user_page_permission_link up ON u.user_id = up.user_id LEFT JOIN admin_header_pages_data p ON p.id = up.page_id WHERE username = ? GROUP BY u.user_id;");
     $stmt->bind_param("s", $username);
     $stmt->bind_result($user_id, $username, $page_permissions, $db_password, $cms_access, $superuser);
     $stmt->execute();

@@ -13,6 +13,14 @@ $js = '';
 $isApiCall = false;
 $cmsLayout = false;
 
+$allowedPages = [];
+$isSuperUser = false;
+
+if (isset($_SESSION['user'])) {
+    $allowedPages = $_SESSION['user']['page_permissions'];
+    $isSuperUser = $_SESSION['user']['superuser'];
+}
+
 switch ($view[0]) {
     case '':
         $template = "home";
@@ -45,74 +53,89 @@ switch ($view[0]) {
                     $model = "cms/cms";
                     break;
                 case 'gebruikers':
-                    if (isset($view[2]) && $view[2] == 'verwijder') {
-                        $template = "cms/delete_user";
-                        $model = "cms/delete_user";
-                    } else {
+                    if (in_array("Gebruikers", $allowedPages) || $isSuperUser) {
                         $template = "cms/users";
                         $model = "cms/users";
+                    } else {
+                        header("Location: " . $env["BASEURL"] . "cms");
+                        exit;
                     }
                     break;
                 case 'vestigingen':
-                    if (isset($view[2]) && $view[2] == 'toevoegen') {
-                        $template = "cms/addLocation";
-                    } else if (isset($view[2]) && $view[2] == 'wijzig') {
-                        if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
-                            $template = "cms/changeLocation";
+                    if (in_array("Vestigingen", $allowedPages) || $isSuperUser) {
+                        if (isset($view[2]) && $view[2] == 'toevoegen') {
+                            $template = "cms/addLocation";
+                        } else if (isset($view[2]) && $view[2] == 'wijzig') {
+                            if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                                $template = "cms/changeLocation";
+                            } else {
+                                header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                            }
+                        } else if (isset($view[2]) && $view[2] == 'verwijder') {
+                            if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                                $template = "cms/deleteLocation";
+                            } else {
+                                header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                            }
                         } else {
-                            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                            $template = "cms/locations";
                         }
-                    } else if (isset($view[2]) && $view[2] == 'verwijder') {
-                        if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
-                            $template = "cms/deleteLocation";
-                        } else {
-                            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
-                        }
+                        $model = "cms/locations";
                     } else {
-                        $template = "cms/locations";
+                        header("Location: " . $env["BASEURL"] . "cms");
+                        exit;
                     }
-                    $model = "cms/locations";
                     break;
                 case 'filmladder':
-                    if (isset($view[2]) && $view[2] == 'toevoegen') {
-                        $template = "cms/addMovieSchedule";
-                    } else if (isset($view[2]) && $view[2] == 'wijzig') {
-                        if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
-                            $template = "cms/changeMovieSchedule";
+                    if (in_array("Filmladder", $allowedPages) || $isSuperUser) {
+                        if (isset($view[2]) && $view[2] == 'toevoegen') {
+                            $template = "cms/addMovieSchedule";
+                        } else if (isset($view[2]) && $view[2] == 'wijzig') {
+                            if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                                $template = "cms/changeMovieSchedule";
+                            } else {
+                                header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                            }
+                        } else if (isset($view[2]) && $view[2] == 'verwijder') {
+                            if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                                $template = "cms/deleteMovieSchedule";
+                            } else {
+                                header("Location: " . $env["BASEURL"] . "cms/filmladder");
+                            }
                         } else {
-                            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                            $template = "cms/movieSchedule";
                         }
-                    } else if (isset($view[2]) && $view[2] == 'verwijder') {
-                        if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
-                            $template = "cms/deleteMovieSchedule";
-                        } else {
-                            header("Location: " . $env["BASEURL"] . "cms/filmladder");
-                        }
+                        $model = "cms/movieSchedule";
                     } else {
-                        $template = "cms/movieSchedule";
+                        header("Location: " . $env["BASEURL"] . "cms");
+                        exit;
                     }
-                    $model = "cms/movieSchedule";
                     break;
 
                 case 'films':
-                    if (isset($view[2]) && $view[2] == 'toevoegen') {
-                        $template = "cms/addMovies";
-                    } else if (isset($view[2]) && $view[2] == 'wijzig') {
-                        if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
-                            $template = "cms/changeMovieSchedule";
+                    if (in_array("Films", $allowedPages) || $isSuperUser) {
+                        if (isset($view[2]) && $view[2] == 'toevoegen') {
+                            $template = "cms/addMovies";
+                        } else if (isset($view[2]) && $view[2] == 'wijzig') {
+                            if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                                $template = "cms/changeMovieSchedule";
+                            } else {
+                                header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                            }
+                        } else if (isset($view[2]) && $view[2] == 'verwijder') {
+                            if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
+                                $template = "cms/deleteMovies";
+                            } else {
+                                header("Location: " . $env["BASEURL"] . "cms/films");
+                            }
                         } else {
-                            header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+                            $template = "cms/movies";
                         }
-                    } else if (isset($view[2]) && $view[2] == 'verwijder') {
-                        if (isset($view[3]) && !empty($view[3]) && validate_integer($view[3])) {
-                            $template = "cms/deleteMovies";
-                        } else {
-                            header("Location: " . $env["BASEURL"] . "cms/films");
-                        }
+                        $model = "cms/movies";
                     } else {
-                        $template = "cms/movies";
+                        header("Location: " . $env["BASEURL"] . "cms");
+                        exit;
                     }
-                    $model = "cms/movies";
                     break;
                 default:
                     $template = "404";
