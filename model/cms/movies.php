@@ -1,4 +1,5 @@
-<?php $data = [
+<?php 
+$data = [
     'page_title' => "AnnexBios Films",
     'base_url' => $env['BASEURL'],
     'url_path' => 'movies',
