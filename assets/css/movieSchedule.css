@@ -77,12 +77,43 @@ main {
 .playing-movies {
   display: flex;
   gap: 1rem;
-  height: 600px;
+  height: 690px;
   scroll-snap-type: x mandatory;
   max-width: 100%;
   overflow-x: auto;
   width: -moz-fit-content;
   width: fit-content;
+}
+.playing-movies .rm-cms {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.playing-movies .rm-cms a {
+  padding: 0.5rem 1rem;
+  width: -moz-fit-content;
+  width: fit-content;
+  text-transform: uppercase;
+  text-align: center;
+  color: white;
+  background-color: transparent;
+  border: 1px solid black;
+  color: black;
+  transition: all 200ms ease-in-out;
+  border-radius: 3px;
+}
+.playing-movies .rm-cms a:hover {
+  background-color: black;
+  color: white;
+}
+.playing-movies .rm-cms a.red {
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+}
+.playing-movies .rm-cms a.red:hover {
+  background-color: black;
 }
 .playing-movies .playing-movie {
   height: 575px;
@@ -112,7 +143,27 @@ main {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  flex-grow: 1;
+}
+.playing-movies .playing-movie .rm-details .rm-play-time,
+.playing-movies .playing-movie .rm-details .rm-places-available {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 3px;
+}
+.playing-movies .playing-movie .rm-details .rm-play-time p,
+.playing-movies .playing-movie .rm-details .rm-places-available p {
+  padding: 5px;
+}
+.playing-movies .playing-movie .rm-details .rm-play-time span,
+.playing-movies .playing-movie .rm-details .rm-places-available span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 3px;
 }
 .playing-movies .playing-movie .rm-details .rm-rating {
   position: relative;
@@ -166,7 +217,6 @@ main {
 .playing-movies .playing-movie .rm-details .rm-title-container {
   font-size: 18px;
   color: #666;
-  height: 50px;
   width: 100%;
 }
 .playing-movies .playing-movie .rm-details .rm-title-container.skeleton {
@@ -230,26 +280,26 @@ main {
 .movie_schedule_add form select {
   width: 100%;
   padding: 0.5rem 1rem;
-  font-weight: 700;
-  font-size: 14px;
+  text-transform: uppercase;
+  text-align: center;
+  color: white;
   background-color: transparent;
-  border: 1px solid #707070;
-  margin: 10px 0;
-  color: #707070;
-  border-radius: 5px;
+  border: 1px solid black;
+  color: black;
   transition: all 200ms ease-in-out;
+  margin: 10px 0;
+  border-radius: 3px;
+}
+.movie_schedule_add form input:focus,
+.movie_schedule_add form select:focus {
+  outline: none;
 }
 .movie_schedule_add form input[type=submit],
 .movie_schedule_add form select[type=submit] {
   cursor: pointer;
 }
-.movie_schedule_add form input[type=submit].red,
-.movie_schedule_add form select[type=submit].red {
-  background-color: #d32f2f;
-  color: white;
-}
 .movie_schedule_add form input[type=submit]:hover,
 .movie_schedule_add form select[type=submit]:hover {
-  background-color: #707070;
+  background-color: black;
   color: white;
 }/*# sourceMappingURL=movieSchedule.css.map */

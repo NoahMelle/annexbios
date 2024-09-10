@@ -113,14 +113,27 @@ main {
       padding: 0.5rem 1rem;
       width: fit-content;
       text-transform: uppercase;
-      font-weight: 700;
       text-align: center;
       color: white;
-      font-size: 14px;
-      background-color: #b97d46;
+      background-color: transparent;
+      border: 1px solid black;
+      color: black;
+      transition: all 200ms ease-in-out;
+      border-radius: 3px;
+
+      &:hover {
+        background-color: black;
+        color: white;
+      }
 
       &.red {
         background-color: #d32f2f;
+        color: white;
+        border: none;
+
+        &:hover {
+          background-color: black;
+        }
       }
     }
   }
