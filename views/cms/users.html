@@ -1,9 +1,9 @@
 <main>
   <div class="hero">
     <h1 class="hero-header">Gebruikers</h1>
-    <button onclick="addUser()" class="add-user-btn">
+    <a class="add-user-btn" href="#new-user-form-container">
       Gebruiker toevoegen
-    </button>
+    </a>
   </div>
   <div>
     <h2 class="existing-users-header">Bestaande Gebruikers</h2>
@@ -162,35 +162,37 @@
       De gebruiker is succesvol toegevoegd aan het systeem. De gebruiker kan nu
       inloggen met deze gegevens:
     </p>
-    <div>
+    <div class="entered-wrapper">
       <p>
         <strong>Gebruikersnaam:</strong>
       </p>
       <div class="entered-container">
         <code class="username entered"> {{ entered_username }} </code>
         <button onclick="copyToClipboard(this)" aria-label="Copy Username" class="copy-entered">
-          <img src="{{ base_url }}assets/icons/copy.svg" alt="Copy Icon" />
+          <img src="{{ base_url }}assets/icons/copy.svg" alt="Copy Icon" class="copy-icon" />
+          <img src="{{ base_url }}assets/icons/check.svg" alt="Check Icon" class="check-icon hidden" />
         </button>
       </div>
     </div>
-    <div>
+    <div class="entered-wrapper">
       <p>
         <strong>Wachtwoord:</strong>
       </p>
       <div class="entered-container">
         <code class="password entered"> {{ entered_password }} </code>
         <button onclick="copyToClipboard(this)" aria-label="Copy Password" class="copy-entered">
-          <img src="{{ base_url }}assets/icons/copy.svg" alt="Copy Icon" />
+          <img src="{{ base_url }}assets/icons/copy.svg" alt="Copy Icon" class="copy-icon" />
+          <img src="{{ base_url }}assets/icons/check.svg" alt="Check Icon" class="check-icon hidden" />
         </button>
       </div>
     </div>
-    <button
+    <a
       class="close-modal-btn"
-      onclick="closeModal(this)"
+      href="{{ current_url }}"
       aria-label="Close Modal"
     >
       Sluiten
-    </button>
+    </a>
   </div>
 </div>
 {{/ add_user_success}}

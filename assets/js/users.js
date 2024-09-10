@@ -138,5 +138,16 @@ function cancelDelete(element) {
 function copyToClipboard(element) {
   const elementToCopy = element.parentNode.querySelector(".entered");
   navigator.clipboard.writeText(elementToCopy.innerText);
+  const copyIcon = element.querySelector(".copy-icon");
+  const checkIcon = element.querySelector(".check-icon");
+
+  copyIcon.classList.add("hidden");
+  checkIcon.classList.remove("hidden");
+
+  const copyTimeout = setTimeout(() => {
+    copyIcon.classList.remove("hidden");
+    checkIcon.classList.add("hidden");
+    clearTimeout(copyTimeout);
+  }, 2000);
 }
 

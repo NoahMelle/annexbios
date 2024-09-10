@@ -46,9 +46,28 @@
     align-items: center;
     z-index: 1002;
   }
+  .add-user-success-modal-wrapper .entered-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
   .add-user-success-modal-wrapper .copy-entered {
     background-color: transparent;
     border: none;
+  }
+  .add-user-success-modal-wrapper .copy-icon.hidden, .add-user-success-modal-wrapper .check-icon.hidden {
+    display: none;
+  }
+  .add-user-success-modal-wrapper .entered-container {
+    padding: 0.4rem;
+    background-color: #eee;
+    display: flex;
+    gap: 0.6rem;
+    width: -moz-fit-content;
+    width: fit-content;
+    align-items: center;
+    border-radius: 0.3rem;
+    border: 1px solid #d5d5d5;
   }
   .add-user-success-modal-wrapper .add-user-success-modal {
     background-color: white;
