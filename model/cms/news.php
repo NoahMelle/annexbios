@@ -5,7 +5,8 @@ $data = [
     'base_url' => $env['BASEURL'],
     'styles' => ['news.css'],
     'current_url' => $_SERVER['REQUEST_URI'],
-    'news' => fetchNews($con)
+    'news' => fetchNews($con),
+    'js' => ['news.js']
 ];
 
 function fetchNews($con) {
@@ -67,19 +68,59 @@ function handleFileUpload($file, $env) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_news'])) {
-        if (isset($_POST['news_title']) && isset($_POST['news_content'])) {
-            $news_title = $_POST['news_title'];
-            $news_content = $_POST['news_content'];
-            $image_url = handleFileUpload($_FILES['image_url'], $env);
+        try {
+            if (isset($_POST['news_title']) && isset($_POST['news_content'])) {
+                $news_title = $_POST['news_title'];
+                $news_content = $_POST['news_content'];
+                $image_url = handleFileUpload($_FILES['image_url'], $env);
+    
+                if ($image_url) {
+                    $stmt = $con->prepare("INSERT INTO news (news_title, image_url, news_content) VALUES (?, ?, ?)");
+                    $stmt->bind_param("sss", $news_title, $image_url, $news_content);
+                    $stmt->execute();
+                    $stmt->close();
+                }
+            }
+            header("Location: " . $_SERVER['REQUEST_URI']);
+        } catch (Exception $e) {
+        }
+    } else if (isset($_POST['delete-news-submit'])) {
+        $newsId = $_POST['delete-news-id'];
 
-            if ($image_url) {
-                $stmt = $con->prepare("INSERT INTO news (news_title, image_url, news_content) VALUES (?, ?, ?)");
-                $stmt->bind_param("sss", $news_title, $image_url, $news_content);
-                $stmt->execute();
-                $stmt->close();
+        $existingNewsItem = fetchNewsItemByID($con, $newsId);
+
+        if ($existingNewsItem) {
+            $image_url = "./assets/img/news/" . $existingNewsItem['image_url'];
+            if (file_exists($image_url)) {
+                unlink($image_url);
             }
         }
+
+        try {
+            $con->begin_transaction();
+            $stmt = $con->prepare("DELETE FROM news WHERE id = ?");
+            $stmt->bind_param("i", $newsId);
+            $stmt->execute();
+            $stmt->close();
+            $con->commit();
+            header("Location: " . $_SERVER['REQUEST_URI']);
+        } catch (Exception $e) {
+        }
     }
+}
+
+function fetchNewsItemByID($con, $newsId) {
+    $stmt = $con->prepare("SELECT id, news_title, image_url, news_content FROM news WHERE id = ?");
+    $stmt->bind_param("i", $newsId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    if ($result->num_rows > 0) {
+        return $result->fetch_assoc();
+    }
+
+    return null;
 }
 
 include "./model/cms/cms_global.php";
