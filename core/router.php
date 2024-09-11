@@ -119,7 +119,7 @@ switch ($view[0]) {
                     break;
 
                 case 'films':
-                    if (in_array("Films", $allowedPages) || $isSuperUser) {
+                    if (in_array("Filmgegevens", $allowedPages) || $isSuperUser) {
                         if (isset($view[2]) && $view[2] == 'toevoegen') {
                             $template = "cms/addMovies";
                         } else if (isset($view[2]) && $view[2] == 'wijzig') {
