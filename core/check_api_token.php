@@ -25,7 +25,7 @@
         exit;
     } else {
         $validToken = true;
-        $currect_location_id = $location_id;
+        $current_location_id = $location_id;
 
         if($token_role === 1) {
             $tokenIsAdmin = true;
