@@ -37,8 +37,8 @@
               <td><img src="{{ base_url }}assets/img/news/{{image_url}}" alt="{{news_title}}" class="news-image"></td>
               <td>{{news_content}}</td>
               <td>
-                <a href="/cms/news/edit/{{id}}" class="btn btn-primary">Bewerken</a>
-                <a href="/cms/news/delete/{{id}}" class="btn btn-danger">Verwijderen</a>
+                <button onclick="" data-title="{{ news_title }}">Bewerken</button>
+                <button onclick="deleteNews(this)" data-title="{{ news_title }}" data-id="{{ id }}">Verwijderen</button>
               </td>
             </tr>
             {{/ news}}
@@ -47,3 +47,32 @@
       </div>
   </div>
 </main>
+<div class="delete-news-form-wrapper">
+  <form action="{{ current_url }}" id="delete-news-form" method="post">
+    <input type="hidden" name="delete-news-id" id="delete-news" />
+    <h3>
+      Weet je zeker dat je dit nieuwsbericht (<span class="title-confirm"></span
+      >) wilt verwijderen?
+    </h3>
+    <p>Deze actie kan niet ongedaan worden gemaakt.</p>
+    <div class="delete-news-btns">
+      <button
+        class="cancel form-btn"
+        onclick="cancelDelete(this)"
+        aria-label="Cancel Deletion"
+        type="button"
+      >
+        Annuleer
+      </button>
+      <label for="delete-news-submit" class="confirm form-btn">
+        Verwijder
+      </label>
+    </div>
+    <input
+      type="submit"
+      id="delete-news-submit"
+      name="delete-news-submit"
+      aria-label="Confirm Deletion"
+    />
+  </form>
+</div>
