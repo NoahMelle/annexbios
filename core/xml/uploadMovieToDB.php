@@ -14,86 +14,92 @@
     {
         global $env;
         global $movie_db_images_baseurl;
-        global $con;
-    
+
         $authHeaders = [
             'Authorization: Bearer ' . $env['THEMOVIEDB_AUTH_TOKEN'],
             'accept: application/json'
         ];
-    
+
+        // Movie data request
         $dataRequest = curl_init();
         curl_setopt($dataRequest, CURLOPT_URL, "https://api.themoviedb.org/3/movie/$imdbId?language=nl-NL&append_to_response=credits");
         curl_setopt($dataRequest, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($dataRequest, CURLOPT_HTTPHEADER, $authHeaders);
-    
         $dataResult = json_decode(curl_exec($dataRequest), true);
-    
-        $trailerRequest = curl_init();
-        curl_setopt($trailerRequest, CURLOPT_URL, "https://api.themoviedb.org/3/movie/$imdbId/videos");
-        curl_setopt($trailerRequest, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($trailerRequest, CURLOPT_HTTPHEADER, $authHeaders);
-    
-        $trailerResult = json_decode(curl_exec($trailerRequest), true);
-    
+        curl_close($dataRequest);
+
+        if (empty($dataResult) || isset($dataResult['status_code'])) {
+            return array('success' => false, 'error_message' => 'Failed to retrieve movie data.', 'error_code' => 500);
+        }
+
+        // Trailer request
         $trailer = null;
-    
-        foreach($trailerResult['results'] as $result) {
-            if (stripos($result['name'], 'Trailer') !== false || $result['type'] === 'Trailer' || $result['type'] === 'Teaser') {
-                $trailer = 'https://www.youtube.com/watch?v=' . $result["key"];
-                break;
+        try {
+            $trailerRequest = curl_init();
+            curl_setopt($trailerRequest, CURLOPT_URL, "https://api.themoviedb.org/3/movie/$imdbId/videos");
+            curl_setopt($trailerRequest, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($trailerRequest, CURLOPT_HTTPHEADER, $authHeaders);
+            $trailerResult = json_decode(curl_exec($trailerRequest), true);
+            curl_close($trailerRequest);
+
+            if (!empty($trailerResult['results'])) {
+                foreach ($trailerResult['results'] as $result) {
+                    if (stripos($result['name'], 'Trailer') !== false || $result['type'] === 'Trailer') {
+                        $trailer = 'https://www.youtube.com/watch?v=' . $result["key"];
+                        break;
+                    }
+                }
             }
-        }    
-    
+        } catch (Exception $e) {
+            return array('success' => false, 'error_message' => 'Failed to retrieve trailer data.', 'error_code' => 500);
+        }
+
+        // Create JSON response
         $json_data = [
-            "imdb_id" => $dataResult['imdb_id'],
-            "title" => $dataResult['original_title'],
-            "description" => $dataResult['overview'],
-            "image" => $movie_db_images_baseurl . str_replace('/', '', $dataResult['poster_path']),
-            "rating" => $dataResult['vote_average'],    
-            "length" => $dataResult['runtime'],
-            "release_date" => $dataResult['release_date'],
+            "imdb_id" => $dataResult['imdb_id'] ?? null,
+            "title" => $dataResult['original_title'] ?? null,
+            "description" => $dataResult['overview'] ?? null,
+            "image" => $movie_db_images_baseurl . str_replace('/', '', $dataResult['poster_path'] ?? ''),
+            "rating" => $dataResult['vote_average'] ?? null,
+            "length" => $dataResult['runtime'] ?? null,
+            "release_date" => $dataResult['release_date'] ?? null,
             "trailer_link" => $trailer,
-            "is_adult_movie" => intval($dataResult['adult']),
-            "genres" => $dataResult['genres'],
+            "is_adult_movie" => intval($dataResult['adult'] ?? 0),
+            "genres" => $dataResult['genres'] ?? [],
             "directors" => [],
             "actors" => [],
             "kijkwijzers" => []
         ];
-    
-        foreach($dataResult['credits']['crew'] as $crewMember) {
-            if($crewMember['job'] === 'Director') {
-                $json_data['directors'][] = [
-                    "director_id" => $crewMember['id'],
-                    "name" => $crewMember['name'],
-                    "gender" => $crewMember['gender'],
-                    "image" => 'https://image.tmdb.org/t/p/w500' . $crewMember['profile_path']
-                ];
-            }
-        }
-    
-        foreach($dataResult['credits']['cast'] as $actor) {
-            if($actor['known_for_department'] === 'Acting') {
-                $json_data['actors'][] = [
-                    "actor_id" => $actor['id'],
-                    "name" => $actor['name'],
-                    "gender" => $actor['gender'],
-                    "image" => 'https://image.tmdb.org/t/p/w500' . $actor['profile_path'],
-                    "character" => $actor['character']
-                ];
+
+        // Extract directors
+        if (isset($dataResult['credits']['crew'])) {
+            foreach ($dataResult['credits']['crew'] as $crewMember) {
+                if ($crewMember['job'] === 'Director') {
+                    $json_data['directors'][] = [
+                        "director_id" => $crewMember['id'] ?? null,
+                        "name" => $crewMember['name'] ?? null,
+                        "gender" => $crewMember['gender'] ?? null,
+                        "image" => 'https://image.tmdb.org/t/p/w500' . ($crewMember['profile_path'] ?? '')
+                    ];
+                }
             }
         }
 
-        foreach($json_data['genres'] as $genre) {
-            $stmt = $con->prepare("SELECT kijkwijzer_genre_id FROM kijkwijzer_genre_link WHERE genre_id = ?;");
-            $stmt->bind_param("i", $genre['id']);
-            $stmt->bind_result($kijkwijzer_genre_id);
-            $stmt->execute();
-            $stmt->fetch();
-            $stmt->close();
-
-            $json_data['kijkwijzers'][] = $kijkwijzer_genre_id;
+        // Extract actors
+        if (isset($dataResult['credits']['cast'])) {
+            foreach ($dataResult['credits']['cast'] as $actor) {
+                if ($actor['known_for_department'] === 'Acting') {
+                    $json_data['actors'][] = [
+                        "actor_id" => $actor['id'] ?? null,
+                        "name" => $actor['name'] ?? null,
+                        "gender" => $actor['gender'] ?? null,
+                        "image" => 'https://image.tmdb.org/t/p/w500' . ($actor['profile_path'] ?? ''),
+                        "character" => $actor['character'] ?? null
+                    ];
+                }
+            }
         }
-        
+
         return $json_data;
     }
         
@@ -399,8 +405,13 @@
 
     try {
         $data = getMovieData($imdbId);
-        $process = processMovie($data);
-        echo $process;
+        if($data['success'] === false) {
+            echo json_encode($data);
+            exit();
+        } else {
+            $process = processMovie($data);
+            echo $process;
+        }
     } catch (Exception $e) {
         echo json_encode(array('success' => false, 'error_message' => 'An error occurred while processing the movie data.', 'error_code' => 500));
         exit();

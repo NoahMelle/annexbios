@@ -26,12 +26,12 @@ if (document.querySelector('#movies_form')) {
 
         if (responseData['success'] === true) {
           // Show success message
-          document.querySelector('..movies-pop-up').style.display = 'flex';
+          document.querySelector('.movies-pop-up').style.display = 'flex';
           document.querySelector('.hero-text-alert').style.display = 'flex';
           document.querySelector('.hero-text-alert').textContent = 'toegevoegd aan de database';
         } else {
           // Show error message
-          document.querySelector('..movies-pop-up').style.display = 'flex';
+          document.querySelector('.movies-pop-up').style.display = 'flex';
           document.querySelector('.hero-text-alert').style.display = 'flex';
           document.querySelector('.hero-text-alert').textContent = 'error: ' + responseData['error_message'];
         }
