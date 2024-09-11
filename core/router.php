@@ -54,8 +54,14 @@ switch ($view[0]) {
                     break;
                 case 'gebruikers':
                     if (in_array("Gebruikers", $allowedPages) || $isSuperUser) {
-                        $template = "cms/users";
+
+                        if(isset($view[2]) && $view[2] === 'wijzig') {
+                            $template = "cms/changeUsers";
+                        } else {
+                            $template = "cms/users";
+                        }
                         $model = "cms/users";
+
                     } else {
                         header("Location: " . $env["BASEURL"] . "cms");
                         exit;

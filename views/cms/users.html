@@ -27,24 +27,13 @@
               {{/ permissions}}
             </td>
             <td>{{ last_login }}</td>
-            <td>
-              <button
-                class="edit-user-btn"
-                onclick="editUser(this)"
-                data-id="{{ id }}"
-                data-username="{{ username }}"
-              >
-                <img
-                  src="{{ base_url }}assets/icons/pencil.svg"
-                  alt="Edit Icon"
-                />
-              </button>
-              <button
-                class="delete-user-btn"
-                onclick="deleteUser(this)"
-                data-id="{{ id }}"
-                data-username="{{ username }}"
-              >
+            <td class="edit-user-td">
+              <a href="{{ base_url }}cms/gebruikers/wijzig/{{ id }}" class="edit-user-btn"
+                data-username="{{ username }}">
+                <img src="{{ base_url }}assets/icons/pencil.svg" alt="Edit Icon" />
+              </a>
+              <button class="delete-user-btn" onclick="deleteUser(this)" data-id="{{ id }}"
+                data-username="{{ username }}">
                 <img src="{{ base_url }}assets/icons/x.svg" alt="Delete Icon" />
               </button>
             </td>
@@ -58,29 +47,14 @@
     <h2>Gebruiker Toevoegen</h2>
     <form action="{{ current_url }}" method="post" class="new-user-form">
       <div>
-        <input
-          type="text"
-          name="username"
-          id="username"
-          placeholder="Gebruikersnaam"
-          autocomplete="off"
-        />
+        <input type="text" name="username" id="username" placeholder="Gebruikersnaam" autocomplete="off" />
         <p id="username-error" class="error">{{ username_error }}</p>
       </div>
       <div>
         <div class="password-input-container">
-          <input
-            type="text"
-            name="password"
-            id="password"
-            placeholder="Wachtwoord"
-          />
-          <button
-            onclick="generateRandomPassword(this)"
-            aria-label="Generate Random Password"
-            class="random-password-button"
-            type="button"
-          >
+          <input type="text" name="password" id="password" placeholder="Wachtwoord" />
+          <button onclick="generateRandomPassword(this)" aria-label="Generate Random Password"
+            class="random-password-button" type="button">
             <img src="{{ base_url }}assets/icons/dice.svg" alt="Dice Icon" />
           </button>
         </div>
@@ -89,24 +63,14 @@
       <div class="permissions-wrapper">
         <div>
           <h3>Permissies</h3>
-          <small
-            ><em
-              >Selecteer de pagina's waar de medewerker toegang tot moet
-              hebben.</em
-            ></small
-          >
+          <small><em>Selecteer de pagina's waar de medewerker toegang tot moet
+              hebben.</em></small>
         </div>
         <div>
           <div class="permissions-container">
             {{# available_perms}}
             <label class="permission-label" for="{{ id }}">
-              <input
-                type="checkbox"
-                name="permissions[]"
-                id="{{ id }}"
-                class="permission-checkbox"
-                value="{{ id }}"
-              />
+              <input type="checkbox" name="permissions[]" id="{{ id }}" class="permission-checkbox" value="{{ id }}" />
               {{ title }}
             </label>
             {{/ available_perms}}
@@ -114,12 +78,7 @@
           <p class="error" id="permissions-error">{{ permissions_error }}</p>
         </div>
       </div>
-      <button
-        type="submit"
-        class="submit-btn"
-        id="add-user-submit"
-        name="add-user-submit"
-      >
+      <button type="submit" class="submit-btn" id="add-user-submit" name="add-user-submit">
         Toevoegen
       </button>
     </form>
@@ -129,29 +88,18 @@
   <form action="{{ current_url }}" id="delete-user-form" method="post">
     <input type="hidden" name="delete-user-id" id="delete-user" />
     <h3>
-      Weet je zeker dat je deze gebruiker (<span class="username-confirm"></span
-      >) wilt verwijderen?
+      Weet je zeker dat je deze gebruiker (<span class="username-confirm"></span>) wilt verwijderen?
     </h3>
     <p>Deze actie kan niet ongedaan worden gemaakt.</p>
     <div class="delete-user-btns">
-      <button
-        class="cancel form-btn"
-        onclick="cancelDelete(this)"
-        aria-label="Cancel Deletion"
-        type="button"
-      >
+      <button class="cancel form-btn" onclick="cancelDelete(this)" aria-label="Cancel Deletion" type="button">
         Annuleer
       </button>
       <label for="delete-user-submit" class="confirm form-btn">
         Verwijder
       </label>
     </div>
-    <input
-      type="submit"
-      id="delete-user-submit"
-      name="delete-user-submit"
-      aria-label="Confirm Deletion"
-    />
+    <input type="submit" id="delete-user-submit" name="delete-user-submit" aria-label="Confirm Deletion" />
   </form>
 </div>
 {{# add_user_success}}
@@ -186,11 +134,7 @@
         </button>
       </div>
     </div>
-    <a
-      class="close-modal-btn"
-      href="{{ current_url }}"
-      aria-label="Close Modal"
-    >
+    <a class="close-modal-btn" href="{{ current_url }}" aria-label="Close Modal">
       Sluiten
     </a>
   </div>

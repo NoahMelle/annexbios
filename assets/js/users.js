@@ -8,6 +8,7 @@ const usernameError = document.getElementById("username-error");
 const passwordError = document.getElementById("password-error");
 const deleteUserForm = document.getElementById("delete-user-form");
 
+
 let containsErrors = true;
 
 function debounce(func, delay) {
@@ -40,9 +41,9 @@ const handleUsernameValidation = (username) => {
 
 const handlePermissionValidation = () => {
   const isChecked = getCheckboxesChecked().length > 0;
-  permissionsError.textContent = isChecked
-    ? ""
-    : "Selecteer minimaal één permissie.";
+  permissionsError.textContent = isChecked ?
+    "" :
+    "Selecteer minimaal één permissie.";
 };
 
 function checkFullValidation() {
@@ -56,8 +57,8 @@ function checkFullValidation() {
 
 const getCheckboxesChecked = () =>
   Array.from(permissionCheckboxes)
-    .filter((checkbox) => checkbox.checked)
-    .map((checkbox) => checkbox.value);
+  .filter((checkbox) => checkbox.checked)
+  .map((checkbox) => checkbox.value);
 
 // Add debounced event listeners
 passwordInput.addEventListener(
@@ -150,4 +151,3 @@ function copyToClipboard(element) {
     clearTimeout(copyTimeout);
   }, 2000);
 }
-
