@@ -64,7 +64,7 @@
             while ($rowDirector = $resultDirector->fetch_assoc()) {
                 $directors[] = [
                     "name" => $rowDirector["name"],
-                    "image" => $env["BASEURL"] . $rowDirector["image_path"]
+                    "image" => $rowDirector["image_path"] === null ? $rowDirector["image_path"] : $env["BASEURL"] . $rowDirector["image_path"]
                 ];
             }
 
@@ -77,7 +77,7 @@
             while ($rowActor = $resultActor->fetch_assoc()) {
                 $actors[] = [
                     "name" => $rowActor["name"],
-                    "image" => $env["BASEURL"] . $rowActor["image_path"]
+                    "image" => $rowActor["image_path"] === null ? $rowActor["image_path"] : $env["BASEURL"] . $rowActor["image_path"]
                 ];
             }
 

@@ -15,27 +15,29 @@ document.querySelector('#movies_form').addEventListener('submit', function (e) {
     })
     .then(response => {
       if (response.ok) {
-        return response.json();
+        return response.text();
       }
       throw new Error('Network response was not ok.');
     })
     .then(responseData => {
-      document.querySelector('.movies-loading-screen').style.display = 'none';
-      document.body.style.overflow = 'auto';
+      console.log(responseData);
 
-      if (responseData['success'] === true) {
-        // Show success message
-        document.querySelector('.hero-text-alert').style.display = 'flex';
-        document.querySelector('.hero-text-alert').classList.add('success');
-        document.querySelector('.hero-text-alert').classList.remove('error');
-        document.querySelector('.hero-text-alert').textContent = 'toegevoegd aan de database';
-      } else {
-        // Show error message
-        document.querySelector('.hero-text-alert').style.display = 'flex';
-        document.querySelector('.hero-text-alert').classList.add('error');
-        document.querySelector('.hero-text-alert').classList.remove('success');
-        document.querySelector('.hero-text-alert').textContent = 'error: ' + responseData['error_message'];
-      }
+      // document.querySelector('.movies-loading-screen').style.display = 'none';
+      // document.body.style.overflow = 'auto';
+
+      // if (responseData['success'] === true) {
+      //   // Show success message
+      //   document.querySelector('.hero-text-alert').style.display = 'flex';
+      //   document.querySelector('.hero-text-alert').classList.add('success');
+      //   document.querySelector('.hero-text-alert').classList.remove('error');
+      //   document.querySelector('.hero-text-alert').textContent = 'toegevoegd aan de database';
+      // } else {
+      //   // Show error message
+      //   document.querySelector('.hero-text-alert').style.display = 'flex';
+      //   document.querySelector('.hero-text-alert').classList.add('error');
+      //   document.querySelector('.hero-text-alert').classList.remove('success');
+      //   document.querySelector('.hero-text-alert').textContent = 'error: ' + responseData['error_message'];
+      // }
     })
     .catch(error => {
       // Handle errors
