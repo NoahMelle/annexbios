@@ -9,6 +9,87 @@ $data = [
     'current_url' => $_SERVER['REQUEST_URI'],
 ];
 
+if(isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && validate_integer($view[3])) {
+    $id = $view[3];
+    $data["id"] = $id;
+
+    $stmt = $con->prepare("SELECT username FROM user_data WHERE user_id = ?;");
+    $stmt->bind_param("i", $id);
+    $stmt->bind_result($username);
+    $stmt->execute();
+    $stmt->fetch();
+    $stmt->close();
+
+    $activatedPermissions = [];
+
+    $stmt = $con->prepare("SELECT admin_header_pages_data.id FROM admin_header_pages_data LEFT JOIN user_page_permission_link ON admin_header_pages_data.id = user_page_permission_link.page_id WHERE user_page_permission_link.user_id = ?;");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    if($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $activatedPermissions[] = $row["id"];
+        }
+    }
+
+    $activatedPermissionChecked = [];
+
+    foreach(fetchAvailablePermissions($con) as $permission) {
+        $activatedPermissionChecked[] = [
+            "checked" => in_array($permission["id"], $activatedPermissions) ? 'checked' : '',
+            "id" => $permission["id"],
+            "title" => $permission["title"]
+        ];
+    }
+
+    $data["username"] = $username;
+    $data["activated_permissions"] = $activatedPermissionChecked;
+} else if(isset($view[2]) && $view[2] === 'wijzig' && isset($_POST["id"]) && validate_integer($_POST["id"]) && isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["permissions"])) {
+    $id = mes($_POST["id"]);
+    
+    if(!empty($_POST["username"])) {
+        $username = mes($_POST["username"]);
+
+        $stmt = $con->prepare("UPDATE user_data SET username = ? WHERE user_id = ?;");
+        $stmt->bind_param("si", $username, $id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    if(!empty($_POST["password"])) {
+        $password = mes($_POST["password"]);
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        
+        $stmt = $con->prepare("UPDATE user_data SET password = ? WHERE user_id = ?;");
+        $stmt->bind_param("si", $password, $id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    if(!empty($_POST["permissions"])) {
+        $permissions = array_map('intval', array_filter($_POST['permissions'], 'is_numeric'));
+        
+        // Unlink all permissions for the user
+        $stmt = $con->prepare("DELETE FROM user_page_permission_link WHERE user_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+        
+        // Link the selected permissions for the user
+        $stmt = $con->prepare("INSERT INTO user_page_permission_link (page_id, user_id) VALUES (?, ?)");
+        foreach ($permissions as $permission) {
+            $stmt->bind_param("ii", $permission, $id);
+            $stmt->execute();
+        }
+        $stmt->close();
+    }
+} else if(isset($view[2]) && $view[2] === 'wijzig') {
+    if(!isset($view[3]) || empty($view[3]) || !validate_integer($view[3])) {
+        header('location: ' . $env["BASEURL"] . 'cms/gebruikers');
+    }
+}
+
 // Function to get users and their permissions
 function fetchUsers($con) {
     $stmt = $con->prepare("
