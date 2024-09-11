@@ -73,6 +73,22 @@ $bar-spacing: calc(#{$hamburger-width} / 3.5);
     backdrop-filter: blur(5px);
 }
 
+.users-table {
+  background-color: white;
+  width: 100%;
+  th,
+  td {
+    text-align: left;
+    padding: 0.7rem 1rem;
+  }
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+}
+.table-container {
+  overflow-x: auto;
+}
+
 .hamburger-button.cms {
     height: calc(#{$hamburger-width} / 1.5);
     width: $hamburger-width;

@@ -143,9 +143,18 @@ switch ($view[0]) {
                         exit;
                     }
                     break;
+                case 'nieuws':
+                    if (in_array("Nieuws", $allowedPages) || $isSuperUser) {
+                        $template = "cms/news";
+                        $model = "cms/news";
+                    } else {
+                        header("Location: " . $env["BASEURL"] . "cms");
+                        exit;
+                    }
+                    break;
                 default:
                     $template = "404";
-                    $model = "404";
+                    $model = "cms/cms_404";
                     break;
             }
         }
