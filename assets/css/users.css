@@ -99,6 +99,30 @@
   .users-table tr:nth-child(even) {
     background-color: #f2f2f2;
   }
+  .users-table .edit-user-td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  .users-table .edit-user-td .edit-user-btn,
+  .users-table .edit-user-td .delete-user-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    min-width: 25px;
+    aspect-ratio: 1;
+    padding: 3px;
+    background-color: #f0f0f0;
+    border: 1px solid #b4b4b4;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .users-table .edit-user-td .edit-user-btn:hover,
+  .users-table .edit-user-td .delete-user-btn:hover {
+    background-color: #e0e0e0;
+  }
   .table-container {
     overflow-x: auto;
   }
@@ -110,6 +134,10 @@
     flex-direction: column;
     container-type: inline-size;
     gap: 1rem;
+  }
+  #new-user-form-container#edit-user-form-container,
+  #edit-user-form-container#edit-user-form-container {
+    gap: 2rem;
   }
   #new-user-form-container .submit-btn,
   #edit-user-form-container .submit-btn {
@@ -138,6 +166,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+  }
+  #new-user-form-container form.edit-user-input-form,
+  #edit-user-form-container form.edit-user-input-form {
+    display: flex;
+    flex-direction: column;
   }
   #new-user-form-container form .error,
   #edit-user-form-container form .error {

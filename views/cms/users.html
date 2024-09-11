@@ -32,10 +32,9 @@
                 data-username="{{ username }}">
                 <img src="{{ base_url }}assets/icons/pencil.svg" alt="Edit Icon" />
               </a>
-              <button class="delete-user-btn" onclick="deleteUser(this)" data-id="{{ id }}"
-                data-username="{{ username }}">
+              <a class="delete-user-btn" onclick="deleteUser(this)" data-id="{{ id }}" data-username="{{ username }}">
                 <img src="{{ base_url }}assets/icons/x.svg" alt="Delete Icon" />
-              </button>
+              </a>
             </td>
           </tr>
           {{/ users}}
