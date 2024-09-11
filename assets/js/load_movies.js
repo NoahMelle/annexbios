@@ -13,7 +13,7 @@ async function loadRecommendedMovies() {
       throw new Error(`Failed to fetch data: ${response.statusText}`);
     }
 
-    const movies = await response.json();
+    const movies = (await response.json()).data;
 
     const recommendedMovies = document.querySelectorAll(".recommended-movie");
 
