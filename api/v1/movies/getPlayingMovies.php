@@ -40,19 +40,19 @@
         if (!isset($movie_id)) {
             // Prepare query for fetching movie data based on the user type
             if (isset($tokenIsAdmin) && $tokenIsAdmin === true) {
-                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data;");
+            $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE play_time >= CURDATE();");
             } else {
-                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE location_id = ?");
-                $stmt->bind_param("i", $current_location_id);
+            $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE location_id = ? AND play_time >= CURDATE();");
+            $stmt->bind_param("i", $current_location_id);
             }
         } else {
             // Prepare query for fetching specific movie data
             if (isset($tokenIsAdmin) && $tokenIsAdmin === true) {
-                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ?;");
-                $stmt->bind_param("i", $movie_id); 
+            $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ? AND play_time >= CURDATE();");
+            $stmt->bind_param("i", $movie_id); 
             } else {
-                $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ? AND location_id = ?");
-                $stmt->bind_param("ii", $movie_id, $current_location_id);
+            $stmt = $con->prepare("SELECT location_movie_id, movie_id, place_data, play_time FROM location_movie_data WHERE movie_id = ? AND location_id = ? AND play_time >= CURDATE();");
+            $stmt->bind_param("ii", $movie_id, $current_location_id);
             }
         }
 
