@@ -23,13 +23,7 @@ paths:
       operationId: getMovies
       responses:
         "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Movie"
+          $ref: "#/components/responses/MoviesResponse"
         "400":
           $ref: "#/components/responses/400BadRequest"
         "403":
@@ -59,11 +53,7 @@ paths:
             format: int64
       responses:
         "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Movie"
+          $ref: "#/components/responses/MovieResponse"
         "400":
           $ref: "#/components/responses/400BadRequest"
         "403":
@@ -85,13 +75,17 @@ paths:
       operationId: getPlayingMovies
       responses:
         "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/PlayingMovie"
+          $ref: "#/components/responses/PlayingMoviesResponse"
+        "400":
+          $ref: "#/components/responses/400BadRequest"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "405":
+          $ref: "#/components/responses/405MethodNotAllowed"
+        "500":
+          $ref: "#/components/responses/500InternalServerError"
   /api/v1/playingMovies/{movieId}:
     get:
       tags:
@@ -109,13 +103,17 @@ paths:
             format: int64
       responses:
         "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/PlayingMovie"
+          $ref: "#/components/responses/PlayingMoviesResponse"
+        "400":
+          $ref: "#/components/responses/400BadRequest"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "405":
+          $ref: "#/components/responses/405MethodNotAllowed"
+        "500":
+          $ref: "#/components/responses/500InternalServerError"
   /api/v1/reservePlace:
     post:
       tags:
@@ -156,13 +154,7 @@ paths:
       operationId: getNews
       responses:
         "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/NewsArticle"
+          $ref: "#/components/responses/NewsResponse"
         "400":
           $ref: "#/components/responses/400BadRequest"
         "403":
@@ -490,6 +482,92 @@ components:
           schema:
             $ref: "#/components/schemas/ReservePlace"
   responses:
+    MovieResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - success
+              - data
+              - status_code
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                $ref: "#/components/schemas/Movie"
+              status_code:
+                  type: integer
+                  format: int64
+                  example: 200
+    MoviesResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - success
+              - data
+              - status_code
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+              status_code:
+                  type: integer
+                  format: int64
+                  example: 200
+    PlayingMoviesResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - success
+              - data
+              - status_code
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PlayingMovie"
+              status_code:
+                  type: integer
+                  format: int64
+                  example: 200
+    NewsResponse:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - success
+              - data
+              - status_code
+            properties:
+              success:
+                type: boolean
+                example: true
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsArticle"
+              status_code:
+                  type: integer
+                  format: int64
+                  example: 200
     400BadRequest:
       description: Bad Request
       content:
