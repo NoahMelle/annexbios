@@ -1,3 +1,9 @@
+<?php
+  require_once '../../core/db_connect.php';
+
+  var_dump($env);
+?>
+
 <!doctype html>
 <html>
 <head>
@@ -10,7 +16,7 @@
 </head>
 <body>
 <!--<div data-api-url="https://annexbios.nickvz.nl/api-config.yaml"></div>-->
-<div data-api-url="https://u231195.gluwebsite.nl/api/api-config.yaml"></div>
+<div data-api-url="<?= $env['BASEURL'] ?>/api/api-config.yaml"></div>
 
 <style>
     body > div > header > div > div > div.flex > a > div > span {
