@@ -32,7 +32,7 @@ function fetchNews($con) {
 }
 
 function handleFileUpload($file, $env) {
-    $target_dir = $_SERVER['DOCUMENT_ROOT'] . $env['BASEURL'] . "assets/img/news/";
+    $target_dir = "./assets/img/news/";
     $newFileName = uniqid() . "-" . strtolower(basename($file["name"]));
     $target_file = $target_dir . $newFileName;
     $uploadOk = 1;
@@ -70,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_news'])) {
         try {
             if (isset($_POST['news_title']) && isset($_POST['news_content'])) {
-                $news_title = $_POST['news_title'];
-                $news_content = $_POST['news_content'];
+                $news_title = sanitizeInput($_POST['news_title']);
+                $news_content = sanitizeInput($_POST['news_content']);
                 $image_url = handleFileUpload($_FILES['image_url'], $env);
     
                 if ($image_url) {
@@ -106,6 +106,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: " . $_SERVER['REQUEST_URI']);
         } catch (Exception $e) {
         }
+    } else if (isset($_POST['edit-news-submit'])) {
+        $newsId = $_POST['edit-news-id'];
+        $existingNewsItem = fetchNewsItemByID($con, $newsId);
+
+        $news_title = sanitizeInput($_POST['edit-news-title']);
+        $news_content = sanitizeInput($_POST['edit-news-content']);
+
+        if (!$existingNewsItem) {
+            return;
+        }
+
+        if (!empty($_FILES['edit-image-url']['name'])) {
+            $image_url = handleFileUpload($_FILES['edit-image-url'], $env);
+            $previousImageUrl = "./assets/img/news/" . $existingNewsItem['image_url'];
+            if (file_exists($previousImageUrl)) {
+                unlink($previousImageUrl);
+            }
+        } else {
+            $image_url = $existingNewsItem['image_url'];
+        }
+
+        try {
+            $con->begin_transaction();
+            $stmt = $con->prepare("UPDATE news SET news_title = ?, news_content = ?, image_url = ? WHERE id = ?");
+            $stmt->bind_param("sssi", $news_title, $news_content, $image_url, $newsId);
+            $stmt->execute();
+            $stmt->close();
+            $con->commit();
+            header("Location: " . $_SERVER['REQUEST_URI']);
+        } catch (Exception $e) {
+        }
     }
 }
 
@@ -121,6 +152,10 @@ function fetchNewsItemByID($con, $newsId) {
     }
 
     return null;
+}
+
+function sanitizeInput($input) {
+    return htmlspecialchars(stripslashes(trim($input)));
 }
 
 include "./model/cms/cms_global.php";
