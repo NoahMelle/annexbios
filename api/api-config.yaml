@@ -2,7 +2,22 @@ openapi: 3.0.2
 info:
   title: AnnexBios API
   description: |-
-    De documentatie voor de API van het Hoofdkantoor (2WDV2)
+    The documentation for the API of the AnnexBios Headquarters API (2WDV2)
+    ---
+    ## Authentication
+    To use this API you need to include a Bearer token in the Authorization header for all requests. The format is:
+    `Authorization: Bearer <your_token>`
+
+    Replace `<your_token>` with the token that we provided to you.
+
+    **Code Example (Javascript)**
+    ```js
+    fetch('https://u231195.gluwebsite.nl/api/v1/movieData', {
+      headers: {
+        'Authorization': 'Bearer 87myiOkW34gPWzFYYmxrrOg3j7cEM9CM',
+      }
+    });
+    ```
   version: 1.0
 servers:
   - url: https://u231195.gluwebsite.nl
@@ -86,6 +101,8 @@ paths:
           $ref: "#/components/responses/405MethodNotAllowed"
         "500":
           $ref: "#/components/responses/500InternalServerError"
+      security:
+        - api_key: [ ]
   /api/v1/playingMovies/{movieId}:
     get:
       tags:
@@ -114,6 +131,8 @@ paths:
           $ref: "#/components/responses/405MethodNotAllowed"
         "500":
           $ref: "#/components/responses/500InternalServerError"
+      security:
+        - api_key: [ ]
   /api/v1/reservePlace:
     post:
       tags:
@@ -145,6 +164,8 @@ paths:
           $ref: "#/components/responses/409Conflict"
         "500":
           $ref: "#/components/responses/500InternalServerError"
+      security:
+        - api_key: [ ]
   /api/v1/getnews:
     get:
       tags:
@@ -165,6 +186,8 @@ paths:
           $ref: "#/components/responses/405MethodNotAllowed"
         "500":
           $ref: "#/components/responses/500InternalServerError"
+      security:
+        - api_key: [ ]
 components:
   schemas:
     Director:
