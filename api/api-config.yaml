@@ -1,0 +1,534 @@
+openapi: 3.0.2
+info:
+  title: AnnexBios API
+  description: |-
+    De documentatie voor de API van het Hoofdkantoor (2WDV2)
+  version: 1.0
+servers:
+  - url: https://u231195.gluwebsite.nl
+tags:
+  - name: movies
+    description: Movies
+  - name: reservations
+    description: Reservations
+  - name: news
+    description: News
+paths:
+  /api/v1/movieData:
+    get:
+      tags:
+        - movies
+      summary: Movies
+      description: View all movies
+      operationId: getMovies
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+        "400":
+          $ref: "#/components/responses/400BadRequest"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "405":
+          $ref: "#/components/responses/405MethodNotAllowed"
+        "500":
+          $ref: "#/components/responses/500InternalServerError"
+      security:
+        - api_key: []
+  /api/v1/movieData/{movieId}:
+    get:
+      tags:
+        - movies
+      summary: Movie
+      description: Get a specific movie by ID
+      operationId: getMovie
+      parameters:
+        - name: movieId
+          in: path
+          description: ID of a movie
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+        "400":
+          $ref: "#/components/responses/400BadRequest"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "405":
+          $ref: "#/components/responses/405MethodNotAllowed"
+        "500":
+          $ref: "#/components/responses/500InternalServerError"
+      security:
+        - api_key: []
+  /api/v1/playingMovies:
+    get:
+      tags:
+        - movies
+      summary: Playing Movies
+      description: View all planned movies
+      operationId: getPlayingMovies
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PlayingMovie"
+  /api/v1/playingMovies/{movieId}:
+    get:
+      tags:
+        - movies
+      summary: Playing Movies by Id
+      description: View all planned movies with a specific Id
+      operationId: getPlayingMoviesById
+      parameters:
+        - name: movieId
+          in: path
+          description: ID of a movie
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PlayingMovie"
+  /api/v1/reservePlace:
+    post:
+      tags:
+        - reservations
+      summary: Reserve a place
+      description: Reserve a place for a movie
+      operationId: reservePlace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReservePlace"
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseObject"
+        "400":
+          $ref: "#/components/responses/400BadRequest"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "405":
+          $ref: "#/components/responses/405MethodNotAllowed"
+        "409":
+          $ref: "#/components/responses/409Conflict"
+        "500":
+          $ref: "#/components/responses/500InternalServerError"
+  /api/v1/getnews:
+    get:
+      tags:
+        - news
+      summary: News
+      description: Get all news articles
+      operationId: getNews
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsArticle"
+        "400":
+          $ref: "#/components/responses/400BadRequest"
+        "403":
+          $ref: "#/components/responses/403Forbidden"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "405":
+          $ref: "#/components/responses/405MethodNotAllowed"
+        "500":
+          $ref: "#/components/responses/500InternalServerError"
+components:
+  schemas:
+    Director:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Tim Burton
+        image:
+          type: string
+          example: http://localhost/assets/img/directors/510.jpg
+    Actor:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Michael Keaton
+        image:
+          type: string
+          example: http://localhost/assets/img/directors/2232.jpg
+    ViewingGuide:
+      type: object
+      required:
+        - age
+        - symbols
+      properties:
+        age:
+          type: string
+          example: "16+"
+        symbols:
+          type: array
+          items:
+            $ref: "#/components/schemas/Symbol"
+    Symbol:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: Grof taalgebruik
+        image:
+          type: string
+          example: http://localhost/assets/img/viewing_guides/taal.png
+    Place:
+      type: object
+      properties:
+        place:
+          type: integer
+          format: int64
+          example: 1
+        available:
+          type: boolean
+          example: true
+    Movie:
+      required:
+        - imdb_id
+        - api_id
+        - title
+        - description
+        - genres
+        - directors
+        - actors
+        - viewing_guides
+        - rating
+        - length
+        - release_date
+        - is_adult_movie
+      type: object
+      properties:
+        imdb_id:
+          type: string
+          example: tt2049403
+        api_id:
+          type: integer
+          format: int64
+          example: 73
+        title:
+          type: string
+          example: Beetlejuice Beetlejuice
+        description:
+          type: string
+          example: Zesendertig jaar na de gebeurtenissen in de eerste film keert de familie Deetz terug naar Winter River na de onverwachte dood van Charles Deetz. Lydia's leven staat op zijn kop als haar rebelse tienerdochter Astrid het mysterieuze model van de stad op zolder ontdekt en het portaal naar het hiernamaals per ongeluk wordt geopend, waardoor Betelgeuze vrijkomt.
+        image:
+          type: string
+        genres:
+          type: array
+          items:
+            type: string
+        directors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Director"
+        actors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Actor"
+        viewing_guides:
+          $ref: "#/components/schemas/ViewingGuide"
+        rating:
+          type: string
+          example: 7.3
+        length:
+          type: string
+          example: 105
+          description: The movie duration in minutes
+        release_date:
+          type: string
+          example: 2024-09-04
+        trailer_link:
+          type: string
+          example: https://www.youtube.com/watch?v=6b7-49Y23vg
+        is_adult_movie:
+          type: integer
+          enum:
+            - 0
+            - 1
+    PlayingMovie:
+      type: object
+      required:
+        - location_movie_id
+        - movie_id
+        - play_time
+        - plays_this_week
+        - plays_today
+        - place_data
+      properties:
+        location_movie_id:
+          type: integer
+          format: int64
+          example: 19
+        movie_id:
+          type: integer
+          format: int64
+          example: 83
+        play_time:
+          type: string
+          example: 2024-09-26 22:00:00
+        plays_this_week:
+          type: boolean
+          example: true
+        plays_today:
+          type: boolean
+          example: true
+        place_data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Place"
+    ReservePlace:
+      type: object
+      required:
+        - movie_id
+        - place_id
+        - name
+        - email
+      properties:
+        movie_id:
+          type: integer
+          format: int64
+          example: 83
+        place_id:
+          type: integer
+          format: int64
+          example: 1
+          description: The seat number to be reserved
+        name:
+          type: string
+          example: Henk de Boer
+          description: The name of the customer that makes the reservation
+        email:
+          type: string
+          example: henk.deboer@mail.nl
+          description: The email of the customer that makes the reservation
+    ResponseObject:
+      type: object
+      required:
+        - success
+        - message
+        - status_code
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Place reserved successfully
+        status_code:
+          type: integer
+          example: 200
+    NewsArticle:
+      type: object
+      required:
+        - title
+        - content
+        - date
+      properties:
+        title:
+          type: string
+          example: EXAMPLE_TITLE
+        content:
+          type: string
+          example: EXAMPLE_CONTENT
+        date:
+          type: string
+          example: ??
+        image:
+          type: string
+          example: EXAMPLE_IMAGE_LINK
+    ErrorResponse400:
+      type: object
+      required:
+        - success
+        - message
+        - status_code
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Something went wrong.
+        status_code:
+          type: integer
+          example: 400
+    ErrorResponse403:
+      type: object
+      required:
+        - success
+        - message
+        - status_code
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Something went wrong.
+        status_code:
+          type: integer
+          example: 403
+    ErrorResponse404:
+      type: object
+      required:
+        - success
+        - message
+        - status_code
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Something went wrong.
+        status_code:
+          type: integer
+          example: 404
+    ErrorResponse405:
+      type: object
+      required:
+        - success
+        - message
+        - status_code
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Something went wrong.
+        status_code:
+          type: integer
+          example: 405
+    ErrorResponse409:
+      type: object
+      required:
+        - success
+        - message
+        - status_code
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Something went wrong.
+        status_code:
+          type: integer
+          example: 409
+    ErrorResponse500:
+      type: object
+      required:
+        - success
+        - message
+        - status_code
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Something went wrong.
+        status_code:
+          type: integer
+          example: 500
+  requestBodies:
+    ReservePlace:
+      description: Information about a movie reservation
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ReservePlace"
+  responses:
+    400BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse400"
+    404NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse404"
+    403Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse403"
+    500InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse500"
+    409Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse409"
+    405MethodNotAllowed:
+      description: Method Not Allowed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse405"
+
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
