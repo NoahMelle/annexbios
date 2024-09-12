@@ -1,12 +1,26 @@
+.error {
+  color: red;
+}
+
+@mixin inputStyling {
+  outline: 1px solid #b4b4b4;
+  border-radius: 0.2rem;
+  width: 100%;
+  border: none;
+  padding: 10px;
+  font-size: inherit;
+  &:focus {
+    outline: 2px solid #303030;
+    animation: glowingOutline 1s infinite;
+  }
+}
+
 #news-form {
   background-color: white;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  .error {
-    color: red;
-  }
   .image-preview {
     width: 200px;
     height: 200px;
@@ -18,7 +32,7 @@
     align-items: center;
     font-size: 5rem;
     color: #727272;
-    padding: .5rem;
+    padding: 0.5rem;
     cursor: pointer;
     background: #f5f5f5;
     .image-preview-img {
@@ -38,17 +52,8 @@
     gap: 0.5rem;
     input[type="text"],
     textarea {
-      outline: 1px solid #b4b4b4;
-      border-radius: 0.2rem;
-      width: 100%;
-      border: none;
-      padding: 10px;
-      font-size: inherit;
+      @include inputStyling;
       height: 44px;
-      &:focus {
-        outline: 2px solid #303030;
-        animation: glowingOutline 1s infinite;
-      }
     }
     textarea {
       resize: vertical;
@@ -80,10 +85,67 @@
 }
 
 .users-table {
-  .news-image {
+  .news-image-container {
+    width: 300px;
+  }
+  .news-image,
+  .edit-news-image-preview {
+    aspect-ratio: 4/1;
+    object-fit: cover;
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+  }
+  .news-title-container {
     width: 200px;
+    height: fit-content;
+    .news-title, .edit-news-title {
+      min-width: 200px;
+      width: 100%;
+      @include inputStyling;
+    }
+    .news-title {
+      outline: none;
+    }
+  }
+  .news-content-container {
     height: 200px;
-    object-fit: contain;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    width: 500px;
+    gap: 0.5rem;
+    .news-content {
+      overflow-y: auto;
+      width: 500px;
+      flex-grow: 1;
+      height: 100%;
+      outline: 1px solid #b4b4b4;
+      border-radius: 0.2rem;
+      border: none;
+      padding: 10px;
+      font-size: inherit;
+      margin-bottom: 1.5rem;
+    }
+    .error {
+      min-height: 1rem;
+    }
+  }
+  textarea {
+    resize: vertical;
+    width: 500px;
+    flex-grow: 1;
+    height: 100%;
+    @include inputStyling;
+  }
+  .news-title {
+    min-width: 200px;
   }
 }
 
