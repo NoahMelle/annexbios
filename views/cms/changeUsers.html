@@ -3,17 +3,24 @@
     <h1 class="hero-header">Gebruiker: {{ username }}</h1>
   </div>
   <div id="edit-user-form-container">
-    <form action="{{ base_url }}cms/gebruikers/wijzig" method="post">
+    <form class="edit-user-input-form" action="{{ base_url }}cms/gebruikers/wijzig/gebruikersnaam" method="post">
       <input type="hidden" name="id" value="{{ id }}">
 
       <div>
-        <input type="text" name="username" id="username" placeholder="Gebruikersnaam" autocomplete="off"
+        <input type="text" name="edit-username" id="edit-username" placeholder="Gebruikersnaam" autocomplete="off"
           value="{{ username }}">
         <p id="username-error" class="error">{{ username_error }}</p>
       </div>
+      <button type="submit" class="submit-btn" id="edit-username-submit" name="edit-username-submit">
+        Wijzig Gebruikersnaam
+      </button>
+    </form>
+    <form class="edit-user-input-form" action="{{ base_url }}cms/gebruikers/wijzig/wachtwoord" method="post">
+      <input type="hidden" name="id" value="{{ id }}">
+
       <div>
         <div class="password-input-container">
-          <input type="text" name="password" id="password" placeholder="Wachtwoord" />
+          <input type="text" name="edit-password" id="edit-password" placeholder="Wachtwoord" />
           <button onclick="generateRandomPassword(this)" aria-label="Generate Random Password"
             class="random-password-button" type="button">
             <img src="{{ base_url }}assets/icons/dice.svg" alt="Dice Icon" />
@@ -21,6 +28,12 @@
         </div>
         <p id="password-error" class="error">{{ password_error }}</p>
       </div>
+      <button type="submit" class="submit-btn" id="edit-password-submit" name="edit-password-submit">
+        Wijzig Wachtwoord
+      </button>
+    </form>
+    <form action="{{ base_url }}cms/gebruikers/wijzig/permissies" method="post">
+      <input type="hidden" name="id" value="{{ id }}">
 
       <div class="permissions-container">
         {{# activated_permissions}}
@@ -32,8 +45,8 @@
         {{/ activated_permissions}}
       </div>
       <p class="error" id="permissions-error">{{ permissions_error }}</p>
-      <button type="submit" class="submit-btn" id="add-user-submit" name="add-user-submit">
-        Toevoegen
+      <button type="submit" class="submit-btn" id="edit-permissions-submit" name="edit-permissions-submit">
+        Wijzig Permissies
       </button>
     </form>
   </div>

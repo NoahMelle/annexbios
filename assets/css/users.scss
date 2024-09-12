@@ -79,6 +79,7 @@
       }
     }
   }
+
   .users-table {
     background-color: white;
     width: 100%;
@@ -91,6 +92,33 @@
 
     tr:nth-child(even) {
       background-color: #f2f2f2;
+    }
+
+
+    .edit-user-td {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+
+      .edit-user-btn,
+      .delete-user-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 25%;
+        min-width: 25px;
+        aspect-ratio: 1;
+        padding: 3px;
+        background-color: #f0f0f0;
+        border: 1px solid #b4b4b4;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #e0e0e0;
+        }
+      }
     }
   }
 
@@ -106,6 +134,11 @@
     flex-direction: column;
     container-type: inline-size;
     gap: 1rem;
+
+    &#edit-user-form-container {
+      gap: 2rem;
+    }
+
     $inputBorderRadius: 0.2rem;
     $activeOutline: 2px solid #303030;
     $inactiveOutline: 1px solid #b4b4b4;
@@ -137,6 +170,12 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
+
+
+      &.edit-user-input-form {
+        display: flex;
+        flex-direction: column;
+      }
 
       .error {
         margin-top: 0.5rem;

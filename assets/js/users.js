@@ -7,6 +7,11 @@ const permissionsError = document.getElementById("permissions-error");
 const usernameError = document.getElementById("username-error");
 const passwordError = document.getElementById("password-error");
 const deleteUserForm = document.getElementById("delete-user-form");
+const editUsernameInput = document.getElementById("edit-username");
+const editPasswordInput = document.getElementById("edit-password");
+const editUsernameButton = document.getElementById("edit-username-submit");
+const editPasswordButton = document.getElementById("edit-password-submit");
+const editPermissionsButton = document.getElementById("edit-permissions-submit");
 
 
 let containsErrors = true;
@@ -47,12 +52,18 @@ const handlePermissionValidation = () => {
 };
 
 function checkFullValidation() {
-  containsErrors = !(
-    validateUsername(usernameInput.value) &&
-    validatePassword(passwordInput.value) &&
-    getCheckboxesChecked().length > 0
-  );
-  addUserButton.disabled = containsErrors;
+  if (passwordInput && usernameInput) {
+    containsErrors = !(
+      validateUsername(usernameInput.value) &&
+      validatePassword(passwordInput.value) &&
+      getCheckboxesChecked().length > 0
+    );
+    addUserButton.disabled = containsErrors;
+  } else if (editPasswordInput && editUsernameInput) {
+    editUsernameButton.disabled = !validateUsername(editUsernameInput.value);
+    editPasswordButton.disabled = !validatePassword(editPasswordInput.value);
+    editPermissionsButton.disabled = !getCheckboxesChecked().length > 0;
+  }
 }
 
 const getCheckboxesChecked = () =>
@@ -60,22 +71,41 @@ const getCheckboxesChecked = () =>
   .filter((checkbox) => checkbox.checked)
   .map((checkbox) => checkbox.value);
 
-// Add debounced event listeners
-passwordInput.addEventListener(
-  "input",
-  debounce((e) => {
-    handlePasswordValidation(e.target.value);
-    checkFullValidation();
-  }, 300)
-);
+if (passwordInput && usernameInput) {
 
-usernameInput.addEventListener(
-  "input",
-  debounce((e) => {
-    handleUsernameValidation(e.target.value);
-    checkFullValidation();
-  }, 300)
-);
+  // Add debounced event listeners
+  passwordInput.addEventListener(
+    "input",
+    debounce((e) => {
+      handlePasswordValidation(e.target.value);
+      checkFullValidation();
+    }, 300)
+  );
+
+  usernameInput.addEventListener(
+    "input",
+    debounce((e) => {
+      handleUsernameValidation(e.target.value);
+      checkFullValidation();
+    }, 300)
+  );
+} else if (editPasswordInput && editUsernameInput) {
+  editPasswordInput.addEventListener(
+    "input",
+    debounce((e) => {
+      handlePasswordValidation(e.target.value);
+      checkFullValidation();
+    }, 300)
+  );
+
+  editUsernameInput.addEventListener(
+    "input",
+    debounce((e) => {
+      handleUsernameValidation(e.target.value);
+      checkFullValidation();
+    }, 300)
+  );
+}
 
 permissionCheckboxes.forEach((checkbox) => {
   checkbox.addEventListener("change", () => {
@@ -89,8 +119,10 @@ checkFullValidation();
 // Password generation
 function generateRandomPassword(element) {
   const randomPassword = generateCustomPassword(32);
-  element.parentNode.querySelector('input[name="password"]').value =
-    randomPassword;
+  element.parentNode.querySelector('input[name="password"]') ? element.parentNode.querySelector('input[name="password"]').value =
+    randomPassword : element.parentNode.querySelector('input[name="edit-password"]').value = randomPassword;
+
+  checkFullValidation();
 }
 
 function generateCustomPassword(length) {

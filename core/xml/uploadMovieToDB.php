@@ -8,93 +8,98 @@
 
     $imdbId = mes($_POST['imdb_id']);
     
-
     $movie_db_images_baseurl = 'https://image.tmdb.org/t/p/w500/';
 
     function getMovieData($imdbId)
     {
         global $env;
         global $movie_db_images_baseurl;
-        global $con;
-    
+
         $authHeaders = [
             'Authorization: Bearer ' . $env['THEMOVIEDB_AUTH_TOKEN'],
             'accept: application/json'
         ];
-    
+
+        // Movie data request
         $dataRequest = curl_init();
         curl_setopt($dataRequest, CURLOPT_URL, "https://api.themoviedb.org/3/movie/$imdbId?language=nl-NL&append_to_response=credits");
         curl_setopt($dataRequest, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($dataRequest, CURLOPT_HTTPHEADER, $authHeaders);
-    
         $dataResult = json_decode(curl_exec($dataRequest), true);
-    
-        $trailerRequest = curl_init();
-        curl_setopt($trailerRequest, CURLOPT_URL, "https://api.themoviedb.org/3/movie/$imdbId/videos");
-        curl_setopt($trailerRequest, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($trailerRequest, CURLOPT_HTTPHEADER, $authHeaders);
-    
-        $trailerResult = json_decode(curl_exec($trailerRequest), true);
-    
+        curl_close($dataRequest);
+
+        if (empty($dataResult) || isset($dataResult['status_code'])) {
+            return array('success' => false, 'error_message' => 'Failed to retrieve movie data.', 'error_code' => 500);
+        }
+
+        // Trailer request
         $trailer = null;
-    
-        foreach($trailerResult['results'] as $result) {
-            if (stripos($result['name'], 'Trailer') !== false || $result['type'] === 'Trailer' || $result['type'] === 'Teaser') {
-                $trailer = 'https://www.youtube.com/watch?v=' . $result["key"];
-                break;
+        try {
+            $trailerRequest = curl_init();
+            curl_setopt($trailerRequest, CURLOPT_URL, "https://api.themoviedb.org/3/movie/$imdbId/videos");
+            curl_setopt($trailerRequest, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($trailerRequest, CURLOPT_HTTPHEADER, $authHeaders);
+            $trailerResult = json_decode(curl_exec($trailerRequest), true);
+            curl_close($trailerRequest);
+
+            if (!empty($trailerResult['results'])) {
+                foreach ($trailerResult['results'] as $result) {
+                    if (stripos($result['name'], 'Trailer') !== false || $result['type'] === 'Trailer') {
+                        $trailer = 'https://www.youtube.com/watch?v=' . $result["key"];
+                        break;
+                    }
+                }
             }
-        }    
-    
+        } catch (Exception $e) {
+            return array('success' => false, 'error_message' => 'Failed to retrieve trailer data.', 'error_code' => 500);
+        }
+
+        // Create JSON response
         $json_data = [
-            "imdb_id" => $dataResult['imdb_id'],
-            "title" => $dataResult['original_title'],
-            "description" => $dataResult['overview'],
-            "image" => $movie_db_images_baseurl . str_replace('/', '', $dataResult['poster_path']),
-            "rating" => $dataResult['vote_average'],    
-            "length" => $dataResult['runtime'],
-            "release_date" => $dataResult['release_date'],
+            "imdb_id" => $dataResult['imdb_id'] ?? null,
+            "title" => $dataResult['original_title'] ?? null,
+            "description" => $dataResult['overview'] ?? null,
+            "image" => $movie_db_images_baseurl . str_replace('/', '', $dataResult['poster_path'] ?? ''),
+            "rating" => $dataResult['vote_average'] ?? null,
+            "length" => $dataResult['runtime'] ?? null,
+            "release_date" => $dataResult['release_date'] ?? null,
             "trailer_link" => $trailer,
-            "is_adult_movie" => intval($dataResult['adult']),
-            "genres" => $dataResult['genres'],
+            "is_adult_movie" => intval($dataResult['adult'] ?? 0),
+            "genres" => $dataResult['genres'] ?? [],
             "directors" => [],
             "actors" => [],
             "kijkwijzers" => []
         ];
-    
-        foreach($dataResult['credits']['crew'] as $crewMember) {
-            if($crewMember['job'] === 'Director') {
-                $json_data['directors'][] = [
-                    "director_id" => $crewMember['id'],
-                    "name" => $crewMember['name'],
-                    "gender" => $crewMember['gender'],
-                    "image" => 'https://image.tmdb.org/t/p/w500' . $crewMember['profile_path']
-                ];
-            }
-        }
-    
-        foreach($dataResult['credits']['cast'] as $actor) {
-            if($actor['known_for_department'] === 'Acting') {
-                $json_data['actors'][] = [
-                    "actor_id" => $actor['id'],
-                    "name" => $actor['name'],
-                    "gender" => $actor['gender'],
-                    "image" => 'https://image.tmdb.org/t/p/w500' . $actor['profile_path'],
-                    "character" => $actor['character']
-                ];
+
+        // Extract directors
+        if (isset($dataResult['credits']['crew'])) {
+            foreach ($dataResult['credits']['crew'] as $crewMember) {
+                if ($crewMember['job'] === 'Director') {
+                    $json_data['directors'][] = [
+                        "director_id" => $crewMember['id'] ?? null,
+                        "name" => $crewMember['name'] ?? null,
+                        "gender" => $crewMember['gender'] ?? null,
+                        "image" => 'https://image.tmdb.org/t/p/w500' . ($crewMember['profile_path'] ?? '')
+                    ];
+                }
             }
         }
 
-        foreach($json_data['genres'] as $genre) {
-            $stmt = $con->prepare("SELECT kijkwijzer_genre_id FROM kijkwijzer_genre_link WHERE genre_id = ?;");
-            $stmt->bind_param("i", $genre['id']);
-            $stmt->bind_result($kijkwijzer_genre_id);
-            $stmt->execute();
-            $stmt->fetch();
-            $stmt->close();
-
-            $json_data['kijkwijzers'][] = $kijkwijzer_genre_id;
+        // Extract actors
+        if (isset($dataResult['credits']['cast'])) {
+            foreach ($dataResult['credits']['cast'] as $actor) {
+                if ($actor['known_for_department'] === 'Acting') {
+                    $json_data['actors'][] = [
+                        "actor_id" => $actor['id'] ?? null,
+                        "name" => $actor['name'] ?? null,
+                        "gender" => $actor['gender'] ?? null,
+                        "image" => 'https://image.tmdb.org/t/p/w500' . ($actor['profile_path'] ?? ''),
+                        "character" => $actor['character'] ?? null
+                    ];
+                }
+            }
         }
-        
+
         return $json_data;
     }
         
@@ -102,6 +107,8 @@
     {
         global $con;
         global $env;
+
+        $error = ['success' => false, 'error_message' => 'Script failed to start', 'status_code' => 500];
     
         $stmt = $con->prepare("SELECT imdb_id FROM movie_data WHERE imdb_id = ?");
         $stmt->bind_param("s", $data['imdb_id']);
@@ -111,16 +118,21 @@
         $stmt->close();
     
         if ($imdb_id === $data['imdb_id']) {
-            return json_encode(array('success' => false, 'error_message' => 'Movie already exists in the database.', 'error_code' => 500));
-            exit();
+            $error = [
+                'success' => false,
+                'error_message' => 'Movie already exists in the database.',
+                'status_code' => 500
+            ];
         }
     
     
         if (!isset($data) || gettype($data) !== 'array') {
             // Throw a 500 - Internal Server error
-            http_response_code(500);
-            return json_encode(array('success' => false, 'error_message' => 'Unknown data received for processing a movie.', 'error_code' => 500));
-            exit();
+            $error = [
+                'success' => false,
+                'error_message' => 'Unknown data received for processing a movie.',
+                'status_code' => 500
+            ];
         }
     
         // Define the path to save the image
@@ -139,6 +151,8 @@
         if ($rawImage !== false) {
             file_put_contents($saveTo, $rawImage);
     
+            $con->begin_transaction();
+
             $stmt = $con->prepare("INSERT INTO movie_data (imdb_id, title, description, image_path, rating, length_minutes, release_date, trailer_link, is_adult_movie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("ssssdisss", $data['imdb_id'], $data['title'], $data['description'], $dbPath, $data['rating'], $data['length'], $data['release_date'], $data['trailer_link'], $data['is_adult_movie']);
             if($stmt->execute()) {
@@ -146,8 +160,11 @@
                 $stmt->close();
     
                 if(empty($db_movie_id)) {
-                    return json_encode(array('success' => false, 'error_message' => 'Failed to insert movie data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                    exit();
+                    $error = [
+                        'success' => false,
+                        'error_message' => 'Failed to insert movie data into the database.',
+                        'status_code' => 500
+                    ];
                 }
                 
                 foreach($data['kijkwijzers'] as $kijkwijzer) {
@@ -157,8 +174,12 @@
                         $stmt->close();
                     } else {
                         $stmt->close();
-                        return json_encode(array('success' => false, 'error_message' => 'Failed to insert kijkwijzer link data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                        exit();
+
+                        $error = [
+                            'success' => false,
+                            'error_message' => 'Failed to insert kijkwijzer link data into the database.',
+                            'status_code' => 500
+                        ];
                     }
                 }
                 
@@ -177,8 +198,11 @@
                             $stmt->close();
                         } else {
                             $stmt->close();
-                            return json_encode(array('success' => false, 'error_message' => 'Failed to insert director link data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                            exit();
+                            $error = [
+                                'success' => false,
+                                'error_message' => 'Failed to insert director link data into the database.',
+                                'status_code' => 500
+                            ];
                         }
                     }
 
@@ -198,7 +222,7 @@
                             // It's a URL, try to fetch the image
                             $rawImage = @file_get_contents($director['image']);
                             if ($rawImage === FALSE) {
-                                $dbPath = 'niet beschikbaar'; // Image could not be retrieved
+                                $dbPath = null; // Image could not be retrieved
                             } else {
                                 file_put_contents($saveTo, $rawImage);
                             }
@@ -215,13 +239,20 @@
                                 $stmt->close();
                             } else {
                                 $stmt->close();
-                                return json_encode(array('success' => false, 'error_message' => 'Failed to insert director link data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                                exit();
+
+                                $error = [
+                                    'success' => false,
+                                    'error_message' => 'Failed to insert director link data into the database.',
+                                    'status_code' => 500
+                                ];
                             }
                         } else {
                             $stmt->close();
-                            return json_encode(array('success' => false, 'error_message' => 'Failed to insert director data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                            exit();
+                            $error = [
+                                'success' => false,
+                                'error_message' => 'Failed to insert director data into the database.',
+                                'status_code' => 500
+                            ];
                         }
                     }
                 }
@@ -241,8 +272,11 @@
                             $stmt->close();
                         } else {
                             $stmt->close();
-                            return json_encode(array('success' => false, 'error_message' => 'Failed to insert actor link data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                            exit();
+                            $error = [
+                                'success' => false,
+                                'error_message' => 'Failed to insert actor link data into the database.',
+                                'status_code' => 500
+                            ];
                         }
                     }
 
@@ -263,7 +297,7 @@
                             // It's a URL, try to fetch the image
                             $rawImage = @file_get_contents($actor['image']);
                             if ($rawImage === FALSE) {
-                                $dbPath = 'niet beschikbaar'; // Image could not be retrieved
+                                $dbPath = null; // Image could not be retrieved
                             } else {
                                 file_put_contents($saveTo, $rawImage);
                             }
@@ -280,13 +314,19 @@
                                 $stmt->close();
                             } else {
                                 $stmt->close();
-                                return json_encode(array('success' => false, 'error_message' => 'Failed to insert actor link data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                                exit();
+                                $error = [
+                                    'success' => false,
+                                    'error_message' => 'Failed to insert actor link data into the database.',
+                                    'status_code' => 500
+                                ];
                             }
                         } else {
                             $stmt->close();
-                            return json_encode(array('success' => false, 'error_message' => 'Failed to insert actor data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                            exit();
+                            $error = [
+                                'success' => false,
+                                'error_message' => 'Failed to insert actor data into the database.',
+                                'status_code' => 500
+                            ];
                         }
                     }
                 }
@@ -306,8 +346,11 @@
                             $stmt->close();
                         } else {
                             $stmt->close();
-                            return json_encode(array('success' => false, 'error_message' => 'Failed to insert genre link data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                            exit();
+                            $error = [
+                                'success' => false,
+                                'error_message' => 'Failed to insert genre link data into the database.',
+                                'status_code' => 500
+                            ];
                         }
                     }
     
@@ -316,6 +359,7 @@
                         $stmt->bind_param("is", $genre['id'], $genre['name']);
                         if($stmt->execute()) {
                             $db_genre_id = $con->insert_id;
+                            $stmt->close();
     
                             $stmt = $con->prepare("INSERT INTO movie_genre_link (genre_id, movie_id) VALUES (?, ?)");
                             $stmt->bind_param("ii", $db_genre_id, $db_movie_id);
@@ -323,25 +367,54 @@
                                 $stmt->close();
                             } else {
                                 $stmt->close();
-                                return json_encode(array('success' => false, 'error_message' => 'Failed to insert genre link data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                                exit();
+                                $error = [
+                                    'success' => false,
+                                    'error_message' => 'Failed to insert genre link data into the database.',
+                                    'status_code' => 500
+                                ];
                             }
                         } else {
                             $stmt->close();
-                            return json_encode(array('success' => false, 'error_message' => 'Failed to insert genre data into the database. Error: ' . $stmt->error, 'error_code' => 500));
-                            exit();
+                            $error = [
+                                'success' => false,
+                                'error_message' => 'Failed to insert genre data into the database.',
+                                'status_code' => 500
+                            ];
                         }
                     }
                 }
     
-                return json_encode(array('success' => true));
+                $error = [
+                    'success' => true,
+                    'error_message' => 'Movie data successfully inserted into the database.',
+                    'status_code' => 200
+                ];
             }
+            $con->commit();
         } else {
-            return json_encode(array('success' => false, 'error_message' => 'Failed to retrieve the image from the given path.', 'error_code' => 500));
-            exit();
+            $error = [
+                'success' => false,
+                'error_message' => 'Failed to retrieve the image from the given path.',
+                'status_code' => 500
+            ];
         }
+
+        return json_encode($error);
     }
 
-    $data = getMovieData($imdbId);
-    echo processMovie($data);
+
+    try {
+        $data = getMovieData($imdbId);
+        if($data['success'] === false) {
+            echo json_encode($data);
+            exit();
+        } else {
+            $process = processMovie($data);
+            echo $process;
+        }
+    } catch (Exception $e) {
+        echo json_encode(array('success' => false, 'error_message' => 'An error occurred while processing the movie data.', 'error_code' => 500));
+        exit();
+    }
+
 ?>

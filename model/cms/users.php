@@ -84,6 +84,60 @@ if(isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && validate_integ
         }
         $stmt->close();
     }
+} else if(isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && $view[3] === 'gebruikersnaam') {
+    if(isset($_POST["id"]) && isset($_POST["edit-username"]) && !empty($_POST["edit-username"])) {
+        $id = mes($_POST["id"]);
+        $username = mes($_POST["edit-username"]);
+
+        $stmt = $con->prepare("UPDATE user_data SET username = ? WHERE user_id = ?;");
+        $stmt->bind_param("si", $username, $id);
+        $stmt->execute();
+        $stmt->close();
+
+        header("location: " . $env["BASEURL"] . "cms/gebruikers/wijzig/" . $id);
+    }
+} else if(isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && $view[3] === 'wachtwoord') {
+    if(isset($_POST["id"]) && isset($_POST["edit-password"]) && !empty($_POST["edit-password"])) {
+        $id = mes($_POST["id"]);
+        $password = mes($_POST["edit-password"]);
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        
+        $stmt = $con->prepare("UPDATE user_data SET password = ? WHERE user_id = ?;");
+        $stmt->bind_param("si", $password, $id);
+        $stmt->execute();
+        $stmt->close();
+
+        header("location: " . $env["BASEURL"] . "cms/gebruikers/wijzig/" . $id);
+    }
+} else if(isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && $view[3] === 'permissies') {
+    if(isset($_POST["id"]) && isset($_POST["permissions"]) && !empty($_POST["permissions"])) {
+        $id = mes($_POST["id"]);
+        $permissions = array_map('intval', array_filter($_POST['permissions'], 'is_numeric'));
+        
+        // Unlink all permissions for the user
+        $stmt = $con->prepare("DELETE FROM user_page_permission_link WHERE user_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+        
+        // Link the selected permissions for the user
+        $stmt = $con->prepare("INSERT INTO user_page_permission_link (page_id, user_id) VALUES (?, ?)");
+        foreach ($permissions as $permission) {
+            $stmt->bind_param("ii", $permission, $id);
+            $stmt->execute();
+        }
+        $stmt->close();
+
+        header("location: " . $env["BASEURL"] . "cms/gebruikers/wijzig/" . $id);
+    }
+} else if(isset($view[2]) && $view[2] === 'verwijder' && isset($view[3]) && validate_integer($view[3])) {
+    $id = $view[3];
+    $stmt = $con->prepare("DELETE FROM user_data WHERE user_id = ?;");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+    header("location: " . $env["BASEURL"] . "cms/gebruikers");
+    exit;
 } else if(isset($view[2]) && $view[2] === 'wijzig') {
     if(!isset($view[3]) || empty($view[3]) || !validate_integer($view[3])) {
         header('location: ' . $env["BASEURL"] . 'cms/gebruikers');
