@@ -16,7 +16,7 @@
 
 <body>
     <!--<div data-api-url="https://annexbios.nickvz.nl/api-config.yaml"></div>-->
-    <div data-api-url="<?= $env['BASEURL'] ?>/api/api-config.yaml"></div>
+    <div data-api-url="<?= $env['BASEURL'] ?>api/api-config.yaml"></div>
 
     <style>
     body>div>header>div>div>div.flex>a>div>span {
