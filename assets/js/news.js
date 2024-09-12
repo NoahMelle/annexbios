@@ -9,6 +9,7 @@ const contentError = document.querySelector("#content-error");
 const newsSubmitButton = document.querySelector("#news-submit-btn");
 const imageError = document.querySelector("#image-error");
 const editNewsId = document.querySelector("#edit-news-id");
+const editImageInput = document.querySelector("#edit-image-url");
 
 imageUpload.addEventListener("change", function () {
   const file = this.files[0];
@@ -84,7 +85,11 @@ imageUpload.addEventListener("change", () => {
 });
 
 function validateForm() {
-  if (handleTitleValidation() && handleContentValidation() && handleImageValidation()) {
+  if (
+    handleTitleValidation() &&
+    handleContentValidation() &&
+    handleImageValidation()
+  ) {
     newsSubmitButton.disabled = false;
   } else {
     newsSubmitButton.disabled = true;
@@ -95,15 +100,16 @@ function editNews(element) {
   const row = element.closest("tr");
   const newsContent = row.querySelector(".news-content");
   const newsTitle = row.querySelector(".news-title");
+  const newsImage = row.querySelector(".news-image");
 
   const editContentInput = document.createElement("textarea");
   editContentInput.innerText = newsContent.textContent;
-  editContentInput.name = "news-content";
+  editContentInput.name = "edit-news-content";
   editContentInput.setAttribute("form", "edit-news-form");
 
   const editTitleInput = document.createElement("input");
   editTitleInput.value = newsTitle.textContent;
-  editTitleInput.name = "news-title";
+  editTitleInput.name = "edit-news-title";
   editTitleInput.setAttribute("form", "edit-news-form");
 
   const saveEditButton = document.createElement("input");
@@ -112,9 +118,37 @@ function editNews(element) {
   saveEditButton.name = "edit-news-submit";
   saveEditButton.setAttribute("form", "edit-news-form");
 
+  const editImageInputLabel = document.createElement("label");
+  editImageInputLabel.htmlFor = "edit-image-url";
+
+  const editImageInputLabelImage = document.createElement("img");
+  editImageInputLabelImage.src = newsImage.src;
+
+  editImageInputLabelImage.classList.add("news-img");
+
+  editImageInputLabel.appendChild(editImageInputLabelImage);
+
   editNewsId.value = element.getAttribute("data-id");
+
+  newsImage.replaceWith(editImageInputLabel);
 
   element.replaceWith(saveEditButton);
   newsContent.replaceWith(editContentInput);
   newsTitle.replaceWith(editTitleInput);
+
+  editContentInput.focus();
+
+  editImageInput.addEventListener("change", function () {
+    const file = this.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.addEventListener("load", function () {
+        editImageInputLabelImage.src = reader.result;
+      });
+
+      reader.readAsDataURL(file);
+    }
+  });
 }

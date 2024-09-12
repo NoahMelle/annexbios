@@ -108,13 +108,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else if (isset($_POST['edit-news-submit'])) {
         $newsId = $_POST['edit-news-id'];
-        $news_title = sanitizeInput($_POST['news-title']);
-        $news_content = sanitizeInput($_POST['news-content']);
+        $existingNewsItem = fetchNewsItemByID($con, $newsId);
+
+        $news_title = sanitizeInput($_POST['edit-news-title']);
+        $news_content = sanitizeInput($_POST['edit-news-content']);
+
+        if (!$existingNewsItem) {
+            return;
+        }
+
+        if (!empty($_FILES['edit-image-url']['name'])) {
+            $image_url = handleFileUpload($_FILES['edit-image-url'], $env);
+            $previousImageUrl = "./assets/img/news/" . $existingNewsItem['image_url'];
+            if (file_exists($previousImageUrl)) {
+                unlink($previousImageUrl);
+            }
+        } else {
+            $image_url = $existingNewsItem['image_url'];
+        }
 
         try {
             $con->begin_transaction();
-            $stmt = $con->prepare("UPDATE news SET news_title = ?, news_content = ? WHERE id = ?");
-            $stmt->bind_param("ssi", $news_title, $news_content, $newsId);
+            $stmt = $con->prepare("UPDATE news SET news_title = ?, news_content = ?, image_url = ? WHERE id = ?");
+            $stmt->bind_param("sssi", $news_title, $news_content, $image_url, $newsId);
             $stmt->execute();
             $stmt->close();
             $con->commit();
