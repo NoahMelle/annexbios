@@ -53,7 +53,7 @@ paths:
             format: int64
       responses:
         "200":
-          $ref: "#/components/responses/MovieResponse"
+          $ref: "#/components/responses/MoviesResponse"
         "400":
           $ref: "#/components/responses/400BadRequest"
         "403":
