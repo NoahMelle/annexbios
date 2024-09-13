@@ -76,6 +76,12 @@ const handleImageValidation = (imageInputElement, errorElement) => {
   }
 };
 
+function cancelDelete(element) {
+  deleteNewsForm.classList.remove("active");
+  deleteNewsForm.querySelector(".title-confirm").textContent = "";
+  deleteNewsForm.querySelector('input[name="delete-news-id"]').value = "";
+}
+
 // Form validation
 function validateForm(
   titleInput,
