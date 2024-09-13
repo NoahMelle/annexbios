@@ -89,7 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $news_title = sanitizeInput($_POST['news_title']);
                 if (strlen($news_title) > 255) {
-                    die("News title is too long.");
+                    $data['title_error'] = "De titel is te lang (max. 255 karakters).";
+                    $data['news_title'] = $news_title;
+                    $valid = false;
                 } else if (strlen($news_title) < 5) {
                     $data['title_error'] = "De titel moet minstens 5 karakters lang zijn.";
                     $data['news_title'] = $news_title;
@@ -101,7 +103,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $data['content_error'] = "Het nieuwsbericht moet minstens 10 karakters lang zijn.";
                     $data['news_content'] = $news_content;
                     $valid = false;
-                }
+                } else if (strlen($news_content) > 4096) {
+                    $data['content_error'] = "Het nieuwsbericht is te lang (max. 4096 karakters).";
+                    $data['news_content'] = $news_content;
+                    $valid = false;
+                }   
 
                 if ($valid) {
                     $image_url = handleFileUpload($_FILES['image_url'], $env);

@@ -35,6 +35,9 @@ const handleTitleValidation = (titleElement, errorElement) => {
   } else if (titleElement.value.length < 5) {
     errorElement.textContent = "De titel moet minstens 5 karakters lang zijn.";
     return false;
+  } else if (titleElement.value.length > 255) {
+    errorElement.textContent = "De titel is te lang (max. 255 karakters).";
+    return false;
   } else {
     errorElement.textContent = "";
     return true;
@@ -49,8 +52,12 @@ const handleContentValidation = (contentElement, errorElement) => {
   } else if (contentElement.value.length < 10) {
     errorElement.textContent =
       "Het nieuwsbericht moet minstens 10 karakters lang zijn.";
-    console.log(errorElement.textContent)
+    console.log(errorElement.textContent);
 
+    return false;
+  } else if (contentElement.value.length > 4096) {
+    errorElement.textContent =
+      "Het nieuwsbericht is te lang (max. 4096 karakters).";
     return false;
   } else {
     errorElement.textContent = "";
