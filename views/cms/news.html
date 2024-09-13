@@ -2,7 +2,9 @@
   <div class="hero">
     <h1 class="hero-header">Nieuws</h1>
   </div>
+
   <div class="news-crud-wrapper">
+    <!-- Add News Form -->
     <form
       action="{{ current_url }}"
       id="news-form"
@@ -10,6 +12,7 @@
       enctype="multipart/form-data"
     >
       <h2 class="news-crud-header">Nieuws toevoegen</h2>
+
       <div class="form-group">
         <label for="news_title">Titel</label>
         <div>
@@ -18,11 +21,13 @@
             name="news_title"
             id="news_title"
             class="form-control"
+            placeholder="Titel van het nieuws"
             required
           />
-          <p class="error" id="title-error"></p>
+          <p class="error" id="title-error">{{ title_error }}</p>
         </div>
       </div>
+
       <div class="form-group">
         <label for="news_content">Bericht</label>
         <div>
@@ -30,14 +35,15 @@
             name="news_content"
             id="news_content"
             class="form-control"
+            placeholder="Schrijf hier het nieuwsbericht"
+            required
           ></textarea>
-          <p class="error" id="content-error"></p>
+          <p class="error" id="content-error">{{ content_error }}</p>
         </div>
       </div>
+
       <div class="form-group">
-        <label for="image_url"
-          >Afbeelding (aanbevolen dimensies: 800x200px)
-        </label>
+        <label for="image_url">Afbeelding (aanbevolen dimensies: 800x200px)</label>
         <label for="image_url" class="image-preview">
           <img
             src="{{ base_url }}assets/icons/plus.svg"
@@ -53,17 +59,21 @@
           required
           accept="image/png,image/jpg,image/jpeg"
         />
-        <p class="error" id="image-error"></p>
+        <p class="error" id="image-error">{{ image_error }}</p>
       </div>
+
       <input
         type="submit"
         value="Toevoegen"
         name="add_news"
         class="form-submit"
         id="news-submit-btn"
-        disabled
+        {{#disable_submit}} disabled {{/disable_submit}}
       />
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     </form>
+
+    <!-- News Table -->
     <div class="table-container">
       <table class="users-table" id="users-table">
         <thead>
@@ -75,19 +85,24 @@
           </tr>
         </thead>
         <tbody>
-          {{# news}}
+          {{#news}}
           <tr>
-            <td><span class="news-title">{{news_title}}</span></td>
+            <td class="news-title-container">
+              <p class="news-title">{{ news_title }}</p>
+            </td>
             <td class="news-image-container">
               <img
-                src="{{ base_url }}assets/img/news/{{image_url}}"
-                alt="{{news_title}}"
+                src="{{ base_url }}assets/img/news/{{ image_url }}"
+                alt="{{ news_title }}"
                 class="news-image"
               />
             </td>
-            <td><span class="news-content">{{news_content}}</span></td>
+            <td><div class="news-content-container">
+              <div class="news-content"><p>{{ news_content }}</p></div>
+            </div></td>
             <td>
               <button
+                class="edit-btn"
                 onclick="editNews(this)"
                 data-title="{{ news_title }}"
                 data-id="{{ id }}"
@@ -97,6 +112,7 @@
                 Bewerken
               </button>
               <button
+                class="delete-btn"
                 onclick="deleteNews(this)"
                 data-title="{{ news_title }}"
                 data-id="{{ id }}"
@@ -105,19 +121,43 @@
               </button>
             </td>
           </tr>
-          {{/ news}}
+          {{/news}}
+          {{^news}}
+          <tr>
+            <td colspan="4">Geen nieuwsartikelen beschikbaar.</td>
+          </tr>
+          {{/news}}
         </tbody>
       </table>
-      <form action="{{ current_url }}" name="edit-news-form" id="edit-news-form" method="post" enctype="multipart/form-data">
+
+      <!-- Hidden form for editing news -->
+      <form
+        action="{{ current_url }}"
+        name="edit-news-form"
+        id="edit-news-form"
+        method="POST"
+        enctype="multipart/form-data"
+      >
         <input type="hidden" name="edit-news-id" id="edit-news-id" />
-        <input type="file" name="edit-image-url" id="edit-image-url" class="form-control" accept="image/png,image/jpg,image/jpeg" style="display: none;" />
+        <input
+          type="file"
+          name="edit-image-url"
+          id="edit-image-url"
+          class="form-control"
+          accept="image/png,image/jpg,image/jpeg"
+          style="display: none;"
+        />
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       </form>
     </div>
   </div>
 </main>
+
+<!-- Modal for Deleting News -->
 <div class="delete-news-form-wrapper">
-  <form action="{{ current_url }}" id="delete-news-form" method="post">
+  <form action="{{ current_url }}" id="delete-news-form" method="POST">
     <input type="hidden" name="delete-news-id" id="delete-news" />
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <h3>
       Weet je zeker dat je dit nieuwsbericht (<span class="title-confirm"></span
       >) wilt verwijderen?
@@ -132,15 +172,7 @@
       >
         Annuleer
       </button>
-      <label for="delete-news-submit" class="confirm form-btn">
-        Verwijder
-      </label>
+      <input type="submit" class="confirm form-btn" aria-label="Confirm Deletion" value="Verwijder" name="delete-news-submit" />
     </div>
-    <input
-      type="submit"
-      id="delete-news-submit"
-      name="delete-news-submit"
-      aria-label="Confirm Deletion"
-    />
   </form>
 </div>
