@@ -29,6 +29,8 @@ $data = [
     'js' => ['news.js']
 ];
 
+include "./model/cms/cms_global.php";
+
 function fetchNews($con) {
     $stmt = $con->prepare("SELECT id, news_title, image_url, news_content FROM news");
     if (!$stmt->execute()) {
@@ -53,9 +55,9 @@ function fetchNews($con) {
 
 function handleFileUpload($file, $env) {
     $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    $target_dir = "./assets/img/news/";
-    $newFileName = uniqid() . "-" . bin2hex(random_bytes(8)) . "." . strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
-    $target_file = $target_dir . $newFileName;
+    $targetDir = "./assets/img/news/";
+    $newFileName = generateFileName($file["name"]);
+    $targetFile = $targetDir . $newFileName;
     $uploadOk = 1;
 
     $mime = mime_content_type($file["tmp_name"]);
@@ -67,7 +69,7 @@ function handleFileUpload($file, $env) {
         return false;
     }
 
-    if ($uploadOk && move_uploaded_file($file["tmp_name"], $target_file)) {
+    if ($uploadOk && move_uploaded_file($file["tmp_name"], $targetFile)) {
         return $newFileName;
     }
 
@@ -83,18 +85,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_news'])) {
         try {
             if (!empty($_POST['news_title']) && !empty($_POST['news_content'])) {
-                $news_title = sanitizeInput($_POST['news_title']);
-                $news_content = sanitizeInput($_POST['news_content']);
-                $image_url = handleFileUpload($_FILES['image_url'], $env);
+                $valid = true;
 
-                if ($image_url) {
-                    $stmt = $con->prepare("INSERT INTO news (news_title, image_url, news_content) VALUES (?, ?, ?)");
-                    $stmt->bind_param("sss", $news_title, $image_url, $news_content);
-                    $stmt->execute();
-                    $stmt->close();
+                $news_title = sanitizeInput($_POST['news_title']);
+                if (strlen($news_title) > 255) {
+                    die("News title is too long.");
+                } else if (strlen($news_title) < 5) {
+                    $data['title_error'] = "De titel moet minstens 5 karakters lang zijn.";
+                    $data['news_title'] = $news_title;
+                    $valid = false;
+                }
+
+                $news_content = sanitizeInput($_POST['news_content']);
+                if (strlen($news_content) < 10) {
+                    $data['content_error'] = "Het nieuwsbericht moet minstens 10 karakters lang zijn.";
+                    $data['news_content'] = $news_content;
+                    $valid = false;
+                }
+
+                if ($valid) {
+                    $image_url = handleFileUpload($_FILES['image_url'], $env);
+
+                    if ($image_url) {
+                        $stmt = $con->prepare("INSERT INTO news (news_title, image_url, news_content) VALUES (?, ?, ?)");
+                        $stmt->bind_param("sss", $news_title, $image_url, $news_content);
+                        $stmt->execute();
+                        $stmt->close();
+                    }
+
+                    header("Location: " . $_SERVER['REQUEST_URI']);
                 }
             }
-            header("Location: " . $_SERVER['REQUEST_URI']);
         } catch (Exception $e) {
             error_log($e->getMessage()); // Log exception
             die("An error occurred while adding news.");
@@ -178,7 +199,5 @@ function fetchNewsItemByID($con, $newsId) {
 function sanitizeInput($input) {
     return htmlspecialchars(stripslashes(trim($input)));
 }
-
-include "./model/cms/cms_global.php";
 
 ?>

@@ -64,6 +64,13 @@ function isThisWeek($date)
     return $givenDate >= $startOfWeek && $givenDate <= $endOfWeek;
 }
 
+function generateFileName($originalName)
+{
+    $originalName = str_replace(' ', '_', $originalName);
+    $originalName = preg_replace('/[^A-Za-z0-9._-]/', '', $originalName);
+    return uniqid() . "-" . $originalName;
+}
+
 
 function dd($var, $die = false)
 {
