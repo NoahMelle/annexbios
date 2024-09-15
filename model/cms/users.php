@@ -11,13 +11,74 @@ $data = [
 
 include "./model/cms/cms_global.php";
 
+// Handle POST requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['csrf_token']) || !verifyCsrfToken($_POST['csrf_token'])) {
+        die("Invalid CSRF token.");
+    }
+
+    $action = $view[2] ?? null;
+
+
+    if (isset($action) && $action === 'wijzig') {
+        if (!isset($_POST['id']) || !validate_integer($_POST['id'])) {
+            return;
+        }
+
+        include "./model/cms/users/edit_user.php";
+
+        $editProperty = $view[3];
+        $userId = $_POST['id'];
+
+        if (!isset($editProperty)) {
+            return;
+        }
+
+        switch ($editProperty) {
+            case 'gebruikersnaam':
+                if (isset($_POST['edit-username'])) {
+                    updateUsername($con, $userId, $_POST['edit-username']);
+                    header("location: " . $env["BASEURL"] . "cms/gebruikers/wijzig/" . $userId);
+                }
+                break;
+            case 'wachtwoord':
+                if (isset($_POST['edit-password'])) {
+                    updatePassword($con, $userId, $_POST['edit-password']);
+                    header("location: " . $env["BASEURL"] . "cms/gebruikers/wijzig/" . $userId);
+                }
+                break;
+            case 'permissies':
+                if (isset($_POST['permissions'])) {
+                    updatePermissions($con, $userId, $_POST['permissions']);
+                    header("location: " . $env["BASEURL"] . "cms/gebruikers/wijzig/" . $userId);
+                }
+                break;
+        }
+    } else if (isset($_POST['add-user-submit'])) {
+
+        include "./model/cms/users/add_user.php";
+
+        $addUserResult = addUser($con, $_POST['username'], $_POST['password'], $_POST['permissions']);
+        $addUserSuccess = $addUserResult['success'] ?? false;
+        $data = array_merge($data, $addUserResult['data']);
+
+        if ($addUserSuccess) {
+            $data['add_user_success'] = true;
+        }
+    } else if (isset($_POST['delete-user-submit']) && isset($_POST['delete-user-id'])) {
+
+        include "./model/cms/users/delete_user.php";
+
+        $data = array_merge($data, deleteUser($con, $_POST['delete-user-id'], $env));
+    }
+}
+
 
 if (isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && validate_integer($view[3])) {
-    $id = $view[3];
-    $data["id"] = $id;
+    $data["id"] = $view[3];
 
     $stmt = $con->prepare("SELECT username FROM user_data WHERE user_id = ?;");
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("i", $view[3]);
     $stmt->bind_result($username);
     $stmt->execute();
     $stmt->fetch();
@@ -26,14 +87,18 @@ if (isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && validate_inte
     $activatedPermissions = [];
 
     $stmt = $con->prepare("SELECT admin_header_pages_data.id FROM admin_header_pages_data LEFT JOIN user_page_permission_link ON admin_header_pages_data.id = user_page_permission_link.page_id WHERE user_page_permission_link.user_id = ?;");
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("i", $view[3]);
     $stmt->execute();
     $result = $stmt->get_result();
     $stmt->close();
+
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $activatedPermissions[] = $row["id"];
         }
+    } else {
+        http_response_code(404);
+        die("User not found.");
     }
 
     $activatedPermissionChecked = [];
@@ -48,7 +113,9 @@ if (isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && validate_inte
 
     $data["username"] = $username;
     $data["activated_permissions"] = $activatedPermissionChecked;
-} else if (isset($view[2]) && $view[2] === 'wijzig' && isset($_POST["id"]) && validate_integer($_POST["id"]) && isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["permissions"])) {
+}
+
+if (isset($view[2]) && $view[2] === 'wijzig' && isset($_POST["id"]) && validate_integer($_POST["id"]) && isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["permissions"])) {
     $id = mes($_POST["id"]);
 
     if (!empty($_POST["username"])) {
@@ -86,64 +153,6 @@ if (isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && validate_inte
             $stmt->execute();
         }
         $stmt->close();
-    }
-} else if (isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && $view[3] === 'gebruikersnaam') {
-    if (isset($_POST["id"]) && isset($_POST["edit-username"]) && !empty($_POST["edit-username"])) {
-        $id = mes($_POST["id"]);
-        $username = mes($_POST["edit-username"]);
-
-        $stmt = $con->prepare("UPDATE user_data SET username = ? WHERE user_id = ?;");
-        $stmt->bind_param("si", $username, $id);
-        $stmt->execute();
-        $stmt->close();
-
-        header("location: " . $env["BASEURL"] . "cms/gebruikers/wijzig/" . $id);
-    }
-} else if (isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && $view[3] === 'wachtwoord') {
-    if (isset($_POST["id"]) && isset($_POST["edit-password"]) && !empty($_POST["edit-password"])) {
-        $id = mes($_POST["id"]);
-        $password = mes($_POST["edit-password"]);
-        $password = password_hash($password, PASSWORD_DEFAULT);
-
-        $stmt = $con->prepare("UPDATE user_data SET password = ? WHERE user_id = ?;");
-        $stmt->bind_param("si", $password, $id);
-        $stmt->execute();
-        $stmt->close();
-
-        header("location: " . $env["BASEURL"] . "cms/gebruikers/wijzig/" . $id);
-    }
-} else if (isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && $view[3] === 'permissies') {
-    if (isset($_POST["id"]) && isset($_POST["permissions"]) && !empty($_POST["permissions"])) {
-        $id = mes($_POST["id"]);
-        $permissions = array_map('intval', array_filter($_POST['permissions'], 'is_numeric'));
-
-        // Unlink all permissions for the user
-        $stmt = $con->prepare("DELETE FROM user_page_permission_link WHERE user_id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->close();
-
-        // Link the selected permissions for the user
-        $stmt = $con->prepare("INSERT INTO user_page_permission_link (page_id, user_id) VALUES (?, ?)");
-        foreach ($permissions as $permission) {
-            $stmt->bind_param("ii", $permission, $id);
-            $stmt->execute();
-        }
-        $stmt->close();
-
-        header("location: " . $env["BASEURL"] . "cms/gebruikers/wijzig/" . $id);
-    }
-} else if (isset($view[2]) && $view[2] === 'verwijder' && isset($view[3]) && validate_integer($view[3])) {
-    $id = $view[3];
-    $stmt = $con->prepare("DELETE FROM user_data WHERE user_id = ?;");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $stmt->close();
-    header("location: " . $env["BASEURL"] . "cms/gebruikers");
-    exit;
-} else if (isset($view[2]) && $view[2] === 'wijzig') {
-    if (!isset($view[3]) || empty($view[3]) || !validate_integer($view[3])) {
-        header('location: ' . $env["BASEURL"] . 'cms/gebruikers');
     }
 }
 
@@ -194,91 +203,6 @@ function fetchAvailablePermissions($con)
         }
     }
     return $available_perms;
-}
-
-// Add new user
-function addUser($con, $username, $password, $permissions)
-{
-    $data = [];
-    $valid = true;
-
-    // Validate username
-    $usernameResult = validateUsername($username, $con);
-    if (!$usernameResult['success']) {
-        $data['username_error'] = $usernameResult['username_error'];
-        $data['username'] = $username;
-        $valid = false;
-    }
-
-    // Validate password
-    $passwordResult = validatePassword($password);
-    if (!$passwordResult['success']) {
-        $data['password_error'] = $passwordResult['password_error'];
-        $valid = false;
-    } else {
-        $hashedPassword = $passwordResult['password'];
-    }
-
-    // Validate permissions
-    $permissionsResult = validatePermissions($permissions, $con);
-    if (!$permissionsResult['success']) {
-        $data['permissions_error'] = $permissionsResult['permissions_error'];
-        $valid = false;
-    } else {
-        $permissions = $permissionsResult['permissions'];
-    }
-
-    if ($valid) {
-        try {
-            // Start transaction, automatically rolls back if error occurs
-            $con->begin_transaction();
-            $stmt = $con->prepare("INSERT INTO user_data (username, password, cms_access) VALUES (?, ?, true);");
-            $stmt->bind_param("ss", $username, $hashedPassword);
-            $stmt->execute();
-            $new_user_id = $con->insert_id;
-            $stmt->close();
-
-            $stmt = $con->prepare("INSERT INTO user_page_permission_link (page_id, user_id) VALUES (?, ?);");
-            foreach ($permissions as $permission) {
-                $stmt->bind_param("ii", $permission, $new_user_id);
-                $stmt->execute();
-            }
-            $stmt->close();
-            $con->commit();
-
-            $data['entered_username'] = $username;
-            $data['entered_password'] = $password;
-
-            return [
-                'success' => true,
-                'data' => $data,
-            ];
-        } catch (Exception $e) {
-            // Revert to previous state
-            $con->rollback();
-            return [
-                'success' => false,
-                'error' => "Er is iets fout gegaan bij het toevoegen van de gebruiker. Probeer het opnieuw.",
-                'data' => $data
-            ];
-        }
-    } else {
-        return ['success' => false, 'data' => $data];
-    }
-}
-
-function deleteUser($con, $user_id, $env)
-{
-    try {
-        $stmt = $con->prepare("DELETE FROM user_data WHERE user_id = ?;");
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        $stmt->close();
-    } catch (Exception $e) {
-        return ['error' => "Er is iets fout gegaan bij het verwijderen van de gebruiker. Probeer het opnieuw."];
-    }
-    header("Location: " . $env['BASEURL'] . "cms/gebruikers");
-    exit;
 }
 
 function checkIfUserAlreadyExists($con, $username)
@@ -357,27 +281,6 @@ function validatePermissions($permissions, $con)
         'permissions' => $validPermissions,
         'success' => true,
     ];
-}
-
-// Handle POST requests
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    if (!isset($_POST['csrf_token']) || !verifyCsrfToken($_POST['csrf_token'])) {
-        die("Invalid CSRF token.");
-    }
-    if (isset($_POST['add-user-submit'])) {
-        $addUserResult = addUser($con, $_POST['username'], $_POST['password'], $_POST['permissions']);
-        $addUserSuccess = $addUserResult['success'] ?? false;
-
-        if ($addUserSuccess) {
-            $data = array_merge($data, $addUserResult['data']);
-            $data['add_user_success'] = true;
-        } else {
-            $data = array_merge($data, $addUserResult['data']);
-        }
-    } else if (isset($_POST['delete-user-submit']) && isset($_POST['delete-user-id'])) {
-        $data = array_merge($data, deleteUser($con, $_POST['delete-user-id'], $env));
-    }
 }
 
 $data['users'] = fetchUsers($con);
