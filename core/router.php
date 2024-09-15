@@ -55,13 +55,12 @@ switch ($view[0]) {
                 case 'gebruikers':
                     if (in_array("Gebruikers", $allowedPages) || $isSuperUser) {
 
-                        if(isset($view[2]) && $view[2] === 'wijzig') {
+                        if (isset($view[2]) && $view[2] === 'wijzig') {
                             $template = "cms/changeUsers";
                         } else {
                             $template = "cms/users";
                         }
                         $model = "cms/users";
-
                     } else {
                         header("Location: " . $env["BASEURL"] . "cms");
                         exit;
@@ -161,6 +160,19 @@ switch ($view[0]) {
         break;
     case 'api':
         $isApiCall = true;
+
+        header('Content-Type: application/json');
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+            header("Access-Control-Allow-Headers: Content-Type, Authorization");
+            header("Access-Control-Max-Age: 3600");  // Cache preflight for 1 hour
+            exit(0);  // Skip the rest of the script for OPTIONS requests
+        }
 
         switch ($view[2]) {
             case 'movieData':

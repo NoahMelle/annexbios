@@ -14,6 +14,25 @@ if ($superuser) {
     $result = $stmt->get_result();
 }
 
+// Verify CSRF token
+function verifyCsrfToken($token) {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
+
+// Helper function to generate CSRF token
+function generateCsrfToken() {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
 if($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $data['header_pages'][] = [
@@ -24,4 +43,6 @@ if($result->num_rows > 0) {
         ];
     }
 }
+
+$data['csrf_token'] = generateCsrfToken();
 ?>

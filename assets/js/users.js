@@ -11,8 +11,9 @@ const editUsernameInput = document.getElementById("edit-username");
 const editPasswordInput = document.getElementById("edit-password");
 const editUsernameButton = document.getElementById("edit-username-submit");
 const editPasswordButton = document.getElementById("edit-password-submit");
-const editPermissionsButton = document.getElementById("edit-permissions-submit");
-
+const editPermissionsButton = document.getElementById(
+  "edit-permissions-submit"
+);
 
 let containsErrors = true;
 
@@ -46,9 +47,9 @@ const handleUsernameValidation = (username) => {
 
 const handlePermissionValidation = () => {
   const isChecked = getCheckboxesChecked().length > 0;
-  permissionsError.textContent = isChecked ?
-    "" :
-    "Selecteer minimaal één permissie.";
+  permissionsError.textContent = isChecked
+    ? ""
+    : "Selecteer minimaal één permissie.";
 };
 
 function checkFullValidation() {
@@ -68,11 +69,10 @@ function checkFullValidation() {
 
 const getCheckboxesChecked = () =>
   Array.from(permissionCheckboxes)
-  .filter((checkbox) => checkbox.checked)
-  .map((checkbox) => checkbox.value);
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.value);
 
 if (passwordInput && usernameInput) {
-
   // Add debounced event listeners
   passwordInput.addEventListener(
     "input",
@@ -119,27 +119,58 @@ checkFullValidation();
 // Password generation
 function generateRandomPassword(element) {
   const randomPassword = generateCustomPassword(32);
-  element.parentNode.querySelector('input[name="password"]') ? element.parentNode.querySelector('input[name="password"]').value =
-    randomPassword : element.parentNode.querySelector('input[name="edit-password"]').value = randomPassword;
+  element.parentNode.querySelector('input[name="password"]')
+    ? (element.parentNode.querySelector('input[name="password"]').value =
+        randomPassword)
+    : (element.parentNode.querySelector('input[name="edit-password"]').value =
+        randomPassword);
 
+  handlePasswordValidation(randomPassword);
   checkFullValidation();
 }
 
 function generateCustomPassword(length) {
-  const charSets = [
-    [48, 57], // Numbers (0-9)
-    [65, 90], // Uppercase letters (A-Z)
-    [97, 122], // Lowercase letters (a-z)
-    [33, 47], // Special characters (!"#$%&'()*+,-./)
-  ];
+  const numbers = "0123456789";
+  const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lowercase = "abcdefghijklmnopqrstuvwxyz";
+  const special = "!@#$%^&*";
+
+  const allChars = numbers + uppercase + lowercase + special;
+
+  // To ensure better balance, decide how much of each character set to include
+  const numSpecialChars = Math.floor(length * 0.2); // 20% special characters
+  const numNumbers = Math.floor(length * 0.2); // 20% numbers
+  const numLetters = length - numSpecialChars - numNumbers; // Remaining 60% for letters
 
   let password = "";
-  for (let i = 0; i < length; i++) {
-    const charSet = charSets[Math.floor(Math.random() * charSets.length)];
-    const charCode =
-      Math.floor(Math.random() * (charSet[1] - charSet[0] + 1)) + charSet[0];
-    password += String.fromCharCode(charCode);
+
+  // Helper function to get random character from a string
+  function getRandomChar(str) {
+    return str[Math.floor(Math.random() * str.length)];
   }
+
+  // Add special characters
+  for (let i = 0; i < numSpecialChars; i++) {
+    password += getRandomChar(special);
+  }
+
+  // Add numbers
+  for (let i = 0; i < numNumbers; i++) {
+    password += getRandomChar(numbers);
+  }
+
+  // Add letters (upper + lower case)
+  for (let i = 0; i < numLetters; i++) {
+    const isUppercase = Math.random() < 0.5;
+    password += getRandomChar(isUppercase ? uppercase : lowercase);
+  }
+
+  // Shuffle the password to make it more random
+  password = password
+    .split("")
+    .sort(() => 0.5 - Math.random())
+    .join("");
+
   return password;
 }
 
@@ -148,9 +179,7 @@ function validateUsername(username) {
 }
 
 function validatePassword(password) {
-  return /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9!"#$%&'()*+,-./]{8,}$/.test(
-    password
-  );
+  return /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9!@#$%^&*]{8,}$/.test(password);
 }
 
 function deleteUser(element) {
