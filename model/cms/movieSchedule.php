@@ -23,6 +23,7 @@ $urlId = $view[3] ?? null;
 
 include "./model/cms/cms_global.php";
 
+// Set data for the view
 if ($action) {
     switch ($action) {
         case 'wijzig':
