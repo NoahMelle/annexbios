@@ -5,14 +5,17 @@ $hashedIpAddress = hash_hmac('sha256', $ipAddress, $env['ENCRYPTION_SECRET']);
 $macAddress = strtok(exec('getmac'), ' ');
 $hashedMacAddress = hash_hmac('sha256', $macAddress, $env['ENCRYPTION_SECRET']);
 
-$stmt = $con->prepare("SELECT level, expires_at FROM api_timeouts WHERE mac_address = ? AND expires_at > NOW() ORDER BY id DESC LIMIT 1");
+$stmt = $con->prepare("SELECT level, expires_at FROM api_timeouts WHERE mac_address = ? ORDER BY id DESC LIMIT 1");
 $stmt->bind_param('s', $hashedMacAddress);
 $stmt->execute();
 $stmt->bind_result($block_level, $block_expires_at);
 $stmt->fetch();
 $stmt->close();
 
-if ($block_level !== NULL) {
+$amsterdamTimeZone = new DateTimeZone('Europe/Amsterdam');
+$blockIsActive = $block_level !== null && DateTime::createFromFormat('Y-m-d H:i:s', $block_expires_at, $amsterdamTimeZone) > new DateTime('now', $amsterdamTimeZone);
+
+if ($blockIsActive) {
   http_response_code(403);
   echo json_encode(['success' => false, 'message' => 'You are blocked from the API until ' . $block_expires_at . '.', 'status_code' => 403]);
   exit();
@@ -50,21 +53,35 @@ $stmt->bind_result($totalMsBetweenRequests);
 $stmt->fetch();
 $stmt->close();
 
-if (($totalMsBetweenRequests / 3) <= 3000) {
-//  $blocked_until = $block_level === null ? date_format(strtod)
-//
-//  $stmt = $con->prepare('INSERT INTO api_timeouts (ip_address, mac_address, level, expires_at) VALUES (?, ?, ?, ?)');
-//  $stmt->bind_param('ssss', );
-//  $stmt->execute();
-//  $stmt->close();
-}
+// -- Timeout Policy --
+// Lvl 1: 1 HOUR
+// Lvl 2: 1 DAY
+// Lvl 3: Permanent
 
-// GEMIDDELDE TIJD TUSSEN AFGELOPEN 3 REQUESTS BEREKENEN
-// HOGER DAN TOEGESTAAN > IP BLOCK/API KEY BLOCK
+if ($totalMsBetweenRequests !== null && ($totalMsBetweenRequests / 3) <= 3000) {
+  $nextBlockLevel = $block_level !== null ? intval($block_level) + 1 : 1;
+
+  $now = new DateTime('now', $amsterdamTimeZone);
+  $blockedUntil = $now->modify('+1 hour')->format('Y-m-d H:i:s');
+
+  if ($nextBlockLevel >= 3) {
+    $blockedUntil = DateTime::createFromFormat('Y-m-d H:i:s', '2300-01-01 00:00:00', $amsterdamTimeZone)->format('Y-m-d H:i:s');
+  } elseif ($nextBlockLevel === 2) {
+    $blockedUntil = $now->modify('+1 day')->format('Y-m-d H:i:s');
+  }
+
+  $stmt = $con->prepare('INSERT INTO api_timeouts (ip_address, mac_address, level, expires_at) VALUES (?, ?, ?, ?)');
+  $stmt->bind_param('ssss', $hashedIpAddress, $hashedMacAddress, $nextBlockLevel, $blockedUntil);
+  $stmt->execute();
+  $stmt->close();
+
+  http_response_code(403);
+  echo json_encode(['success' => false, 'message' => 'You are blocked from the API until ' . $blockedUntil . '.', 'status_code' => 403]);
+  exit();
+}
 
 // Log/Generate a API request
 $stmt = $con->prepare('INSERT INTO api_requests (token, ip_address, mac_address, request_context) VALUES (?, ?, ?, ?)');
 $stmt->bind_param('ssss', $apiKey, $hashedIpAddress, $hashedMacAddress, $requestContext);
 $stmt->execute();
 $stmt->close();
-exit();

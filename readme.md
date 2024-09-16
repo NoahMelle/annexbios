@@ -6,9 +6,9 @@ Welcome to the AnnexBios Headquarters API repository! This project serves as the
 
 Here's an overview of the main folders and files in this repository:
 
-- **dummy_data/**: This folder contains JSON files with dummy data used for testing and development purposes. The structure of these files mimics the actual data used in production.
-  
-- **documents/**: In this folder, you'll find the API User Guide, which provides comprehensive documentation on how to use the AnnexBios API, including available endpoints and request/response formats.
+- **`dummy_data/`**: This folder contains JSON files with dummy data used for testing and development purposes. The structure of these files mimics the actual data used in production.
+
+- **`documents/`**: In this folder, you'll find the API User Guide, which provides comprehensive documentation on how to use the AnnexBios API, including available endpoints and request/response formats.
 
 ## API User Guide
 
