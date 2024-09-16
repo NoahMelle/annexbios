@@ -9,6 +9,7 @@
     <form action="{{ base_url }}cms/filmladder/verwijder/{{ current_location_movie_id }}" method="post">
       <label>Weet je het zeker?</label>
       <input type="hidden" name="current_location_id" value="{{ current_location_movie_id }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input class="red" type="submit" value="verwijderen">
     </form>
   </div>

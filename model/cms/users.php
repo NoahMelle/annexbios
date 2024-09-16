@@ -115,47 +115,6 @@ if (isset($view[2]) && $view[2] === 'wijzig' && isset($view[3]) && validate_inte
     $data["activated_permissions"] = $activatedPermissionChecked;
 }
 
-if (isset($view[2]) && $view[2] === 'wijzig' && isset($_POST["id"]) && validate_integer($_POST["id"]) && isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["permissions"])) {
-    $id = mes($_POST["id"]);
-
-    if (!empty($_POST["username"])) {
-        $username = mes($_POST["username"]);
-
-        $stmt = $con->prepare("UPDATE user_data SET username = ? WHERE user_id = ?;");
-        $stmt->bind_param("si", $username, $id);
-        $stmt->execute();
-        $stmt->close();
-    }
-
-    if (!empty($_POST["password"])) {
-        $password = mes($_POST["password"]);
-        $password = password_hash($password, PASSWORD_DEFAULT);
-
-        $stmt = $con->prepare("UPDATE user_data SET password = ? WHERE user_id = ?;");
-        $stmt->bind_param("si", $password, $id);
-        $stmt->execute();
-        $stmt->close();
-    }
-
-    if (!empty($_POST["permissions"])) {
-        $permissions = array_map('intval', array_filter($_POST['permissions'], 'is_numeric'));
-
-        // Unlink all permissions for the user
-        $stmt = $con->prepare("DELETE FROM user_page_permission_link WHERE user_id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $stmt->close();
-
-        // Link the selected permissions for the user
-        $stmt = $con->prepare("INSERT INTO user_page_permission_link (page_id, user_id) VALUES (?, ?)");
-        foreach ($permissions as $permission) {
-            $stmt->bind_param("ii", $permission, $id);
-            $stmt->execute();
-        }
-        $stmt->close();
-    }
-}
-
 // Function to get users and their permissions
 function fetchUsers($con)
 {
