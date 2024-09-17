@@ -37,5 +37,5 @@ if (!isset($token) || $apiKey !== $token) {
   }
 }
 
-require_once 'ratelimit_handler.php';
+//require_once 'ratelimit_handler.php';
 ?>
