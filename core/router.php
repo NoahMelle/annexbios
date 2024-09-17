@@ -161,11 +161,16 @@ switch ($view[0]) {
     case 'api':
         $isApiCall = true;
 
-        header('Content-Type: application/json');
-        header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
         header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
+        
+        // Handle OPTIONS requests (preflight)
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            // Return 200 OK status for the preflight request
+            http_response_code(200); // This line ensures a 200 OK response
+            exit(0); // Stop further processing
+        }
+        
         switch ($view[2]) {
             case 'movieData':
                 $page = "v1/movies/movieData.php";
