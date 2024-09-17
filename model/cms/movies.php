@@ -79,6 +79,11 @@ if (isset($view[2]) && $view[2] == 'wijzig') {
             $stmt->execute();
             $stmt->close();
 
+            $stmt = $con->prepare("DELETE FROM location_movie_data WHERE movie_id = ?;");
+            $stmt->bind_param("i", $_POST["current_movie_id"]);
+            $stmt->execute();
+            $stmt->close();
+
             $stmt = $con->prepare("DELETE FROM movie_data WHERE movie_id = ?;");
             $stmt->bind_param("i", $_POST["current_movie_id"]);
             $stmt->execute();

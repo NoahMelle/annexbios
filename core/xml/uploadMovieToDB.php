@@ -405,7 +405,7 @@
 
     try {
         $data = getMovieData($imdbId);
-        if($data['success'] === false) {
+        if($data === null) {
             echo json_encode($data);
             exit();
         } else {
