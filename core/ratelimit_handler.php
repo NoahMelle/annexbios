@@ -58,7 +58,7 @@ $stmt->close();
 // Lvl 2: 1 DAY
 // Lvl 3: Permanent
 
-if ($totalMsBetweenRequests !== null && ($totalMsBetweenRequests / 3) <= 3000) {
+if ($totalMsBetweenRequests !== null && ($totalMsBetweenRequests / 3) <= $env['AVERAGE_MS_FOR_TIMEOUT']) {
   $nextBlockLevel = $block_level !== null ? intval($block_level) + 1 : 1;
 
   $now = new DateTime('now', $amsterdamTimeZone);
