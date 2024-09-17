@@ -9,6 +9,7 @@
     <form action="{{ base_url }}cms/films/verwijder/{{ current_movie_id }}" method="post">
       <label>Weet je het zeker? Alle spelende films met deze film worden verwijderd...</label>
       <input type="hidden" name="current_movie_id" value="{{ current_movie_id }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input class="red" type="submit" value="verwijderen">
     </form>
   </div>

@@ -5,7 +5,7 @@
   <div id="edit-user-form-container">
     <form class="edit-user-input-form" action="{{ base_url }}cms/gebruikers/wijzig/gebruikersnaam" method="post">
       <input type="hidden" name="id" value="{{ id }}">
-
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <div>
         <input type="text" name="edit-username" id="edit-username" placeholder="Gebruikersnaam" autocomplete="off"
           value="{{ username }}">
@@ -17,7 +17,7 @@
     </form>
     <form class="edit-user-input-form" action="{{ base_url }}cms/gebruikers/wijzig/wachtwoord" method="post">
       <input type="hidden" name="id" value="{{ id }}">
-
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <div>
         <div class="password-input-container">
           <input type="text" name="edit-password" id="edit-password" placeholder="Wachtwoord" />
@@ -34,7 +34,7 @@
     </form>
     <form action="{{ base_url }}cms/gebruikers/wijzig/permissies" method="post">
       <input type="hidden" name="id" value="{{ id }}">
-
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <div class="permissions-container">
         {{# activated_permissions}}
         <label class="permission-label" for="{{ id }}">

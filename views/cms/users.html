@@ -80,6 +80,7 @@
       <button type="submit" class="submit-btn" id="add-user-submit" name="add-user-submit">
         Toevoegen
       </button>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
     </form>
   </div>
 </main>
@@ -98,6 +99,7 @@
         Verwijder
       </label>
     </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
     <input type="submit" id="delete-user-submit" name="delete-user-submit" aria-label="Confirm Deletion" />
   </form>
 </div>

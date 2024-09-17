@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="locations_add">
-    <form action="{{ base_url }}vestigingen/toevoegen" method="post">
+    <form action="{{ base_url }}cms/vestigingen/toevoegen" method="post">
       <label for="function">Functie</label>
       <select name="function" id="function">
         {{# functions}}
@@ -21,6 +21,7 @@
       <input type="text" name="postal_code" id="postal_code">
       <label for="website_link">Website link</label>
       <input type="text" name="website_link" id="website_link">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input type="submit" value="toevoegen">
     </form>
   </div>

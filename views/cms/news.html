@@ -2,54 +2,166 @@
   <div class="hero">
     <h1 class="hero-header">Nieuws</h1>
   </div>
+
   <div class="news-crud-wrapper">
-    <form action="{{ current_url }}" id="news-form" method="POST" enctype="multipart/form-data">
+    <!-- Add News Form -->
+    <form
+      action="{{ current_url }}"
+      id="news-form"
+      method="POST"
+      enctype="multipart/form-data"
+    >
       <h2 class="news-crud-header">Nieuws toevoegen</h2>
+
       <div class="form-group">
         <label for="news_title">Titel</label>
-        <input type="text" name="news_title" id="news_title" class="form-control" required>
+        <div>
+          <input
+            type="text"
+            name="news_title"
+            id="news_title"
+            class="form-control"
+            placeholder="Titel van het nieuws"
+            value="{{ news_title }}"
+            required
+          />
+          <p class="error" id="title-error">{{ title_error }}</p>
+        </div>
       </div>
-      <div class="form-group
-      ">
-        <label for="news_content">Bericht</label>
-        <textarea name="news_content" id="news_content" class="form-control"></textarea>
-      </div>
+
       <div class="form-group">
-        <label for="image_url">Afbeelding</label>
-        <input type="file" name="image_url" id="image_url" class="form-control" required>
+        <label for="news_content">Bericht</label>
+        <div>
+          <textarea
+            name="news_content"
+            id="news_content"
+            class="form-control"
+            placeholder="Schrijf hier het nieuwsbericht"
+            required
+          >{{ news_content }}</textarea>
+          <p class="error" id="content-error">{{ content_error }}</p>
+        </div>
       </div>
-      <input type="submit" value="Toevoegen" name="add_news">
+
+      <div class="form-group">
+        <label for="image_url"
+          >Afbeelding (aanbevolen dimensies: 800x200px)</label
+        >
+        <label for="image_url" class="image-preview">
+          <img
+            src="{{ base_url }}assets/icons/plus.svg"
+            alt="+"
+            class="image-preview-img"
+          />
+        </label>
+        <input
+          type="file"
+          name="image_url"
+          id="image_url"
+          class="form-control"
+          required
+          accept="image/png,image/jpg,image/jpeg"
+        />
+        <p class="error" id="image-error">{{ image_error }}</p>
+      </div>
+
+      <input
+        type="submit"
+        value="Toevoegen"
+        name="add_news"
+        class="form-submit"
+        id="news-submit-btn"
+        disabled
+      />
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
     </form>
+
+    <!-- News Table -->
     <div class="table-container">
-        <table class="users-table" id="users-table">
-          <thead>
-            <tr>
-              <th>Titel</th>
-              <th>Afbeelding</th>
-              <th>Bericht</th>
-              <th>Acties</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{# news}}
-            <tr>
-              <td>{{news_title}}</td>
-              <td><img src="{{ base_url }}assets/img/news/{{image_url}}" alt="{{news_title}}" class="news-image"></td>
-              <td>{{news_content}}</td>
-              <td>
-                <button onclick="" data-title="{{ news_title }}">Bewerken</button>
-                <button onclick="deleteNews(this)" data-title="{{ news_title }}" data-id="{{ id }}">Verwijderen</button>
-              </td>
-            </tr>
-            {{/ news}}
-          </tbody>
-        </table>
-      </div>
+      <table class="users-table" id="users-table">
+        <thead>
+          <tr>
+            <th>Titel</th>
+            <th>Afbeelding</th>
+            <th>Bericht</th>
+            <th>Acties</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#news}}
+          <tr>
+            <td class="news-title-container">
+              <p class="news-title">{{ news_title }}</p>
+            </td>
+            <td class="news-image-container">
+              <img
+                src="{{ base_url }}assets/img/news/{{ image_url }}"
+                alt="{{ news_title }}"
+                class="news-image"
+              />
+            </td>
+            <td>
+              <div class="news-content-container">
+                <div class="news-content"><p>{{ news_content }}</p></div>
+              </div>
+            </td>
+            <td>
+              <button
+                class="edit-btn"
+                onclick="editNews(this)"
+                data-title="{{ news_title }}"
+                data-id="{{ id }}"
+                data-content="{{ news_content }}"
+                data-image="{{ image_url }}"
+              >
+                Bewerken
+              </button>
+              <button
+                class="delete-btn"
+                onclick="deleteNews(this)"
+                data-title="{{ news_title }}"
+                data-id="{{ id }}"
+              >
+                Verwijderen
+              </button>
+            </td>
+          </tr>
+          {{/news}} {{^news}}
+          <tr>
+            <td colspan="4">Geen nieuwsartikelen beschikbaar.</td>
+          </tr>
+          {{/news}}
+        </tbody>
+      </table>
+
+      <!-- Hidden form for editing news -->
+      <form
+        action="{{ current_url }}"
+        name="edit-news-form"
+        id="edit-news-form"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <input type="hidden" name="edit-news-id" id="edit-news-id" />
+        <input
+          type="file"
+          name="edit-image-url"
+          id="edit-image-url"
+          class="form-control"
+          accept="image/png,image/jpg,image/jpeg"
+          style="display: none"
+        />
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      </form>
+    </div>
   </div>
 </main>
+
+<!-- Modal for Deleting News -->
 <div class="delete-news-form-wrapper">
-  <form action="{{ current_url }}" id="delete-news-form" method="post">
+  <form action="{{ current_url }}" id="delete-news-form" method="POST">
     <input type="hidden" name="delete-news-id" id="delete-news" />
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
     <h3>
       Weet je zeker dat je dit nieuwsbericht (<span class="title-confirm"></span
       >) wilt verwijderen?
@@ -64,15 +176,13 @@
       >
         Annuleer
       </button>
-      <label for="delete-news-submit" class="confirm form-btn">
-        Verwijder
-      </label>
+      <input
+        type="submit"
+        class="confirm form-btn"
+        aria-label="Confirm Deletion"
+        value="Verwijder"
+        name="delete-news-submit"
+      />
     </div>
-    <input
-      type="submit"
-      id="delete-news-submit"
-      name="delete-news-submit"
-      aria-label="Confirm Deletion"
-    />
   </form>
 </div>
