@@ -1,6 +1,7 @@
-const stars = document.querySelector(".stars.filled");
-console.log(stars);
+const stars = document.querySelectorAll(".stars.filled");
 
-if (stars) {
-  stars.style.width = stars.dataset.rating + "%";
-}
+stars.forEach((stars) => {
+  if (stars) {
+    stars.style.width = stars.dataset.rating + "%";
+  }
+});
