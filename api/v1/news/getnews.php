@@ -1,6 +1,4 @@
 <?php
-header('Content-Type: application/json');
-
 require_once './core/check_api_token.php';
 
 if (isset($validToken) && $validToken === true && isset($current_location_id)) {

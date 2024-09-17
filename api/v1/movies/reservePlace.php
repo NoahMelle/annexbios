@@ -1,6 +1,4 @@
 <?php
-header('Content-Type: application/json');
-
 require_once './core/check_api_token.php';
 
 function returnError($message, $status_code = 500) {

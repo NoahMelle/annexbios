@@ -1,6 +1,4 @@
 <?php
-    header('Content-Type: application/json');
-
     require_once './core/check_api_token.php';
 
     // Function to return error messages in the desired format
