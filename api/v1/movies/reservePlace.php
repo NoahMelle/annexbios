@@ -1,7 +1,4 @@
 <?php
-header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: *");
-
 require_once './core/check_api_token.php';
 
 function returnError($message, $status_code = 500) {
