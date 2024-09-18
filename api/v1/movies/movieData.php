@@ -35,10 +35,10 @@
 
         // Prepare the query based on the movie_id presence
         if (isset($movie_id)) {
-            $stmt = $con->prepare("SELECT imdb_id, movie_id, title, description, image_path, rating, length_minutes, release_date, trailer_link, is_adult_movie FROM movie_data WHERE movie_id = ?;");
+            $stmt = $con->prepare("SELECT imdb_id, movie_id, title, description, image_path, rating, length_minutes, release_date, trailer_link, is_adult_movie, minimum_price FROM movie_data WHERE movie_id = ?;");
             $stmt->bind_param("i", $movie_id);
         } else {
-            $stmt = $con->prepare("SELECT imdb_id, movie_id, title, description, image_path, rating, length_minutes, release_date, trailer_link, is_adult_movie FROM movie_data;");
+            $stmt = $con->prepare("SELECT imdb_id, movie_id, title, description, image_path, rating, length_minutes, release_date, trailer_link, is_adult_movie, minimum_price FROM movie_data;");
         }
 
         // Execute the statement
@@ -157,6 +157,13 @@
                     "symbols" => $symbols
                 ];
 
+                $stmt = $con->prepare("SELECT play_time FROM location_movie_data WHERE movie_id = ? ORDER BY play_time ASC LIMIT 1;");
+                $stmt->bind_param("i", $row["movie_id"]);
+                $stmt->bind_result($first_play_time);
+                $stmt->execute();
+                $stmt->fetch();
+                $stmt->close();
+
                 // Add the fetched movie data to the response
                 $data[] = [
                     "imdb_id" => $row["imdb_id"],
@@ -172,7 +179,9 @@
                     "length" => $row["length_minutes"],
                     "release_date" => $row["release_date"],
                     "trailer_link" => $row["trailer_link"],
-                    "is_adult_movie" => $row["is_adult_movie"]
+                    "is_adult_movie" => $row["is_adult_movie"],
+                    'minimum_price' => $row["minimum_price"],
+                    "first_play_time" => $first_play_time === null ? null : $first_play_time
                 ];
             }
 
