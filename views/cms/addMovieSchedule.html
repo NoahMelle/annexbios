@@ -16,14 +16,17 @@
       <label for="location">Vestiging</label>
       <select name="location" id="location">
         {{# locations }}
-        <option value="{{ location_id }}">{{ function }} {{ city }} - {{ address }} {{ postal_code }}
+        <option value="{{ location_id }}">
+          {{ function }} {{ city }} - {{ address }} {{ postal_code }}
         </option>
         {{/ locations }}
       </select>
       <label for="place_data">Plaatsen</label>
-      <input type="number" name="place_data" id="place_data">
+      <input type="number" name="place_data" id="place_data" />
       <label for="play_time">Speel moment</label>
-      <input type="datetime-local" name="play_time" id="play_time" step="1">
-      <input type="submit" value="toevoegen"> </form>
+      <input type="datetime-local" name="play_time" id="play_time" step="1" />
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <input type="submit" value="toevoegen" />
+    </form>
   </div>
 </main>
