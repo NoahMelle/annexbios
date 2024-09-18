@@ -272,6 +272,7 @@ components:
         - release_date
         - is_adult_movie
         - trailer_link
+        - embedded_trailer_link
         - first_play_time
         - minimum_price
         - image
@@ -319,6 +320,9 @@ components:
         trailer_link:
           type: string
           example: https://www.youtube.com/watch?v=6b7-49Y23vg
+        embedded_trailer_link:
+          type: string
+          example: https://www.youtube.com/embed/6b7-49Y23vg
         first_play_time:
           type: string
           example: 2024-09-26 22:00:00

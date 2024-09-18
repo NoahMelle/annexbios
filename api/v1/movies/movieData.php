@@ -179,6 +179,7 @@
                     "length" => $row["length_minutes"],
                     "release_date" => $row["release_date"],
                     "trailer_link" => $row["trailer_link"],
+                    "embedded_trailer_link" => str_replace("watch?v=", "embed/", $row["trailer_link"]),
                     "is_adult_movie" => $row["is_adult_movie"],
                     'minimum_price' => $row["minimum_price"],
                     "first_play_time" => $first_play_time === null ? null : $first_play_time
