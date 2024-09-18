@@ -1,5 +1,5 @@
 async function loadRecommendedMovies() {
-  const apiEndpoint = "./api/v1/movieData";
+  const apiEndpoint = "https://annexbios.nickvz.nl/api/v1/movieData";
 
   try {
     const response = await fetch(apiEndpoint, {
@@ -14,45 +14,61 @@ async function loadRecommendedMovies() {
     }
 
     const movies = (await response.json()).data;
+    const movieContainer = document.querySelector(".recommended-movies");
 
-    const recommendedMovies = document.querySelectorAll(".recommended-movie");
+    // Loop over the movies and create or update movie elements
+    movies.forEach((movie, index) => {
+      const { title, image, release_date, description, rating } = movie;
 
-    recommendedMovies.forEach((recommendedMovie, index) => {
-      if (index < movies.length) {
-        const { title, image, release_date, description, rating } =
-          movies[index];
+      // Check if the element already exists
+      let recommendedMovie = movieContainer.querySelectorAll(`.recommended-movie`)[index];
 
-        const movieTitle = recommendedMovie.querySelector(".rm-title");
-        const movieImageContainer =
-          recommendedMovie.querySelector(".rm-img-container");
-        const movieReleaseDate =
-          recommendedMovie.querySelector(".rm-release-date");
-        const movieDescription =
-          recommendedMovie.querySelector(".rm-description");
-        const filledStars = recommendedMovie.querySelector(".stars.filled");
+      // If not, create a new one
+      if (!recommendedMovie) {
+        const templateElement = movieContainer.querySelector(".recommended-movie.template");
+        recommendedMovie = templateElement.cloneNode(true);
+        recommendedMovie.classList.remove("template");
+        movieContainer.appendChild(recommendedMovie);
+        // recommendedMovie = document.querySelector(".recommended-movie.template").cloneNode(true);
+      }
 
-        // Set movie details
-        movieTitle.textContent = title;
-        movieReleaseDate.textContent = `Release: ${release_date}`;
-        movieDescription.textContent = `${description} ${description} ${description}`;
+      // Update the movie details
+      const movieTitle = recommendedMovie.querySelector(".rm-title");
+      const movieImageContainer = recommendedMovie.querySelector(".rm-img-container");
+      const movieReleaseDate = recommendedMovie.querySelector(".rm-release-date");
+      const movieDescription = recommendedMovie.querySelector(".rm-description");
+      const filledStars = recommendedMovie.querySelector(".stars.filled");
 
-        // Update the image only if necessary
-        if (!movieImageContainer.querySelector(".rm-img")) {
-          const movieImageElement = document.createElement("img");
-          movieImageElement.src = image;
-          movieImageElement.alt = `Poster for ${title}`;
-          movieImageElement.classList.add("rm-img");
-          movieImageContainer.appendChild(movieImageElement);
-        }
+      movieTitle.textContent = title;
+      movieReleaseDate.textContent = `Release: ${release_date}`;
+      movieDescription.textContent = `${description} ${description} ${description}`;
 
-        // Update the star rating
-        filledStars.style.width = `${rating * 10}%`;
-
-        // Remove skeleton loaders
-        recommendedMovie.classList.remove("skeleton");
+      if (movieImageContainer.querySelector(".rm-img")) {
+        // Update the existing image if it already exists
+        const movieImageElement = movieImageContainer.querySelector(".rm-img");
+        movieImageElement.src = image;
+        movieImageElement.alt = `Poster for ${title}`;
       } else {
-        // Hide extra recommended movie elements
-        recommendedMovie.style.display = "none";
+        // Create and append a new image if it doesn't exist
+        const movieImageElement = document.createElement("img");
+        movieImageElement.src = image;
+        movieImageElement.alt = `Poster for ${title}`;
+        movieImageElement.classList.add("rm-img");
+        movieImageContainer.appendChild(movieImageElement);
+      }
+      
+
+      filledStars.style.width = `${rating * 10}%`;
+
+      // Remove skeleton loader
+      recommendedMovie.classList.remove("skeleton");
+    });
+
+    // Hide any extra elements if there are more elements than movies
+    const allMovieElements = movieContainer.querySelectorAll(".recommended-movie");
+    allMovieElements.forEach((element, index) => {
+      if (index >= movies.length) {
+        element.style.display = "none";
       }
     });
   } catch (error) {
@@ -61,4 +77,15 @@ async function loadRecommendedMovies() {
 }
 
 // Simulate loading with a delay
-setTimeout(loadRecommendedMovies, 2000);
+document.addEventListener("DOMContentLoaded", () => {
+  loadRecommendedMovies();
+});
+
+function duplicateChildNodes (parent){
+  NodeList.prototype.forEach = Array.prototype.forEach;
+  var children = parent.childNodes;
+  children.forEach(function(item){
+    var cln = item.cloneNode(true);
+    parent.appendChild(cln);
+  });
+};
