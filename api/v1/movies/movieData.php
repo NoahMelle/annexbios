@@ -70,7 +70,7 @@
                 $stmt->close();
 
                 while ($rowGenre = $resultGenre->fetch_assoc()) {
-                    $genres[] = $rowGenre["title"];
+                    $genres[] = ["name" => $rowGenre["title"]];
                 }
 
                 // Fetch directors

@@ -12,7 +12,7 @@ info:
 
     **Code Example (Javascript)**
     ```js
-    fetch('https://u231195.gluwebsite.nl/api/v1/movieData', {
+    fetch('https://annexbios.nickvz.nl/api/v1/movieData', {
       headers: {
         'Authorization': 'Bearer 87myiOkW34gPWzFYYmxrrOg3j7cEM9CM',
       }
@@ -20,7 +20,7 @@ info:
     ```
   version: 1.0
 servers:
-  - url: https://u231195.gluwebsite.nl
+  - url: https://annexbios.nickvz.nl
 tags:
   - name: movies
     description: Movies
@@ -201,6 +201,14 @@ components:
         image:
           type: string
           example: http://localhost/assets/img/directors/510.jpg
+    Genre:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: horror
     Actor:
       required:
         - name
@@ -238,6 +246,9 @@ components:
           example: http://localhost/assets/img/viewing_guides/taal.png
     Place:
       type: object
+      required:
+        - place
+        - available
       properties:
         place:
           type: integer
@@ -260,6 +271,10 @@ components:
         - length
         - release_date
         - is_adult_movie
+        - trailer_link
+        - first_play_time
+        - minimum_price
+        - image
       type: object
       properties:
         imdb_id:
@@ -280,7 +295,7 @@ components:
         genres:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/Genre"
         directors:
           type: array
           items:
@@ -304,6 +319,13 @@ components:
         trailer_link:
           type: string
           example: https://www.youtube.com/watch?v=6b7-49Y23vg
+        first_play_time:
+          type: string
+          example: 2024-09-26 22:00:00
+          description: The first time this movie played/will play in our theaters
+        minimum_price:
+          type: float
+          example: 9,00
         is_adult_movie:
           type: integer
           enum:
