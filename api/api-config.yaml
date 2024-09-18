@@ -200,7 +200,7 @@ components:
           example: Tim Burton
         image:
           type: string
-          example: http://localhost/assets/img/directors/510.jpg
+          example: https://annexbios.nickvz.nl/assets/img/directors/510.jpg
     Genre:
       required:
         - name
@@ -219,7 +219,7 @@ components:
           example: Michael Keaton
         image:
           type: string
-          example: http://localhost/assets/img/directors/2232.jpg
+          example: https://annexbios.nickvz.nl/assets/img/directors/2232.jpg
     ViewingGuide:
       type: object
       required:
@@ -243,7 +243,7 @@ components:
           example: Grof taalgebruik
         image:
           type: string
-          example: http://localhost/assets/img/viewing_guides/taal.png
+          example: https://annexbios.nickvz.nl/assets/img/viewing_guides/taal.png
     Place:
       type: object
       required:
@@ -262,6 +262,7 @@ components:
         - imdb_id
         - api_id
         - title
+        - image
         - description
         - genres
         - directors
@@ -275,7 +276,6 @@ components:
         - embedded_trailer_link
         - first_play_time
         - minimum_price
-        - image
       type: object
       properties:
         imdb_id:
@@ -288,11 +288,12 @@ components:
         title:
           type: string
           example: Beetlejuice Beetlejuice
+        image:
+          type: string
+          example: https://annexbios.nickvz.nl/assets/img/movies/tt2049403.jpg
         description:
           type: string
           example: Zesendertig jaar na de gebeurtenissen in de eerste film keert de familie Deetz terug naar Winter River na de onverwachte dood van Charles Deetz. Lydia's leven staat op zijn kop als haar rebelse tienerdochter Astrid het mysterieuze model van de stad op zolder ontdekt en het portaal naar het hiernamaals per ongeluk wordt geopend, waardoor Betelgeuze vrijkomt.
-        image:
-          type: string
         genres:
           type: array
           items:

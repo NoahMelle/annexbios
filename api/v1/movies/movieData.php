@@ -152,7 +152,7 @@
                     "image" => $env["BASEURL"] . "assets/img/viewing_guides/" . $age . ".png"
                 ];
 
-                $viewing_guides[] = [
+                $viewing_guides = [
                     "age" => $age . "+",
                     "symbols" => $symbols
                 ];
