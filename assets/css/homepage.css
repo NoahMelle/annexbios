@@ -82,6 +82,7 @@ main {
   min-width: 0;
   min-height: 0;
   overflow: hidden;
+  z-index: 2;
 }
 .locations .location {
   height: 100%;
