@@ -2,7 +2,7 @@ openapi: 3.0.2
 info:
   title: AnnexBios API
   description: |-
-    The documentation for the API of the AnnexBios Headquarters API (2WDV2)
+    The documentation for the AnnexBios Headquarters API (2WDV2)
     ---
     ## Authentication
     To use this API you need to include a Bearer token in the Authorization header for all requests. The format is:
