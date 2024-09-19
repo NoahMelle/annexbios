@@ -65,5 +65,4 @@ async function loadNews() {
   });
 }
 
-// Simulate loading with a delay
-setTimeout(loadNews, 2000);
+document.addEventListener("DOMContentLoaded", loadNews);

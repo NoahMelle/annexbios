@@ -91,7 +91,6 @@ main {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 .locations .location .location-image {
   width: 100%;
