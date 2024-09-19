@@ -64,7 +64,7 @@
             "length" => $dataResult['runtime'] ?? null,
             "release_date" => $dataResult['release_date'] ?? null,
             "trailer_link" => $trailer,
-            "is_adult_movie" => intval($dataResult['adult'] ?? 0),
+            "is_adult_movie" => $dataResult['adult'] === false ? 0 : 1,
             "genres" => $dataResult['genres'] ?? [],
             "directors" => [],
             "actors" => [],
