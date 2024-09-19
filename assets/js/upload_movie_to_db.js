@@ -16,29 +16,31 @@ if (document.querySelector('#movies_form')) {
       })
       .then(response => {
         if (response.ok) {
-          return response.json();
+          return response.text();
         }
         throw new Error('Network response was not ok.');
       })
       .then(responseData => {
-        document.querySelector('.movies-loading-screen').style.display = 'none';
-        document.body.style.overflow = 'auto';
+        console.log(responseData);
 
-        if (responseData['success'] === true) {
-          // Show success message
-          document.querySelector('.movies-pop-up').style.display = 'flex';
-          document.querySelector('.hero-text-alert').style.display = 'flex';
-          document.querySelector('.hero-text-alert').textContent = 'toegevoegd aan de database';
-        } else {
-          // Show error message
-          document.querySelector('.movies-pop-up').style.display = 'flex';
-          document.querySelector('.hero-text-alert').style.display = 'flex';
-          document.querySelector('.hero-text-alert').textContent = 'error: ' + responseData['error_message'];
-        }
+        // document.querySelector('.movies-loading-screen').style.display = 'none';
+        // document.body.style.overflow = 'auto';
 
-        setTimeout(function () {
-          document.querySelector('.movies-pop-up').style.display = 'none';
-        }, 2000);
+        // if (responseData['success'] === true) {
+        //   // Show success message
+        //   document.querySelector('.movies-pop-up').style.display = 'flex';
+        //   document.querySelector('.hero-text-alert').style.display = 'flex';
+        //   document.querySelector('.hero-text-alert').textContent = 'toegevoegd aan de database';
+        // } else {
+        //   // Show error message
+        //   document.querySelector('.movies-pop-up').style.display = 'flex';
+        //   document.querySelector('.hero-text-alert').style.display = 'flex';
+        //   document.querySelector('.hero-text-alert').textContent = 'error: ' + responseData['error_message'];
+        // }
+
+        // setTimeout(function () {
+        //   document.querySelector('.movies-pop-up').style.display = 'none';
+        // }, 2000);
       })
       .catch(error => {
         // Handle errors
