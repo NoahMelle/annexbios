@@ -76,10 +76,7 @@ async function loadRecommendedMovies() {
   }
 }
 
-// Simulate loading with a delay
-document.addEventListener("DOMContentLoaded", () => {
-  loadRecommendedMovies();
-});
+document.addEventListener("DOMContentLoaded", loadRecommendedMovies);
 
 function duplicateChildNodes (parent){
   NodeList.prototype.forEach = Array.prototype.forEach;

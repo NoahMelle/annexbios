@@ -4,10 +4,10 @@ const newsItems = document.querySelectorAll(".news-item:not(.template)");
 const newsItemsContainer = document.querySelector(".news");
 
 async function loadNews() {
-  const dummyDataEndpoint = "./api/v1/getnews";
+  const apiEndpoint = "https://annexbios.nickvz.nl/api/v1/getnews";
 
   try {
-    const response = await fetch(dummyDataEndpoint, {
+    const response = await fetch(apiEndpoint, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${apiToken}`,
@@ -44,7 +44,7 @@ async function loadNews() {
       // Update the image only if necessary
       if (!newsImageContainer.querySelector(".news-img")) {
         const newsImageElement = document.createElement("img");
-        newsImageElement.src = "./assets/img/news/" + image;
+        newsImageElement.src = image;
         newsImageElement.alt = `Image for ${title}`;
         newsImageElement.classList.add("news-img");
         newsImageContainer.appendChild(newsImageElement);
@@ -65,5 +65,4 @@ async function loadNews() {
   });
 }
 
-// Simulate loading with a delay
-setTimeout(loadNews, 2000);
+document.addEventListener("DOMContentLoaded", loadNews);
