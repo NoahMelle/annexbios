@@ -12,6 +12,7 @@
     <form action="{{ base_url }}cms/vestigingen/verwijder/{{ current_location_id }}" method="post">
       <label>Weet je het zeker? Alle spelende films in deze locatie worden verwijderd...</label>
       <input type="hidden" name="location_id" value="{{ current_location_id }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input class="red" type="submit" value="verwijderen">
     </form>
   </div>
