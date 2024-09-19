@@ -14,7 +14,7 @@ if (isset($validToken) && $validToken === true && isset($current_location_id)) {
             "title" => $row["news_title"],
             "content" => $row["news_content"],
             "date" => $row["published_at"],
-            "image" => $row["image_url"]
+            "image" => $env["BASEURL"] . "assets/img/news/" . $row["image_url"]
         ];
 
         $id++;
