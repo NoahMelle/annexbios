@@ -24,6 +24,7 @@
       <input type="text" name="postal_code" id="postal_code" value="{{ postal_code }}">
       <label for="website_link">Website link</label>
       <input type="text" name="website_link" id="website_link" value="{{ current_website_link }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <input type="submit" value="wijzig">
     </form>
   </div>
