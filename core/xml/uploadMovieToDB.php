@@ -420,8 +420,7 @@
         }
     } catch (Exception $e) {
         error_log($e->getMessage());
-        // dd($e, true);
-        echo json_encode(array('success' => false, 'error_message' => $e->getMessage(), 'error_code' => 500));
+        echo json_encode(array('success' => false, 'error_message' => 'An error occurred while processing the movie data.', 'error_code' => 500));
         exit();
     }
 
