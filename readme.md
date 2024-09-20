@@ -1,3 +1,8 @@
+## For Teachers!
+
+All teachers involved in this project will have received an Email about the credentials needed for this project.
+
+
 # AnnexBios Headquarters API
 
 Welcome to the AnnexBios Headquarters API repository! This project serves as the core backend system for all our movie theater establishments, providing a centralized API for data management and communication between branches. We also host a homepage that provides general information.
