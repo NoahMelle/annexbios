@@ -23,6 +23,7 @@ To set up the project on your local environment, follow these steps:
 1. **XAMPP**: Download and install [XAMPP](https://www.apachefriends.org/index.html), which includes Apache, MySQL (via phpMyAdmin), and PHP.
 2. **PHP**: Ensure PHP is installed and configured via XAMPP.
 3. **MySQL Database**: The project uses MySQL with the `mysqli` extension.
+4. **Composer**: Make sure composer is installed, since this project uses the Mustache Template Engine
 
 ### Steps
 
@@ -41,8 +42,13 @@ To set up the project on your local environment, follow these steps:
     Open phpMyAdmin by visiting http://localhost/phpmyadmin/.
     Create a new database with the name `u123340p119668_annexbios`.
     Import the database schema from the provided .sql file, located in the **`db_export/`** folder.
-
-4. **Set Up The .env File**
+4. **Install Mustache**
+    To install the required packages, run the following command in the project root directory:
+    ```
+    $ composer install
+    ```
+    This will install the Mustache Template Engine.
+5. **Set Up The .env File**
     Create a .env file in the root directory of this project.
     paste this code with your data inside:
     ```.env
@@ -62,10 +68,10 @@ To set up the project on your local environment, follow these steps:
 
     DEFAULT_MINIMUM_PRICE=9,00
 
-5. **Start XAMPP**:
+6. **Start XAMPP**:
     Open the XAMPP control panel and start Apache and MySQL services.
 
-6. **Access the project**:
+7. **Access the project**:
     After setting everything up, you can access the API via your web browser by going to:
     ```
     http://localhost/annexbios/

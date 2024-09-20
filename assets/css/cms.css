@@ -40,20 +40,28 @@
 .navbar .logo img {
   width: 100%;
 }
-.navbar .nav-links .nav-link {
+.navbar .nav-link {
   display: flex;
   gap: 1.5rem;
   align-items: center;
   width: 100%;
   padding: 1rem 2rem;
   background-color: transparent;
+  transition: background-color 0.3s;
 }
-.navbar .nav-links .nav-link img {
+.navbar .nav-link img {
   height: 30px;
 }
-.navbar .nav-links .nav-link.active {
+.navbar .nav-link.active {
   background-color: #ffffff;
   border-left: 3px solid #4b4b4b;
+}
+.navbar .nav-link:hover {
+  background-color: #ffffff;
+}
+.navbar .nav-link.sign-out {
+  margin-top: auto;
+  margin-bottom: 0;
 }
 
 .cms-content {

@@ -1,43 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ page_title }}</title>
+    <link href="{{ base_url }}assets/css/style.css" rel="stylesheet" />
+    <link href="{{ base_url }}assets/css/cms.css" rel="stylesheet" />
+    {{# styles}}
+    <link href="{{ base_url }}assets/css/{{.}}" rel="stylesheet" />
+    {{/ styles}}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page_title }}</title>
-  <link href="{{ base_url }}assets/css/style.css" rel="stylesheet" />
-  <link href="{{ base_url }}assets/css/cms.css" rel="stylesheet" />
-  {{# styles}}
-  <link href="{{ base_url }}assets/css/{{.}}" rel="stylesheet" />
-  {{/ styles}}
+    <script>
+      const BASEURL = "{{ base_url }}";
+    </script>
+  </head>
 
-  <script>
-    const BASEURL = '{{ base_url }}';
-
-  </script>
-</head>
-
-<body>
+  <body>
     <div class="cms-layout">
-        <nav class="navbar not-active">
-            <a href="{{base_url}}" class="logo">
-                <img src="{{base_url}}assets/img/logo/logo_hoofd.png" alt="">
-            </a>
-            <div class="nav-links">
-                {{# header_pages}}
-                <a href="{{ base_url }}cms/{{ url }}" class="nav-link {{# active }}active{{/ active }}">
-                    <img src="{{ base_url }}assets/icons/{{ img_url }}" alt="">
-                    {{title}}
-                </a>
-                {{/ header_pages}}
-                
-            </div>
-        </nav>
-        <div class="menu-container not-active">
-            <div class="hamburger-button cms">
-                <span class="hamburger-bar bar-top"></span>
-                <span class="hamburger-bar bar-middle"></span>
-                <span class="hamburger-bar bar-bottom"></span>
-              </div>
+      <nav class="navbar not-active">
+        <a href="{{base_url}}" class="logo">
+          <img src="{{base_url}}assets/img/logo/logo_hoofd.png" alt="" />
+        </a>
+        <div class="nav-links">
+          {{# header_pages}}
+          <a
+            href="{{ base_url }}cms/{{ url }}"
+            class="nav-link {{# active }}active{{/ active }}"
+          >
+            <img src="{{ base_url }}assets/icons/{{ img_url }}" alt="" />
+            {{title}}
+          </a>
+          {{/ header_pages}}
         </div>
-        <div class="cms-content">
+        <a href="{{ base_url }}loguit" class="nav-link sign-out">
+            <img src="{{ base_url }}assets/icons/sign-out.svg" alt="Sign out icon" />
+            Log uit
+        </a>
+      </nav>
+      <div class="menu-container not-active">
+        <div class="hamburger-button cms">
+          <span class="hamburger-bar bar-top"></span>
+          <span class="hamburger-bar bar-middle"></span>
+          <span class="hamburger-bar bar-bottom"></span>
+        </div>
+      </div>
+      <div class="cms-content">
