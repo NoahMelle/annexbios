@@ -21,7 +21,46 @@ To set up the project on your local environment, follow these steps:
 
 ### Steps
 
-1. **Clone the Repository**:
+1. **Clone The Repository**:
    Clone the repository to your local machine using Git:
    ```bash
    git clone https://github.com/NoahMelle/annexbios.git
+
+2. **Move Project To XAMPP Folder**:
+    Move the cloned project folder to the XAMPP htdocs directory, which is typically located at:
+    ```
+    C:/xampp/htdocs/
+    This step allows the project to be accessible via your local server.
+
+3. **Set Up The Database**:
+    Open phpMyAdmin by visiting http://localhost/phpmyadmin/.
+    Create a new database with the name `u123340p119668_annexbios`.
+    Import the database schema from the provided .sql file, located in the **`db_export/`** folder.
+
+4. **Set Up The .env File**
+    Create a .env file in the root directory of this project.
+    paste this code with your data inside:
+    ```.env
+    DBHOST=*YOUR DB HOST*
+    DBUSERNAME=*YOUR DB USERNAME*
+    DBPASSWORD=*YOUR DB PASSWORD*
+    DBNAME=*YOUR DB NAME*
+
+    THEMOVIEDB_AUTH_TOKEN=**PROVIDED IN THE MAIL**
+    THEMOVIEDB_AUTH_KEY=**PROVIDED IN THE MAIL**
+
+    BASEURL=http://localhost/annexbios/
+
+    ENCRYPTION_SECRET=**PROVIDED IN THE MAIL**
+    MAX_REQUESTS_PER_MINUTE=50
+    AVERAGE_MS_FOR_TIMEOUT=1000
+
+    DEFAULT_MINIMUM_PRICE=9,00
+
+5. **Start XAMPP**:
+    Open the XAMPP control panel and start Apache and MySQL services.
+
+6. **Access the project**:
+    After setting everything up, you can access the API via your web browser by going to:
+    ```
+    http://localhost/annexbios/
