@@ -16,31 +16,29 @@ if (document.querySelector('#movies_form')) {
       })
       .then(response => {
         if (response.ok) {
-          return response.text();
+          return response.json();
         }
         throw new Error('Network response was not ok.');
       })
       .then(responseData => {
-        console.log(responseData);
+        document.querySelector('.movies-loading-screen').style.display = 'none';
+        document.body.style.overflow = 'auto';
 
-        // document.querySelector('.movies-loading-screen').style.display = 'none';
-        // document.body.style.overflow = 'auto';
+        if (responseData['success'] === true) {
+          // Show success message
+          document.querySelector('.movies-pop-up').style.display = 'flex';
+          document.querySelector('.hero-text-alert').style.display = 'flex';
+          document.querySelector('.hero-text-alert').textContent = 'toegevoegd aan de database';
+        } else {
+          // Show error message
+          document.querySelector('.movies-pop-up').style.display = 'flex';
+          document.querySelector('.hero-text-alert').style.display = 'flex';
+          document.querySelector('.hero-text-alert').textContent = 'error: ' + responseData['error_message'];
+        }
 
-        // if (responseData['success'] === true) {
-        //   // Show success message
-        //   document.querySelector('.movies-pop-up').style.display = 'flex';
-        //   document.querySelector('.hero-text-alert').style.display = 'flex';
-        //   document.querySelector('.hero-text-alert').textContent = 'toegevoegd aan de database';
-        // } else {
-        //   // Show error message
-        //   document.querySelector('.movies-pop-up').style.display = 'flex';
-        //   document.querySelector('.hero-text-alert').style.display = 'flex';
-        //   document.querySelector('.hero-text-alert').textContent = 'error: ' + responseData['error_message'];
-        // }
-
-        // setTimeout(function () {
-        //   document.querySelector('.movies-pop-up').style.display = 'none';
-        // }, 2000);
+        setTimeout(function () {
+          document.querySelector('.movies-pop-up').style.display = 'none';
+        }, 2000);
       })
       .catch(error => {
         // Handle errors
