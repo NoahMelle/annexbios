@@ -4,9 +4,15 @@
         exit();
     }
 
+    if (!isset($_POST['min_price']) || empty($_POST['min_price']) || !filter_var($_POST['min_price'], FILTER_VALIDATE_INT)) {
+        echo json_encode(array('success' => false, 'error_message' => 'No minimum price provided.', 'error_code' => 400));
+        exit();
+    }
+
     require_once "../db_connect.php";
 
     $imdbId = mes($_POST['imdb_id']);
+    $minPrice = intval($_POST['min_price']);
     
     $movie_db_images_baseurl = 'https://image.tmdb.org/t/p/w500/';
 
@@ -106,7 +112,7 @@
     function processMovie($data)
     {
         global $con;
-        global $env;
+        global $minPrice;
 
         $error = ['success' => false, 'error_message' => 'Script failed to start', 'status_code' => 500];
     
@@ -154,7 +160,7 @@
             $con->begin_transaction();
 
             $stmt = $con->prepare("INSERT INTO movie_data (imdb_id, title, description, image_path, rating, length_minutes, release_date, trailer_link, is_adult_movie, minimum_price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssdissss", $data['imdb_id'], $data['title'], $data['description'], $dbPath, $data['rating'], $data['length'], $data['release_date'], $data['trailer_link'], $data['is_adult_movie'], $env['DEFAULT_MINIMUM_PRICE']);
+            $stmt->bind_param("ssssdissss", $data['imdb_id'], $data['title'], $data['description'], $dbPath, $data['rating'], $data['length'], $data['release_date'], $data['trailer_link'], $data['is_adult_movie'], $minPrice);
             if($stmt->execute()) {
                 $db_movie_id = $con->insert_id;
                 $stmt->close();
@@ -413,7 +419,9 @@
             echo $process;
         }
     } catch (Exception $e) {
-        echo json_encode(array('success' => false, 'error_message' => 'An error occurred while processing the movie data.', 'error_code' => 500));
+        error_log($e->getMessage());
+        // dd($e, true);
+        echo json_encode(array('success' => false, 'error_message' => $e->getMessage(), 'error_code' => 500));
         exit();
     }
 

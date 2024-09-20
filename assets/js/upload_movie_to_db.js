@@ -9,6 +9,7 @@ if (document.querySelector('#movies_form')) {
     // Get the form data
     let formData = new FormData();
     formData.append('imdb_id', document.querySelector('#imdb_id').value);
+    formData.append('min_price', document.querySelector('#min_price').value);
 
     fetch('../../core/xml/uploadMovieToDB.php', {
         method: 'POST',
@@ -21,6 +22,7 @@ if (document.querySelector('#movies_form')) {
         throw new Error('Network response was not ok.');
       })
       .then(responseData => {
+        console.log(responseData);
         document.querySelector('.movies-loading-screen').style.display = 'none';
         document.body.style.overflow = 'auto';
 
