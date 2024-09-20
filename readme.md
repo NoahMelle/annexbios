@@ -30,7 +30,7 @@ To set up the project on your local environment, follow these steps:
     Move the cloned project folder to the XAMPP htdocs directory, which is typically located at:
     ```
     C:/xampp/htdocs/
-
+    ```
     This step allows the project to be accessible via your local server.
 3. **Set Up The Database**:
     Open phpMyAdmin by visiting http://localhost/phpmyadmin/.
