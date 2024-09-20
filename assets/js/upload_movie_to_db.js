@@ -22,7 +22,6 @@ if (document.querySelector('#movies_form')) {
         throw new Error('Network response was not ok.');
       })
       .then(responseData => {
-        console.log(responseData);
         document.querySelector('.movies-loading-screen').style.display = 'none';
         document.body.style.overflow = 'auto';
 
