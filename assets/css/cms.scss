@@ -23,21 +23,27 @@
       width: 100%;
     }
   }
-  .nav-links {
-    .nav-link {
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-      width: 100%;
-      padding: 1rem 2rem;
-      background-color: transparent;
-      img {
-        height: 30px;
-      }
-      &.active {
-        background-color: #ffffff;
-        border-left: 3px solid #4b4b4b;
-      }
+  .nav-link {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 2rem;
+    background-color: transparent;
+    transition: background-color 0.3s;
+    img {
+      height: 30px;
+    }
+    &.active {
+      background-color: #ffffff;
+      border-left: 3px solid #4b4b4b;
+    }
+    &:hover {
+      background-color: #ffffff;
+    }
+    &.sign-out {
+      margin-top: auto;
+      margin-bottom: 0;
     }
   }
 }
@@ -52,25 +58,25 @@ $bar-height: calc(#{$hamburger-width} / 10);
 $bar-spacing: calc(#{$hamburger-width} / 3.5);
 
 .menu-container {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    left: unset;
-    transform: unset;
-    cursor: pointer;
-    background-color: rgba($color: #FFFFFF, $alpha: .8);
-    border: 1px solid rgba($color: #000000, $alpha: .2);
-    padding: .5rem;
-    aspect-ratio: 1;
-    width: calc(#{$hamburger-width} * 1.5);
-    height: calc(#{$hamburger-width} * 1.5);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1001;
-    border-radius: .2rem;
-    box-shadow: 0 0 10px rgba($color: #000000, $alpha: .2);
-    backdrop-filter: blur(5px);
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  left: unset;
+  transform: unset;
+  cursor: pointer;
+  background-color: rgba($color: #ffffff, $alpha: 0.8);
+  border: 1px solid rgba($color: #000000, $alpha: 0.2);
+  padding: 0.5rem;
+  aspect-ratio: 1;
+  width: calc(#{$hamburger-width} * 1.5);
+  height: calc(#{$hamburger-width} * 1.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+  border-radius: 0.2rem;
+  box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
+  backdrop-filter: blur(5px);
 }
 
 .users-table {
@@ -90,10 +96,9 @@ $bar-spacing: calc(#{$hamburger-width} / 3.5);
 }
 
 .hamburger-button.cms {
-    height: calc(#{$hamburger-width} / 1.5);
-    width: $hamburger-width;
+  height: calc(#{$hamburger-width} / 1.5);
+  width: $hamburger-width;
 }
-
 
 .bar-top {
   top: 0;
@@ -132,9 +137,9 @@ $bar-spacing: calc(#{$hamburger-width} / 3.5);
 }
 
 @media screen and (max-width: $tabletBreakpoint) {
-    .menu-container {
-        display: flex;
-    }
+  .menu-container {
+    display: flex;
+  }
   .navbar {
     position: fixed;
     z-index: 1000;

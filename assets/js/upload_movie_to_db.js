@@ -9,6 +9,7 @@ if (document.querySelector('#movies_form')) {
     // Get the form data
     let formData = new FormData();
     formData.append('imdb_id', document.querySelector('#imdb_id').value);
+    formData.append('min_price', document.querySelector('#min_price').value);
 
     fetch('../../core/xml/uploadMovieToDB.php', {
         method: 'POST',

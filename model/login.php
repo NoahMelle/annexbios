@@ -38,7 +38,12 @@ if (isset($_POST["username"]) && !empty($_POST["username"]) && isset($_POST["pas
             "superuser" => $superuser
         ];
 
-        header("Location: " . $env["BASEURL"] . "cms/vestigingen");
+        $stmt = $con->prepare("UPDATE user_data SET last_login = NOW() WHERE user_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->close();
+
+        header("Location: " . $env["BASEURL"] . "cms");
     } else {
         $_SESSION["user"] = [
             "user_id" => null,
